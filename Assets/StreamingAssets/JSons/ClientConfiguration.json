@@ -1,7 +1,7 @@
 {
 	"ClientConfiguration": 
 	{
-		"ServerConfigurationCDN": "http://blueasa.synology.me/home/shmhlove/KOR/DevQA",
+		"ServerConfigurationCDN": "http://blueasa.synology.me/home/shmhlove/KOR",
 		"ServiceMode": "DevQA",
 		"Version": "1.0.0",
 		"VSyncCount": 0,

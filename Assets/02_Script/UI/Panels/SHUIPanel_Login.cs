@@ -9,6 +9,7 @@ public class SHUIPanel_Login : SHUIBasePanel
 
 
     #region Members : Event
+    private Action<bool> m_pEventToLogin = null;
     #endregion
 
 
@@ -21,7 +22,8 @@ public class SHUIPanel_Login : SHUIBasePanel
     {
         if ((null == pArgs) || (1 > pArgs.Length))
             return;
-        
+
+        m_pEventToLogin = ((Action<bool>)pArgs[0]);
     }
     #endregion
 
@@ -31,7 +33,13 @@ public class SHUIPanel_Login : SHUIBasePanel
 
 
     #region Utility Functions
+    void SendEventToLogin(bool bIsSuccess)
+    {
+        if (null == m_pEventToLogin)
+            return;
 
+        m_pEventToLogin(bIsSuccess);
+    }
     #endregion
 
 
@@ -46,7 +54,7 @@ public class SHUIPanel_Login : SHUIBasePanel
     }
     public void OnClickToGuast()
     {
-        Single.UI.ShowNotice_NoMake();
+        SendEventToLogin(true);
     }
     #endregion
 }

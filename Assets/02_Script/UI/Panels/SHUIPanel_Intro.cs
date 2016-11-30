@@ -6,7 +6,9 @@ public class SHUIPanel_Intro : SHUIBasePanel
 {
     #region Members : Inspector
     [Header("IntroInfo")]
-    [SerializeField] private GameObject m_pButton = null;
+    [SerializeField] private GameObject     m_pButton        = null;
+    [SerializeField] private GameObject     m_pLogo          = null;
+    [SerializeField] private AnimationClip  m_pStartLogoClip = null;
     #endregion
 
 
@@ -41,10 +43,17 @@ public class SHUIPanel_Intro : SHUIBasePanel
     #region Event Handler
     public void OnClickToScreen()
     {
-        if (null != m_pEventToTouch)
-            m_pEventToTouch();
-        
-        m_pButton.SetActive(false);
+        if (null != m_pStartLogoClip)
+            PlayAnim(eDirection.Front, m_pLogo, m_pStartLogoClip, null);
+
+        if (null != m_pButton)
+            m_pButton.SetActive(false);
+
+        SHCoroutine.Instance.WaitTime(() =>
+        {
+            if (null != m_pEventToTouch)
+                m_pEventToTouch();
+        }, 0.5f);
     }
     #endregion
 }

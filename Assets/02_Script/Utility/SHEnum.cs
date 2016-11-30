@@ -40,6 +40,7 @@ public enum eSceneType
     Patch,
     Login,
     Loading,
+    InGame,
 }
 
 // 데이터 종류

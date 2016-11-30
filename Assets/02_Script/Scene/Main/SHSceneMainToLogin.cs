@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class SHSceneMainToLogin : MonoBehaviour 
@@ -11,6 +12,7 @@ public class SHSceneMainToLogin : MonoBehaviour
     void Start()
     {
         Single.AppInfo.CreateSingleton();
+        Single.UI.Show("Panel - Login", (Action<bool>)OnEventToLogin);
     }
     #endregion
 
@@ -28,5 +30,16 @@ public class SHSceneMainToLogin : MonoBehaviour
 
 
     #region Event Handler
+    public void OnEventToLogin(bool bIsSuccess)
+    {
+        if (false == bIsSuccess)
+        {
+            Single.UI.ShowNotice_NoMake();
+        }
+        else
+        {
+            Single.Scene.GoTo(eSceneType.InGame);
+        }
+    }
     #endregion
 }
