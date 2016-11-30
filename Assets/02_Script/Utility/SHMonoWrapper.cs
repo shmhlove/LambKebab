@@ -23,11 +23,9 @@ public class SHMonoWrapper : MonoBehaviour
     #region System Functions
     public virtual void Awake()
     {
-
     }
     public virtual void Start()
     {
-        
     }
     public virtual void OnDisable()
     {
@@ -35,7 +33,15 @@ public class SHMonoWrapper : MonoBehaviour
     }
     public virtual void OnDestroy()
     {
-
+    }
+    public virtual void Update()
+    {
+    }
+    public virtual void FixedUpdate()
+    {
+    }
+    public virtual void LateUpdate()
+    {
     }
     #endregion
 

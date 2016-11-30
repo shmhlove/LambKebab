@@ -15,6 +15,9 @@ public static class Single
     // 씬
     public static SHSceneManager            Scene               { get { return SHSceneManager.Instance; } }
 
+    // 인게임 엔진
+    public static SHGameEngine              Engine              { get { return SHGameEngine.Instance; } }
+
     // UI
     public static SHUIManager               UI                  { get { return SHUIManager.Instance; } }
     
@@ -56,11 +59,41 @@ public abstract class SHSingleton<T> : SHMonoWrapper where T : SHSingleton<T>
         Initialize(this as T);
     }
 
+    // 시스템 : 시작
+    public override void Start()
+    {
+        base.Start();
+    }
+
+    // 시스템 : 활성화
+    public override void OnDisable()
+    {
+        base.OnDisable();
+    }
+    
     // 시스템 : 제거
     public override void OnDestroy()
     {
         base.OnDestroy();
         Destroyed();
+    }
+
+    // 시스템 : 업데이트
+    public override void Update()
+    {
+        base.Update();
+    }
+
+    // 시스템 : 물리 업데이트
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
+
+    // 시스템 : 렌더 후 업데이트
+    public override void LateUpdate()
+    {
+        base.LateUpdate();
     }
 
     // 시스템 : 어플종료
