@@ -50,7 +50,7 @@
         "Description_ServiceState_List":
         [
             "Run",
-            "Check"
+            "Check",
 			"ConnectMarket",
         ]
     }
