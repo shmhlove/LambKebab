@@ -21,7 +21,7 @@ public class SHSceneMainToIntro : SHMonoWrapper
     #region Event Handler
     void OnEventToNextScene()
     {
-        Single.Scene.GoTo(eSceneType.Login);
+        Single.Scene.GoTo(eSceneType.InGame);
     }
     #endregion
 }
