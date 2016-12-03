@@ -19,7 +19,7 @@ public class SHMonster : SHBaseEngine
 
     #region Members : Constants
     private readonly float MIN_CREATE_POS_Y = 50;
-    private readonly float MAX_CREATE_POS_Y = 500;
+    private readonly float MAX_CREATE_POS_Y = 320;
     #endregion
 
 
@@ -72,7 +72,7 @@ public class SHMonster : SHBaseEngine
         if (0 != m_pMonsters.Count)
             return;
 
-        var pMonster = CreateMonster(GetMonsterType(), GetRandomFactor(), SHMath.Random(MIN_CREATE_POS_Y, MAX_CREATE_POS_Y));
+        var pMonster = CreateMonster(Single.Balance.GetMonsterType(), GetRandomFactor(), SHMath.Random(MIN_CREATE_POS_Y, MAX_CREATE_POS_Y));
         pMonster.PlayMoveTween();
         AddMonster(pMonster);
     }
@@ -94,18 +94,12 @@ public class SHMonster : SHBaseEngine
         SHGameObject.SetParent(pMonster.transform, Single.UI.GetRootToScene());
         Single.ObjectPool.SetStartTransform(pMonster.gameObject);
         pMonster.SetActive(true);
-        pMonster.Initialize(fFactor, fStartPosY);
+        pMonster.Initialize(fFactor, Single.Balance.GetMonsterSpeed(), fStartPosY);
         return pMonster;
     }
     private float GetRandomFactor()
     {
         return SHMath.RandomN(new List<float>(){0.0f, 1.0f});
-    }
-    private string GetMonsterType()
-    {
-        return SHMath.RandomW(
-            new List<string>() { "1",  "2",  "3",  "4", },
-            new List<float>()  { 0.1f, 0.2f, 0.4f, 0.5f, });
     }
     void ClearMonster()
     {

@@ -38,11 +38,37 @@ public class SHBalance : SHBaseEngine
         var fGap = Mathf.Abs(pMonster.GetLocalPosition().x - pStick.GetLocalPosition().x);
         var fSep = pMonster.GetCollider().size.x / 3.0f;
 
-        if (fGap <= (fSep * 1.0f)) return eDecision.Good;
-        if (fGap <= (fSep * 2.0f)) return eDecision.Normal;
+        if (fGap <= (fSep * 0.5f)) return eDecision.Good;
+        if (fGap <= (fSep * 1.5f)) return eDecision.Normal;
         if (fGap <= (fSep * 3.0f)) return eDecision.Bad;
 
         return eDecision.Miss;
+    }
+    public string GetMonsterType()
+    {
+        return SHMath.RandomW(
+            new List<string>() { "1",  "2",  "3",  "4", },
+            new List<float>()  { 0.1f, 0.2f, 0.4f, 0.5f, });
+    }
+    public float GetMonsterSpeed()
+    {
+        var iLevel  = (int)(Single.GameState.m_iScore / 10.0f);
+        var pWeight = new List<float>();
+        switch (iLevel)
+        {
+            case 0:  pWeight = new List<float>() { 1.0f, 0.9f, 0.4f, 0.3f, 0.2f, 0.1f };   break;
+            case 1:  pWeight = new List<float>() { 0.9f, 0.8f, 0.4f, 0.3f, 0.2f, 0.1f };   break;
+            case 2:  pWeight = new List<float>() { 0.8f, 0.7f, 0.4f, 0.3f, 0.3f, 0.2f };   break;
+            case 3:  pWeight = new List<float>() { 0.7f, 0.6f, 0.4f, 0.4f, 0.3f, 0.2f };   break;
+            case 4:  pWeight = new List<float>() { 0.6f, 0.5f, 0.4f, 0.4f, 0.3f, 0.3f };   break;
+            case 5:  pWeight = new List<float>() { 0.5f, 0.4f, 0.5f, 0.4f, 0.4f, 0.3f };   break;
+            case 6:  pWeight = new List<float>() { 0.4f, 0.3f, 0.5f, 0.5f, 0.4f, 0.4f };   break;
+            case 7:  pWeight = new List<float>() { 0.3f, 0.2f, 0.5f, 0.5f, 0.4f, 0.4f };   break;
+            case 8:  pWeight = new List<float>() { 0.2f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f };   break;
+            case 9:  pWeight = new List<float>() { 0.1f, 0.1f, 0.5f, 0.6f, 0.5f, 0.5f };   break;
+            default: pWeight = new List<float>() { 0.1f, 0.1f, 0.6f, 0.6f, 0.5f, 0.7f };   break;
+        }
+        return SHMath.RandomW(new List<float>()  { 1.0f, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f }, pWeight);
     }
     #endregion
 

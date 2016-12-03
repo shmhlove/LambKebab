@@ -25,9 +25,11 @@ public static class Single
 
     // UI
     public static SHUIManager               UI                  { get { return SHUIManager.Instance; } }
-    
+
     // 사운드
+    public static SHSound                   Sound               { get { return SHSound.Instance; } }
     
+
     // 렌더유틸
     public static SHRenderTextureManager    RenderTexture       { get { return SHRenderTextureManager.Instance; } }
 

@@ -76,10 +76,9 @@ public class SHUIWidge_Monster : SHMonoWrapper
             return;
         
         m_pTweenMove.tweenFactor = (float)pArgs[0];
-        m_pTweenMove.from.y      = ((float)pArgs[1]);
-        m_pTweenMove.to.y        = ((float)pArgs[1]);
-        
-        m_pTweenMove.duration = m_pInfo.m_fSpeed;
+        m_pTweenMove.duration    = (float)pArgs[1];
+        m_pTweenMove.from.y      = ((float)pArgs[2]);
+        m_pTweenMove.to.y        = ((float)pArgs[2]);
     }
     private void OnUpdateToIdle()
     {
@@ -118,9 +117,9 @@ public class SHUIWidge_Monster : SHMonoWrapper
 
 
     #region Interface Functions
-    public void Initialize(float fFactor, float fStartPosY)
+    public void Initialize(float fFactor, float fSpeed, float fStartPosY)
     {
-        ChangeState(eState.Idle, fFactor, fStartPosY);
+        ChangeState(eState.Idle, fFactor, fSpeed, fStartPosY);
     }
     [FuncButton] public void PlayMoveTween()
     {

@@ -1,83 +1,19 @@
 {
 	"AssetBundleInfo": [
 		{
-			"s_BundleName": "Prefab",
+			"s_BundleName": "Sound",
 			"s_BundleSize": "0",
 			"s_BundleHash": "00000000000000000000000000000000",
 			"p_Resources": 
 			[
-                {
-                    "s_Name": "UIRoot_Global",
-                    "s_FileName": "UIRoot_Global.prefab",
-                    "s_Extension": ".prefab",
-                    "s_Size": "10312",
-                    "s_Hash": "B6A3EC4ED9A57165AFBBC75DEB492B37",
-                    "s_Path": "Prefab/UI/UIRoot_Global"
-                },
-                {
-                    "s_Name": "Panel_FadeIn",
-                    "s_FileName": "Panel_FadeIn.prefab",
-                    "s_Extension": ".prefab",
-                    "s_Size": "12820",
-                    "s_Hash": "D61BB3FBB42CE5C2F1886941683A1E34",
-                    "s_Path": "Prefab/UI/Panel/Panel_FadeIn"
-                },
-                {
-                    "s_Name": "Panel_FadeOut",
-                    "s_FileName": "Panel_FadeOut.prefab",
-                    "s_Extension": ".prefab",
-                    "s_Size": "12832",
-                    "s_Hash": "AF3D4DDC9343F9289D9320F2362A8A00",
-                    "s_Path": "Prefab/UI/Panel/Panel_FadeOut"
-                },
-                {
-                    "s_Name": "Panel_Notice",
-                    "s_FileName": "Panel_Notice.prefab",
-                    "s_Extension": ".prefab",
-                    "s_Size": "42340",
-                    "s_Hash": "5615792C17FD63AA1D77ECBF19B8A7A1",
-                    "s_Path": "Prefab/UI/Panel/Panel_Notice"
-                },
-                {
-                    "s_Name": "Widget_Monster_1",
-                    "s_FileName": "Widget_Monster_1.prefab",
-                    "s_Extension": ".prefab",
-                    "s_Size": "11892",
-                    "s_Hash": "A53C21A316423491FA11FE1EE92D6AC8",
-                    "s_Path": "Prefab/UI/Widget/Widget_Monster_1"
-                },
-                {
-                    "s_Name": "Widget_Monster_2",
-                    "s_FileName": "Widget_Monster_2.prefab",
-                    "s_Extension": ".prefab",
-                    "s_Size": "11892",
-                    "s_Hash": "9234498D668CE061A29D45DCEDC3C7CE",
-                    "s_Path": "Prefab/UI/Widget/Widget_Monster_2"
-                },
-                {
-                    "s_Name": "Widget_Monster_3",
-                    "s_FileName": "Widget_Monster_3.prefab",
-                    "s_Extension": ".prefab",
-                    "s_Size": "11892",
-                    "s_Hash": "588E1ACFD5073F63D16D151C7A908052",
-                    "s_Path": "Prefab/UI/Widget/Widget_Monster_3"
-                },
-                {
-                    "s_Name": "Widget_Monster_4",
-                    "s_FileName": "Widget_Monster_4.prefab",
-                    "s_Extension": ".prefab",
-                    "s_Size": "11892",
-                    "s_Hash": "8468F5B2D301FF0A827CBDCBA7F6C412",
-                    "s_Path": "Prefab/UI/Widget/Widget_Monster_4"
-                },
-                {
-                    "s_Name": "Widget_Stick",
-                    "s_FileName": "Widget_Stick.prefab",
-                    "s_Extension": ".prefab",
-                    "s_Size": "11380",
-                    "s_Hash": "E8B75E9297A101C2BADDAE2A6C96780B",
-                    "s_Path": "Prefab/UI/Widget/Widget_Stick"
-                }
+				{
+					"s_Name": "Audio_Pineapple",
+					"s_FileName": "Audio_Pineapple.ogg",
+					"s_Extension": ".ogg",
+					"s_Size": "423938",
+					"s_Hash": "B1AA4ABDFB1BCDDEF73E0844D9FA7A40",
+					"s_Path": "Sound/Audio_Pineapple"
+				}
 			]
 		}
 	]

@@ -15,7 +15,7 @@ public class SHUIWidge_Stick : SHMonoWrapper
 
     #region Members : Inspector
     public float        m_fSpeed         = 1.0f;
-    public float        m_fStartPosition = -350.0f;
+    public float        m_fStartPosition = -450.0f;
     public float        m_fEndPosition   = 725.0f;
     public float        m_fReCreateTime  = 0.5f;
     public BoxCollider  m_pCollider      = null;
