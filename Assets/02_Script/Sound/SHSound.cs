@@ -13,6 +13,7 @@ public class SHSound : SHSingleton<SHSound>
     public override void OnInitialize()
     {
         m_pChannelBGM = SHGameObject.GetComponent<AudioSource>(gameObject);
+        m_pChannelBGM.loop = true;
     }
     public override void OnFinalize()
     {
