@@ -43,6 +43,7 @@ public class SHUIPanel_StartMenu : SHUIBasePanel
             return;
 
         m_pEventToStartGame();
+        Close();
     }
     #endregion
 }

@@ -12,7 +12,7 @@ public class SHSceneMainToLogin : MonoBehaviour
     void Start()
     {
         Single.AppInfo.CreateSingleton();
-        Single.UI.Show("Panel - Login", (Action<bool>)OnEventToLogin);
+        Single.UI.Show("Panel_Login", (Action<bool>)OnEventToLogin);
     }
     #endregion
 

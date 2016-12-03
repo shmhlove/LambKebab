@@ -1,36 +1,76 @@
 {
 	"ResourcesList": [
 		{
-			"s_Name": "Panel - FadeIn",
-			"s_FileName": "Panel - FadeIn.prefab",
-			"s_Extension": ".prefab",
-			"s_Size": "12776",
-			"s_Hash": "1FF0814CABB0CF1F97AF31365461C2F7",
-			"s_Path": "Prefab/UI/Panel - FadeIn"
-		},
-		{
-			"s_Name": "Panel - FadeOut",
-			"s_FileName": "Panel - FadeOut.prefab",
-			"s_Extension": ".prefab",
-			"s_Size": "12776",
-			"s_Hash": "D1A10768F6A390940DC1AE8F951D36BC",
-			"s_Path": "Prefab/UI/Panel - FadeOut"
-		},
-		{
-			"s_Name": "Panel - Notice",
-			"s_FileName": "Panel - Notice.prefab",
-			"s_Extension": ".prefab",
-			"s_Size": "41476",
-			"s_Hash": "6A58C75F2A6AFCCD04A69E9F1AC58858",
-			"s_Path": "Prefab/UI/Panel - Notice"
-		},
-		{
-			"s_Name": "UI Root - Global",
-			"s_FileName": "UI Root - Global.prefab",
+			"s_Name": "UIRoot_Global",
+			"s_FileName": "UIRoot_Global.prefab",
 			"s_Extension": ".prefab",
 			"s_Size": "10312",
-			"s_Hash": "F1EC28C9EA91FE25D92C975E1993EEC3",
-			"s_Path": "Prefab/UI/UI Root - Global"
+			"s_Hash": "B6A3EC4ED9A57165AFBBC75DEB492B37",
+			"s_Path": "Prefab/UI/UIRoot_Global"
+		},
+		{
+			"s_Name": "Panel_FadeIn",
+			"s_FileName": "Panel_FadeIn.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "12820",
+			"s_Hash": "D61BB3FBB42CE5C2F1886941683A1E34",
+			"s_Path": "Prefab/UI/Panel/Panel_FadeIn"
+		},
+		{
+			"s_Name": "Panel_FadeOut",
+			"s_FileName": "Panel_FadeOut.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "12832",
+			"s_Hash": "AF3D4DDC9343F9289D9320F2362A8A00",
+			"s_Path": "Prefab/UI/Panel/Panel_FadeOut"
+		},
+		{
+			"s_Name": "Panel_Notice",
+			"s_FileName": "Panel_Notice.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "42340",
+			"s_Hash": "5615792C17FD63AA1D77ECBF19B8A7A1",
+			"s_Path": "Prefab/UI/Panel/Panel_Notice"
+		},
+		{
+			"s_Name": "Widget_Monster_1",
+			"s_FileName": "Widget_Monster_1.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "12860",
+			"s_Hash": "AC05960B070E81F78DEA9011D94B4795",
+			"s_Path": "Prefab/UI/Widget/Widget_Monster_1"
+		},
+		{
+			"s_Name": "Widget_Monster_2",
+			"s_FileName": "Widget_Monster_2.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "12860",
+			"s_Hash": "DDCE67E086CE2B535CFE029861E9774A",
+			"s_Path": "Prefab/UI/Widget/Widget_Monster_2"
+		},
+		{
+			"s_Name": "Widget_Monster_3",
+			"s_FileName": "Widget_Monster_3.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "12860",
+			"s_Hash": "6646DA2B6EDE96467864BF9C17AFAD40",
+			"s_Path": "Prefab/UI/Widget/Widget_Monster_3"
+		},
+		{
+			"s_Name": "Widget_Monster_4",
+			"s_FileName": "Widget_Monster_4.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "12860",
+			"s_Hash": "EF86C1C53BED0A9B42A8FF0B25025B64",
+			"s_Path": "Prefab/UI/Widget/Widget_Monster_4"
+		},
+		{
+			"s_Name": "Widget_Stick_1",
+			"s_FileName": "Widget_Stick_1.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "11620",
+			"s_Hash": "32CA8EFE3DE67AFAC57533EF7AB07C2A",
+			"s_Path": "Prefab/UI/Widget/Widget_Stick_1"
 		}
 	]
 }

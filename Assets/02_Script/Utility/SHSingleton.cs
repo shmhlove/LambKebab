@@ -17,6 +17,11 @@ public static class Single
 
     // 인게임 엔진
     public static SHGameEngine              Engine              { get { return SHGameEngine.Instance; } }
+    public static SHGameStep                GameStep            { get { return Engine.GetGameStep(); } }
+    public static SHGameState               GameState           { get { return Engine.GetGameState(); } }
+    public static SHBalance                 Balance             { get { return Engine.GetBalance(); } }
+    public static SHPlayer                  Player              { get { return Engine.GetPlayer(); } }
+    public static SHMonster                 Monster             { get { return Engine.GetMonster(); } }
 
     // UI
     public static SHUIManager               UI                  { get { return SHUIManager.Instance; } }
@@ -31,6 +36,7 @@ public static class Single
     public static SHEventUtil               Event               { get { return SHEventUtil.Instance; } }
     public static SHCoroutine               Coroutine           { get { return SHCoroutine.Instance; } }
     public static SHTimer                   Timer               { get { return SHTimer.Instance; } }
+    public static SHObjectPool              ObjectPool          { get { return SHObjectPool.Instance; } }
 }
 
 public abstract class SHSingleton<T> : SHMonoWrapper where T : SHSingleton<T>

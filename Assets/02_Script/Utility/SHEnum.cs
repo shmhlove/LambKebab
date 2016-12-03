@@ -118,3 +118,12 @@ public enum eOrderNum
     Ninth,
     Tenth,
 }
+
+// 판정
+public enum eDecision
+{
+    Miss,
+    Bad,
+    Normal,
+    Good,
+}
