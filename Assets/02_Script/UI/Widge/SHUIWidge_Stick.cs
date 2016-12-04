@@ -115,7 +115,7 @@ public class SHUIWidge_Stick : SHMonoWrapper
 
             // 점수처리
             var eDecision = Single.Balance.GetDecision(this, pMonster);
-            Single.GameState.AddScore(pMonster.GetScore(eDecision));
+            Single.ScoreBoard.AddScore(pMonster.GetScore(eDecision));
             
             // 상태처리
             pMonster.SetCrash(this);

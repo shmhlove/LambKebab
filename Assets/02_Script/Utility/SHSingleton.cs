@@ -18,7 +18,7 @@ public static class Single
     // 인게임 엔진
     public static SHGameEngine              Engine              { get { return SHGameEngine.Instance; } }
     public static SHGameStep                GameStep            { get { return Engine.GetGameStep(); } }
-    public static SHGameState               GameState           { get { return Engine.GetGameState(); } }
+    public static SHScoreBoard              ScoreBoard          { get { return Engine.GetScoreBoard(); } }
     public static SHBalance                 Balance             { get { return Engine.GetBalance(); } }
     public static SHPlayer                  Player              { get { return Engine.GetPlayer(); } }
     public static SHMonster                 Monster             { get { return Engine.GetMonster(); } }

@@ -5,11 +5,11 @@ using System.Collections;
 public class SHGameEngine : SHSingleton<SHGameEngine>
 {
     #region Members
-    private SHGameStep  m_pGameStep  = new SHGameStep();
-    private SHGameState m_pGameState = new SHGameState();
-    private SHBalance   m_pBalance   = new SHBalance();
-    private SHPlayer    m_pPlayer    = new SHPlayer();
-    private SHMonster   m_pMonster   = new SHMonster();
+    private SHGameStep   m_pGameStep   = new SHGameStep();
+    private SHScoreBoard m_pScoreBoard = new SHScoreBoard();
+    private SHBalance    m_pBalance    = new SHBalance();
+    private SHPlayer     m_pPlayer     = new SHPlayer();
+    private SHMonster    m_pMonster    = new SHMonster();
     #endregion
 
 
@@ -20,8 +20,8 @@ public class SHGameEngine : SHSingleton<SHGameEngine>
         if (null != m_pGameStep)
             m_pGameStep.OnFinalize();
 
-        if (null != m_pGameState)
-            m_pGameState.OnFinalize();
+        if (null != m_pScoreBoard)
+            m_pScoreBoard.OnFinalize();
 
         if (null != m_pBalance)
             m_pBalance.OnFinalize();
@@ -45,8 +45,8 @@ public class SHGameEngine : SHSingleton<SHGameEngine>
         if (null != m_pGameStep)
             m_pGameStep.OnInitialize();
 
-        if (null != m_pGameState)
-            m_pGameState.OnInitialize();
+        if (null != m_pScoreBoard)
+            m_pScoreBoard.OnInitialize();
 
         if (null != m_pBalance)
             m_pBalance.OnInitialize();
@@ -62,8 +62,8 @@ public class SHGameEngine : SHSingleton<SHGameEngine>
         if (null != m_pGameStep)
             m_pGameStep.OnFrameMove();
 
-        if (null != m_pGameState)
-            m_pGameState.OnFrameMove();
+        if (null != m_pScoreBoard)
+            m_pScoreBoard.OnFrameMove();
 
         if (null != m_pBalance)
             m_pBalance.OnFrameMove();
@@ -82,9 +82,9 @@ public class SHGameEngine : SHSingleton<SHGameEngine>
     {
         return m_pGameStep;
     }
-    public SHGameState GetGameState()
+    public SHScoreBoard GetScoreBoard()
     {
-        return m_pGameState;
+        return m_pScoreBoard;
     }
     public SHBalance GetBalance()
     {

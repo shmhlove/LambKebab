@@ -52,7 +52,7 @@ public class SHBalance : SHBaseEngine
     }
     public float GetMonsterSpeed()
     {
-        var iLevel  = (int)(Single.GameState.m_iScore / 10.0f);
+        var iLevel  = (int)(Single.ScoreBoard.m_iScore / 10.0f);
         var pWeight = new List<float>();
         switch (iLevel)
         {
