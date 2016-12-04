@@ -1,6 +1,38 @@
 {
 	"ResourcesList": [
 		{
+			"s_Name": "cloud03_01",
+			"s_FileName": "cloud03_01.png",
+			"s_Extension": ".png",
+			"s_Size": "9940",
+			"s_Hash": "DB4C6A40B6056D61ADA845E0009C88D5",
+			"s_Path": "Effect/cloud03_01"
+		},
+		{
+			"s_Name": "Explosion 11",
+			"s_FileName": "Explosion 11.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "13000",
+			"s_Hash": "B8AF6814B1920E86D75064A71663AF03",
+			"s_Path": "Effect/Explosion 11"
+		},
+		{
+			"s_Name": "New Material",
+			"s_FileName": "New Material.mat",
+			"s_Extension": ".mat",
+			"s_Size": "5024",
+			"s_Hash": "F6F789BFB7DC42B22670C3215089824B",
+			"s_Path": "Effect/New Material"
+		},
+		{
+			"s_Name": "Particle_Crash_Dust",
+			"s_FileName": "Particle_Crash_Dust.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "52056",
+			"s_Hash": "38BA9AE2CE22EEE63493A1DAF5A171EB",
+			"s_Path": "Prefab/Effect/Particle_Crash_Dust"
+		},
+		{
 			"s_Name": "UIRoot_Global",
 			"s_FileName": "UIRoot_Global.prefab",
 			"s_Extension": ".prefab",
@@ -37,7 +69,7 @@
 			"s_FileName": "Widget_Monster_1.prefab",
 			"s_Extension": ".prefab",
 			"s_Size": "11916",
-			"s_Hash": "2F3EF6CADFBB286CD6537381BC8000A3",
+			"s_Hash": "CEC648E2EE52DCDA30D64D29383D15D5",
 			"s_Path": "Prefab/UI/Widget/Widget_Monster_1"
 		},
 		{
@@ -45,7 +77,7 @@
 			"s_FileName": "Widget_Monster_2.prefab",
 			"s_Extension": ".prefab",
 			"s_Size": "11916",
-			"s_Hash": "E1CDD077BAEBB02E78506A7CF921EB10",
+			"s_Hash": "91DC0F5ABF48C714C98168499828C7C9",
 			"s_Path": "Prefab/UI/Widget/Widget_Monster_2"
 		},
 		{
@@ -53,7 +85,7 @@
 			"s_FileName": "Widget_Monster_3.prefab",
 			"s_Extension": ".prefab",
 			"s_Size": "11916",
-			"s_Hash": "7E29325E9B93BBB3486278BBD97BFC71",
+			"s_Hash": "393A5A930045734457C7CD3434042B4A",
 			"s_Path": "Prefab/UI/Widget/Widget_Monster_3"
 		},
 		{
@@ -61,7 +93,7 @@
 			"s_FileName": "Widget_Monster_4.prefab",
 			"s_Extension": ".prefab",
 			"s_Size": "11916",
-			"s_Hash": "CB00F33223F19793BCD6F6FC39E91AA1",
+			"s_Hash": "8CE4561E659C924EC5EC94C918CC7761",
 			"s_Path": "Prefab/UI/Widget/Widget_Monster_4"
 		},
 		{

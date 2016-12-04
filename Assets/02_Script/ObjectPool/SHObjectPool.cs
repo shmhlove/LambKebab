@@ -117,7 +117,7 @@ public class SHObjectPool : SHSingleton<SHObjectPool>
 
 
     #region Members : Constants
-    private readonly int CHECK_DELAY_FOR_ACTIVE = 10;
+    private readonly int CHECK_DELAY_FOR_ACTIVE = 5;
     #endregion
 
 

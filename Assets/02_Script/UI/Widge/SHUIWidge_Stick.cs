@@ -123,6 +123,13 @@ public class SHUIWidge_Stick : SHMonoWrapper
 
             // 효과음
             Single.Sound.PlayEffect("Audio_Effect_Crash");
+
+            // 이펙트
+            var pEffect = Single.ObjectPool.Get("Particle_Crash_Dust");
+            pEffect.transform.SetParent(Single.UI.GetRootToScene());
+            pEffect.transform.localPosition = pMonster.GetLocalPosition();
+            pEffect.transform.localScale    = Vector3.one;
+            pEffect.SetActive(true);
         });
     }
     void CheckPass()
