@@ -12,24 +12,24 @@
 			"s_Name": "Panel_FadeIn",
 			"s_FileName": "Panel_FadeIn.prefab",
 			"s_Extension": ".prefab",
-			"s_Size": "12820",
-			"s_Hash": "D61BB3FBB42CE5C2F1886941683A1E34",
+			"s_Size": "12392",
+			"s_Hash": "741097947E7D2A401343A2A869B4E4F0",
 			"s_Path": "Prefab/UI/Panel/Panel_FadeIn"
 		},
 		{
 			"s_Name": "Panel_FadeOut",
 			"s_FileName": "Panel_FadeOut.prefab",
 			"s_Extension": ".prefab",
-			"s_Size": "12832",
-			"s_Hash": "AF3D4DDC9343F9289D9320F2362A8A00",
+			"s_Size": "12400",
+			"s_Hash": "0E92BC73E11F4BF0B36728393B43715C",
 			"s_Path": "Prefab/UI/Panel/Panel_FadeOut"
 		},
 		{
 			"s_Name": "Panel_Notice",
 			"s_FileName": "Panel_Notice.prefab",
 			"s_Extension": ".prefab",
-			"s_Size": "42340",
-			"s_Hash": "5615792C17FD63AA1D77ECBF19B8A7A1",
+			"s_Size": "41908",
+			"s_Hash": "7C282A67EB1B8F6F16E1D78C6E0DD070",
 			"s_Path": "Prefab/UI/Panel/Panel_Notice"
 		},
 		{
@@ -68,17 +68,33 @@
 			"s_Name": "Widget_Stick_1",
 			"s_FileName": "Widget_Stick_1.prefab",
 			"s_Extension": ".prefab",
-			"s_Size": "10956",
-			"s_Hash": "C5D4109D98BC1ED768BCD485A9C21B76",
+			"s_Size": "8592",
+			"s_Hash": "0CD67515D3A62F8D7F7B0A96E64BA169",
 			"s_Path": "Prefab/UI/Widget/Widget_Stick_1"
 		},
 		{
-			"s_Name": "Audio_Pineapple",
-			"s_FileName": "Audio_Pineapple.ogg",
+			"s_Name": "Audio_BGM_GameOver",
+			"s_FileName": "Audio_BGM_GameOver.wav",
+			"s_Extension": ".wav",
+			"s_Size": "360852",
+			"s_Hash": "83ACDDE38C731E8FC3216C1F282F2AA3",
+			"s_Path": "Sound/BGM/Audio_BGM_GameOver"
+		},
+		{
+			"s_Name": "Audio_BGM_Pineapple",
+			"s_FileName": "Audio_BGM_Pineapple.ogg",
 			"s_Extension": ".ogg",
 			"s_Size": "423938",
 			"s_Hash": "B1AA4ABDFB1BCDDEF73E0844D9FA7A40",
-			"s_Path": "Sound/Audio_Pineapple"
+			"s_Path": "Sound/BGM/Audio_BGM_Pineapple"
+		},
+		{
+			"s_Name": "Audio_Effect_Crash",
+			"s_FileName": "Audio_Effect_Crash.wav",
+			"s_Extension": ".wav",
+			"s_Size": "31116",
+			"s_Hash": "C586D3C03B5012C6E13C3E69B4EDCAD5",
+			"s_Path": "Sound/Effect/Audio_Effect_Crash"
 		}
 	]
 }

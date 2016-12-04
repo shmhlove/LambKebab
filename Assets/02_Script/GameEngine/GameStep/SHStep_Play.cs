@@ -11,14 +11,15 @@ public class SHStep_Play : SHStepBase
     #region Virtual Functions
     public override void InitialStep()
     {
-        Single.Sound.PlayBGM();
+        Single.Sound.PlayBGM("Audio_BGM_Pineapple");
         Single.UI.Show("Panel_CtrlPad", (Action)OnEventToTouch);
     }
     public override void FinalStep()
     {
         Single.Player.Stop();
         Single.Monster.Stop();
-        Single.Sound.StopBGM();
+        Single.Sound.StopBGM("Audio_BGM_Pineapple");
+        Single.Sound.PlayBGM("Audio_BGM_GameOver");
         Single.UI.Close("Panel_CtrlPad");
     }
     public override void FrameMove(int iCallCnt)

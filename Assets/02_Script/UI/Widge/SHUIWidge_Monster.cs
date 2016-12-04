@@ -110,6 +110,8 @@ public class SHUIWidge_Monster : SHMonoWrapper
             SHPhysics.CalculationEuler(
                 SHPhysics.m_vGravity * 500.0f, GetLocalPosition(), ref m_vSpeed, 1.0f));
 
+        SetLocalScale(GetLocalScale() * 0.99f);
+
         if (-1000.0f > GetLocalPosition().y)
             SetActive(false);
     }

@@ -56,19 +56,19 @@ public class SHBalance : SHBaseEngine
         var pWeight = new List<float>();
         switch (iLevel)
         {
-            case 0:  pWeight = new List<float>() { 1.0f, 0.9f, 0.4f, 0.3f, 0.2f, 0.1f };   break;
-            case 1:  pWeight = new List<float>() { 0.9f, 0.8f, 0.4f, 0.3f, 0.2f, 0.1f };   break;
-            case 2:  pWeight = new List<float>() { 0.8f, 0.7f, 0.4f, 0.3f, 0.3f, 0.2f };   break;
-            case 3:  pWeight = new List<float>() { 0.7f, 0.6f, 0.4f, 0.4f, 0.3f, 0.2f };   break;
-            case 4:  pWeight = new List<float>() { 0.6f, 0.5f, 0.4f, 0.4f, 0.3f, 0.3f };   break;
-            case 5:  pWeight = new List<float>() { 0.5f, 0.4f, 0.5f, 0.4f, 0.4f, 0.3f };   break;
-            case 6:  pWeight = new List<float>() { 0.4f, 0.3f, 0.5f, 0.5f, 0.4f, 0.4f };   break;
-            case 7:  pWeight = new List<float>() { 0.3f, 0.2f, 0.5f, 0.5f, 0.4f, 0.4f };   break;
-            case 8:  pWeight = new List<float>() { 0.2f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f };   break;
-            case 9:  pWeight = new List<float>() { 0.1f, 0.1f, 0.5f, 0.6f, 0.5f, 0.5f };   break;
-            default: pWeight = new List<float>() { 0.1f, 0.1f, 0.6f, 0.6f, 0.5f, 0.7f };   break;
+            case 0:  pWeight = new List<float>() { 1.00f, 0.90f, 0.30f, 0.10f, 0.00f, 0.00f };   break;
+            case 1:  pWeight = new List<float>() { 0.90f, 0.80f, 0.40f, 0.20f, 0.10f, 0.00f };   break;
+            case 2:  pWeight = new List<float>() { 0.80f, 0.70f, 0.40f, 0.30f, 0.20f, 0.10f };   break;
+            case 3:  pWeight = new List<float>() { 0.70f, 0.60f, 0.40f, 0.40f, 0.30f, 0.20f };   break;
+            case 4:  pWeight = new List<float>() { 0.60f, 0.50f, 0.40f, 0.40f, 0.30f, 0.30f };   break;
+            case 5:  pWeight = new List<float>() { 0.50f, 0.40f, 0.50f, 0.40f, 0.40f, 0.30f };   break;
+            case 6:  pWeight = new List<float>() { 0.40f, 0.30f, 0.50f, 0.50f, 0.40f, 0.40f };   break;
+            case 7:  pWeight = new List<float>() { 0.30f, 0.20f, 0.50f, 0.50f, 0.40f, 0.40f };   break;
+            case 8:  pWeight = new List<float>() { 0.20f, 0.10f, 0.50f, 0.50f, 0.50f, 0.50f };   break;
+            case 9:  pWeight = new List<float>() { 0.10f, 0.10f, 0.50f, 0.60f, 0.50f, 0.50f };   break;
+            default: pWeight = new List<float>() { 0.10f, 0.10f, 0.60f, 0.60f, 0.50f, 0.70f };   break;
         }
-        return SHMath.RandomW(new List<float>()  { 1.0f, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f }, pWeight);
+        return SHMath.RandomW(new List<float>()  { 1.00f, 0.90f, 0.80f, 0.70f, 0.60f, 0.50f }, pWeight);
     }
     #endregion
 

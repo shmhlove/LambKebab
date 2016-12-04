@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using DicRoots  = System.Collections.Generic.Dictionary<int, UnityEngine.Transform>;
 using DicObject = System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<SHObjectInfo>>;
 
 public enum ePoolReturnType
@@ -48,7 +49,9 @@ public class SHObjectInfo
         if (null == m_pObject)
             return;
 
+        var pLayer = m_pObject.layer;
         m_pObject.transform.SetParent(pParent);
+        m_pObject.layer = pLayer;
     }
     public void SetActive(bool bIsActive)
     {
@@ -102,6 +105,11 @@ public class SHObjectInfo
 
 public class SHObjectPool : SHSingleton<SHObjectPool>
 {
+    #region Members : ObjectPool
+    DicRoots m_dicRoots      = new DicRoots();
+    #endregion
+
+
     #region Members : ObjectPool
     DicObject m_dicActives   = new DicObject();
     DicObject m_dicInactives = new DicObject();
@@ -177,8 +185,8 @@ public class SHObjectPool : SHSingleton<SHObjectPool>
 
         m_dicActives[strName].Add(pObjectInfo);
         m_dicInactives[strName].Remove(pObjectInfo);
-
-        pObjectInfo.SetParent(transform);
+        
+        pObjectInfo.SetParent(GetRoot(pObjectInfo.m_pObject.layer));
         pObjectInfo.SetStartTransform();
         pObjectInfo.SetActive(false);
     }
@@ -196,7 +204,7 @@ public class SHObjectPool : SHSingleton<SHObjectPool>
             m_dicActives[strName].Remove(pObjectInfo);
             m_dicInactives[strName].Add(pObjectInfo);
 
-            pObjectInfo.SetParent(transform);
+            pObjectInfo.SetParent(GetRoot(pObjectInfo.m_pObject.layer));
             pObjectInfo.SetActive(false);
         }
     }
@@ -361,10 +369,22 @@ public class SHObjectPool : SHSingleton<SHObjectPool>
     #endregion
 
 
-    #region Utility : Auto Return Or Destroy
+    #region Utility Functions
+    Transform GetRoot(int iLayer)
+    {
+        if (false == m_dicRoots.ContainsKey(iLayer))
+        {
+            var pRoot = SHGameObject.CreateEmptyObject(string.Format("SHObjectPool_{0}", iLayer));
+            pRoot.layer = iLayer;
+            DontDestroyOnLoad(pRoot);
+            m_dicRoots.Add(iLayer, pRoot.transform);
+        }
+
+        return m_dicRoots[iLayer];
+    }
     IEnumerator CoroutineCheckAutoProcess()
     {
-        while(true)
+        while (true)
         {
             yield return new WaitForSeconds(CHECK_DELAY_FOR_ACTIVE);
 
@@ -373,8 +393,8 @@ public class SHObjectPool : SHSingleton<SHObjectPool>
         }
     }
     #endregion
-    
-    
+
+
     #region Event Handler
     public void OnEventToChangeScene(eSceneType eCurrentScene, eSceneType eNextScene)
     {

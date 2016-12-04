@@ -120,6 +120,9 @@ public class SHUIWidge_Stick : SHMonoWrapper
             // 상태처리
             pMonster.SetCrash(this);
             this.SetCrash(pMonster);
+
+            // 효과음
+            Single.Sound.PlayEffect("Audio_Effect_Crash");
         });
     }
     void CheckPass()

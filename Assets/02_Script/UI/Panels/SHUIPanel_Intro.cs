@@ -48,12 +48,12 @@ public class SHUIPanel_Intro : SHUIBasePanel
 
         if (null != m_pButton)
             m_pButton.SetActive(false);
-
+        
         SHCoroutine.Instance.WaitTime(() =>
         {
             if (null != m_pEventToTouch)
                 m_pEventToTouch();
-        }, 0.5f);
+        }, 0.2f);
     }
     #endregion
 }
