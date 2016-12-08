@@ -45,6 +45,10 @@ public partial class SHUIManager : SHSingleton<SHUIManager>
 
         pPanel.Initialize(bIsActive);
     }
+    public T GetPanel<T>(string strPanelName) where T : SHUIBasePanel
+    {
+        return GetPanel(strPanelName) as T;
+    }
     public SHUIBasePanel Show(string strName, params object[] pArgs)
     {
         var pPanel = GetPanel(strName);
@@ -89,8 +93,7 @@ public partial class SHUIManager : SHSingleton<SHUIManager>
     {
         if (false == m_dicPanels.ContainsKey(strName))
         {
-            AddPanel(
-                Single.ObjectPool.Get<SHUIBasePanel>(strName, 
+            AddPanel(Single.ObjectPool.Get<SHUIBasePanel>(strName, 
                 ePoolReturnType.None, ePoolDestroyType.None), false);
         }
 

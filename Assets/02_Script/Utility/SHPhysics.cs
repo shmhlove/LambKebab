@@ -5,6 +5,7 @@ public static class SHPhysics
 {
     public static Vector3 m_vGravity = new Vector3(0.0f, -9.81f, 0.0f);
 
+    #region Move Physics
     // Spring 알고리즘(Runge-Kutta Method) : 중심점을 기준으로 포인트위치가 스프링처럼 움직인다.
     // 단, 속도는 누적 갱신되는 값이므로 호출하는 곳에서 멤버변수로 가지고 있어야한다.
     public static Vector3 CalculationSpring(Vector3 vCenter, Vector3 vPoint, ref Vector3 vSpeed, float fSpringPower, float fSpringDamping)
@@ -31,11 +32,16 @@ public static class SHPhysics
         // 위치 = 속도 * 시간
         vPoint += (vSpeed * Single.Timer.m_fFixedDeltaTime);
 
+        if (true == SHUtils.IsNan(vPoint))
+        {
+            Debug.Log("딱걸릿다!!");
+        }
+
         return vPoint;
     }
 
     // 유도 알고리즘
-    public static void GuidedMissile(ref Vector3 vPos, ref Vector3 vDirection, Vector3 vTarget, float fHomingAngle, float fSpeed, bool bDirect = false)
+    public static Vector3 GuidedMissile(Vector3 vPos, ref Vector3 vDirection, Vector3 vTarget, float fHomingAngle, float fSpeed, bool bDirect = false)
     {
         // 예외처리 : 꺽이는 각도가 0이면 방향이 zero가되어 큰 문제가 생긴다.
         if (0.0f == fHomingAngle)
@@ -50,7 +56,7 @@ public static class SHPhysics
 
         // 예외처리 : 이미 타켓에 도착했는가?
         if (Vector3.zero == vTargetDist)
-            return;
+            return vPos;
 
         // 회전 전 타켓과 진행 방향간 X/Y 부호기록
         bool bMarkX1 = (0.0f < vTargetDist.x - vDirection.x);
@@ -80,6 +86,10 @@ public static class SHPhysics
 
         // 회전된 방향으로 진행
         Vector3 vSpeed = (vDirection * fSpeed);
-        vPos = CalculationEuler(Vector3.zero, vPos, ref vSpeed);
+        return CalculationEuler(Vector3.zero, vPos, ref vSpeed);
     }
+    #endregion
+
+    #region Collision Physics
+    #endregion
 }

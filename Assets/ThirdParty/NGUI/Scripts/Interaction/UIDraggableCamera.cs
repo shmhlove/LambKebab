@@ -1,6 +1,6 @@
 //----------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2015 Tasharen Entertainment
+// Copyright © 2011-2016 Tasharen Entertainment
 //----------------------------------------------
 
 using UnityEngine;
@@ -63,21 +63,6 @@ public class UIDraggableCamera : MonoBehaviour
 	/// </summary>
 
 	public Vector2 currentMomentum { get { return mMomentum; } set { mMomentum = value; } }
-
-	/////////////////////////////////////////////////////////////////////////
-	// Customized for ResetPosition
-	/////////////////////////////////////////////////////////////////////////
-	public void SetScrollPos(Vector3 vPos)
-	{
-		transform.localPosition = vPos;
-		Update();
-	}
-
-	public void UpdateBounds()
-	{
-		mBounds = NGUIMath.CalculateAbsoluteWidgetBounds(rootForBounds);
-	}
-	/////////////////////////////////////////////////////////////////////////
 
 	/// <summary>
 	/// Cache the root.

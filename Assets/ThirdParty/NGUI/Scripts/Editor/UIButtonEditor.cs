@@ -1,6 +1,6 @@
 //----------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2015 Tasharen Entertainment
+// Copyright © 2011-2016 Tasharen Entertainment
 //----------------------------------------------
 
 using UnityEngine;
@@ -20,18 +20,6 @@ public class UIButtonEditor : UIButtonColorEditor
 		Press,
 	}
 
-	/////////////////////////////////////////////////////////////////////////
-	// Customized for ClickCooltime
-	/////////////////////////////////////////////////////////////////////////
-	protected void DrawClickCooltime()
-	{
-		GUILayout.BeginHorizontal();
-		NGUIEditorTools.DrawProperty("Click Cooltime", serializedObject, "clickCooltime", GUILayout.Width(120f));
-		GUILayout.Label("seconds");
-		GUILayout.EndHorizontal();
-	}
-	/////////////////////////////////////////////////////////////////////////
-
 	protected override void DrawProperties ()
 	{
 		SerializedProperty sp = serializedObject.FindProperty("dragHighlight");
@@ -42,7 +30,6 @@ public class UIButtonEditor : UIButtonColorEditor
 		GUILayout.EndHorizontal();
 		if (sp.boolValue != highlight) sp.boolValue = highlight;
 
-		DrawClickCooltime();
 		DrawTransition();
 		DrawColors();
 

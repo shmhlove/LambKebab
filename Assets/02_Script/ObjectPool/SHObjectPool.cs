@@ -234,8 +234,12 @@ public class SHObjectPool : SHSingleton<SHObjectPool>
         var pObjects = GetInactiveObjects(strName);
         if (0 == pObjects.Count)
         {
+            var pObject = Single.Resource.GetGameObject(strName);
+            if (null == pObject)
+                return null;
+
             return new SHObjectInfo(
-                eReturnType, eDestroyType, Single.Resource.GetGameObject(strName));
+                eReturnType, eDestroyType, pObject);
         }
         else
         {

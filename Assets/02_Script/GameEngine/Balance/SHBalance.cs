@@ -36,7 +36,7 @@ public class SHBalance : SHBaseEngine
             return eDecision.Miss;
 
         var fGap = Mathf.Abs(pMonster.GetLocalPosition().x - pStick.GetLocalPosition().x);
-        var fSep = pMonster.GetCollider().size.x / 3.0f;
+        var fSep = 50.0f;//pMonster.GetCollider().bounds.size.x / 3.0f;
 
         if (fGap <= (fSep * 0.5f)) return eDecision.Good;
         if (fGap <= (fSep * 1.5f)) return eDecision.Normal;
@@ -47,8 +47,8 @@ public class SHBalance : SHBaseEngine
     public string GetMonsterType()
     {
         return SHMath.RandomW(
-            new List<string>() { "1",  "2",  "3",  "4", },
-            new List<float>()  { 0.1f, 0.2f, 0.4f, 0.5f, });
+            new List<string>() { "1",  "2",  "3",  "4", "5" },
+            new List<float>()  { 0.1f, 0.2f, 0.4f, 0.5f, 1.05f });
     }
     public float GetMonsterSpeed()
     {

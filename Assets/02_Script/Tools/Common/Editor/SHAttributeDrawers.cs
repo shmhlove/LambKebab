@@ -17,6 +17,7 @@ using System.Reflection;
 [CustomEditor(typeof(MonoBehaviour), true)]
 public class FuncButtonDrawer : Editor
 {
+#if UNITY_EDITOR
     public override void OnInspectorGUI()
     {
         base.DrawDefaultInspector();
@@ -25,7 +26,6 @@ public class FuncButtonDrawer : Editor
 
     void InspectorGUIToFunctionButton()
     {
-#if UNITY_EDITOR
         Type pType              = target.GetType();
         MethodInfo[] pMethods   = pType.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
         for (int iLoop = 0; iLoop < pMethods.Length; ++iLoop)
@@ -46,17 +46,17 @@ public class FuncButtonDrawer : Editor
                 ((Component)target).SendMessage(pMethod.Name, SendMessageOptions.DontRequireReceiver);
             }
         }
-#endif
     }
+#endif
 }
 
 // 인스펙터에 노출되는 필드를 읽기전용으로 노출합니다.
 [CustomPropertyDrawer(typeof(ReadOnlyField))]
 public class ReadOnlyFieldDrawer : PropertyDrawer
 {
+#if UNITY_EDITOR
     public override void OnGUI(Rect pRect, SerializedProperty pProperty, GUIContent pLabel)
     {
-#if UNITY_EDITOR
         GUI.enabled = false;
         switch (pProperty.propertyType)
         {
@@ -123,14 +123,15 @@ public class ReadOnlyFieldDrawer : PropertyDrawer
                 break;
         }
         GUI.enabled = true;
-#endif
     }
+#endif
 }
 
 // 인스펙터에 같은 타입의 자식오브젝트를 콤보박스 형태로 노출합니다.
 [CustomPropertyDrawer(typeof(SelectOnChildren))]
 public class SelectOnChildrenDrawer : PropertyDrawer
 {
+#if UNITY_EDITOR
     public override void OnGUI(Rect pRect, SerializedProperty pProperty, GUIContent pLabel)
     {
         System.Type pType = null;
@@ -225,4 +226,5 @@ public class SelectOnChildrenDrawer : PropertyDrawer
         EditorGUI.indentLevel = iOldLevel;
         EditorGUI.EndProperty();
     }
+#endif
 }

@@ -15,13 +15,15 @@ public static class Single
     // 씬
     public static SHSceneManager            Scene               { get { return SHSceneManager.Instance; } }
 
-    // 인게임 엔진
+    // 게임엔진
     public static SHGameEngine              Engine              { get { return SHGameEngine.Instance; } }
     public static SHGameStep                GameStep            { get { return Engine.GetGameStep(); } }
     public static SHScoreBoard              ScoreBoard          { get { return Engine.GetScoreBoard(); } }
+    public static SHInventory               Inventory           { get { return Engine.GetInventory(); } }
     public static SHBalance                 Balance             { get { return Engine.GetBalance(); } }
     public static SHPlayer                  Player              { get { return Engine.GetPlayer(); } }
     public static SHMonster                 Monster             { get { return Engine.GetMonster(); } }
+    public static SHDamage                  Damage              { get { return Engine.GetDamage(); } }
 
     // UI
     public static SHUIManager               UI                  { get { return SHUIManager.Instance; } }
@@ -29,7 +31,6 @@ public static class Single
     // 사운드
     public static SHSound                   Sound               { get { return SHSound.Instance; } }
     
-
     // 렌더유틸
     public static SHRenderTextureManager    RenderTexture       { get { return SHRenderTextureManager.Instance; } }
 

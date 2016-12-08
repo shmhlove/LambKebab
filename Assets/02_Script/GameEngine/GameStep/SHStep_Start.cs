@@ -13,7 +13,8 @@ public class SHStep_Start : SHStepBase
     {
         Single.Player.Start();
         Single.Monster.Start();
-        Single.ScoreBoard.Start();
+        Single.ScoreBoard.Clear();
+        Single.Inventory.Clear();
         Single.UI.Show("Panel_StartMenu", (Action)OnEventToTouch);
     }
     public override void FinalStep()

@@ -27,10 +27,10 @@ public class SHUIPanel_ScoreBoard : SHUIBasePanel
         if ((null == pArgs) || (2 != pArgs.Length))
             return;
 
-        switch((string)pArgs[0])
+        switch(((string)pArgs[0]).ToLower())
         {
-            case "Current":     SetCurrentScore((int)pArgs[1]); break;
-            case "Best":        SetBestScore((int)pArgs[1]);    break;
+            case "current":     SetCurrentScore((int)pArgs[1]); break;
+            case "best":        SetBestScore((int)pArgs[1]);    break;
         }
     }
     #endregion

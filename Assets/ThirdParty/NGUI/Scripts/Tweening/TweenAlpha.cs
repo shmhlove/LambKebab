@@ -1,6 +1,6 @@
 //----------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2015 Tasharen Entertainment
+// Copyright © 2011-2016 Tasharen Entertainment
 //----------------------------------------------
 
 using UnityEngine;
@@ -83,9 +83,9 @@ public class TweenAlpha : UITweener
 	/// Start the tweening operation.
 	/// </summary>
 
-	static public TweenAlpha Begin (GameObject go, float duration, float alpha)
+	static public TweenAlpha Begin (GameObject go, float duration, float alpha, float delay = 0f)
 	{
-		TweenAlpha comp = UITweener.Begin<TweenAlpha>(go, duration);
+		TweenAlpha comp = UITweener.Begin<TweenAlpha>(go, duration, delay);
 		comp.from = comp.value;
 		comp.to = alpha;
 

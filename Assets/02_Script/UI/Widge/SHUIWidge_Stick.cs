@@ -14,11 +14,10 @@ public class SHUIWidge_Stick : SHMonoWrapper
 
 
     #region Members : Inspector
-    public float        m_fSpeed         = 1.0f;
+    public float        m_fMoveSpeed     = 1.0f;
     public float        m_fStartPosition = -450.0f;
     public float        m_fEndPosition   = 725.0f;
     public float        m_fReCreateTime  = 0.5f;
-    public BoxCollider  m_pCollider      = null;
     #endregion
 
 
@@ -64,7 +63,7 @@ public class SHUIWidge_Stick : SHMonoWrapper
     }
     private void OnUpdateToShooting()
     {
-        AddLocalPositionY(m_fSpeed);
+        AddLocalPositionY(m_fMoveSpeed);
         CheckCollision();
         CheckPass();
     }
@@ -123,13 +122,6 @@ public class SHUIWidge_Stick : SHMonoWrapper
 
             // 효과음
             Single.Sound.PlayEffect("Audio_Effect_Crash");
-
-            // 이펙트
-            var pEffect = Single.ObjectPool.Get("Particle_Crash_Dust");
-            pEffect.transform.SetParent(Single.UI.GetRootToScene());
-            pEffect.transform.localPosition = pMonster.GetLocalPosition();
-            pEffect.transform.localScale    = Vector3.one;
-            pEffect.SetActive(true);
         });
     }
     void CheckPass()

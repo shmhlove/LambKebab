@@ -12,6 +12,8 @@ public class SHUIWidge_Monster_Info
     public int     m_iBadScore    = 1;
     public int     m_iNormalScore = 2;
     public int     m_iGoodScore   = 3;
+    public int     m_iMinCoin     = 0;
+    public int     m_iMaxCoin     = 0;
 
     public void Copy(SHUIWidge_Monster_Info pInfo)
     {
@@ -21,6 +23,8 @@ public class SHUIWidge_Monster_Info
         m_iBadScore    = pInfo.m_iBadScore;
         m_iNormalScore = pInfo.m_iNormalScore;
         m_iGoodScore   = pInfo.m_iGoodScore;
+        m_iMinCoin     = pInfo.m_iMinCoin;
+        m_iMaxCoin     = pInfo.m_iMaxCoin;
     }
 }
 
@@ -36,7 +40,6 @@ public class SHUIWidge_Monster : SHMonoWrapper
     #region Members : Inspector
     [SerializeField]
     public SHUIWidge_Monster_Info m_pOriginalInfo = new SHUIWidge_Monster_Info();
-    public BoxCollider            m_pCollider    = null;
     public TweenPosition          m_pTweenMove   = null;
     public AnimationClip          m_pDie_Left    = null;
     public AnimationClip          m_pDie_Right   = null;
@@ -85,7 +88,7 @@ public class SHUIWidge_Monster : SHMonoWrapper
     }
     private void OnChangeToCrash(params object[] pArgs)
     {
-        InitPhysics();
+        InitPhysicsValue();
         StopMoveTween();
     }
     private void OnUpdateToCrash()
@@ -93,22 +96,39 @@ public class SHUIWidge_Monster : SHMonoWrapper
     }
     private void OnChangeToDie(params object[] pArgs)
     {
-        InitPhysics();
+        InitPhysicsValue();
         StopMoveTween();
 
         var eCrashDir = Single.Balance.GetDirection((SHUIWidge_Stick)pArgs[0], this);
         PlayAnim(eDirection.Front, gameObject, (eDirection.Left == eCrashDir) ?
                                                 m_pDie_Left : m_pDie_Right, null);
 
-        m_vSpeed = m_pInfo.m_vDieSpeed;
-        m_vSpeed.x = (eDirection.Left == eCrashDir) ? -m_vSpeed.x : m_vSpeed.x;
-        m_vSpeed.x *= SHMath.Random(0.0f, 2.0f);
+        var iCoinCount = SHMath.Random(m_pInfo.m_iMinCoin, m_pInfo.m_iMaxCoin);
+        SHUtils.For(0, iCoinCount, (iIndex) => 
+        {
+            var pHUD = Single.UI.GetPanel<SHUIPanel_HUD>("Panel_HUD");
+            Single.Damage.AddDamage("Dmg_Coin", new SHAddDamageParam(this, pHUD.GetCoinTarget(), null, null));
+        });
+
+        if (0 == iCoinCount)
+            PlayParticle("Particle_Crash_Dust_Small");
+        else
+            PlayParticle("Particle_Crash_Dust_Big");
+
+        m_fSpeed       = m_pInfo.m_vDieSpeed.magnitude;
+        m_vDirection   = m_pInfo.m_vDieSpeed.normalized;
+        m_vDirection.x = (eDirection.Left == eCrashDir) ? -m_vDirection.x : m_vDirection.x;
+        m_vDirection.x *= SHMath.Random(0.0f, 2.0f);
     }
     private void OnUpdateToDie()
     {
-        SetLocalPosition(
-            SHPhysics.CalculationEuler(
-                SHPhysics.m_vGravity * 500.0f, GetLocalPosition(), ref m_vSpeed, 1.0f));
+        var vSpeed = GetSpeed();
+        {
+            SetLocalPosition(
+                SHPhysics.CalculationEuler(
+                    SHPhysics.m_vGravity * 500.0f, GetLocalPosition(), ref vSpeed, 1.0f));
+        }
+        SetSpeed(vSpeed);
 
         SetLocalScale(GetLocalScale() * 0.99f);
 
@@ -159,14 +179,18 @@ public class SHUIWidge_Monster : SHMonoWrapper
 
         return 0;
     }
-    public BoxCollider GetCollider()
-    {
-        return m_pCollider;
-    }
     #endregion
 
 
     #region Utility Functions
+    void PlayParticle(string strPrefabName)
+    {
+        var pEffect = Single.ObjectPool.Get(strPrefabName);
+        pEffect.transform.SetParent(Single.UI.GetRootToScene());
+        pEffect.transform.localPosition = GetLocalPosition();
+        pEffect.transform.localScale    = Vector3.one;
+        pEffect.SetActive(true);
+    }
     #endregion
 
 

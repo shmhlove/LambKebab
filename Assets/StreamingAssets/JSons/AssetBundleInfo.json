@@ -1,30 +1,6 @@
 {
 	"AssetBundleInfo": [
 		{
-			"s_BundleName": "Effect",
-			"s_BundleSize": "0",
-			"s_BundleHash": "00000000000000000000000000000000",
-			"p_Resources": 
-			[
-				{
-					"s_Name": "cloud03_01",
-					"s_FileName": "cloud03_01.png",
-					"s_Extension": ".png",
-					"s_Size": "9940",
-					"s_Hash": "DB4C6A40B6056D61ADA845E0009C88D5",
-					"s_Path": "Effect/cloud03_01"
-				},
-				{
-					"s_Name": "New Material",
-					"s_FileName": "New Material.mat",
-					"s_Extension": ".mat",
-					"s_Size": "5024",
-					"s_Hash": "F6F789BFB7DC42B22670C3215089824B",
-					"s_Path": "Effect/New Material"
-				}
-			]
-		},
-		{
 			"s_BundleName": "Sound",
 			"s_BundleSize": "0",
 			"s_BundleHash": "00000000000000000000000000000000",

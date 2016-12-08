@@ -140,9 +140,16 @@ public static class SHMath
     }
 
     // Random
-    public static float Random(int iMin, int iMax)
+    public static int Random(int iMin, int iMax)
     {
         return UnityEngine.Random.Range(iMin, iMax);
+    }
+    public static Vector3 RandomDirection()
+    {
+        return new Vector3(
+            UnityEngine.Random.Range(-1.0f, 1.0f),
+            UnityEngine.Random.Range(-1.0f, 1.0f),
+            UnityEngine.Random.Range(-1.0f, 1.0f));
     }
     public static float Random(float fMin, float fMax)
     {

@@ -1,6 +1,6 @@
 //----------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2015 Tasharen Entertainment
+// Copyright © 2011-2016 Tasharen Entertainment
 //----------------------------------------------
 
 using UnityEngine;
@@ -867,6 +867,11 @@ public class UIAtlasMaker : EditorWindow
 		GUILayout.Label("force ARGB32 textures", GUILayout.MinWidth(70f));
 		GUILayout.EndHorizontal();
 
+		GUILayout.BeginHorizontal();
+		NGUISettings.autoUpgradeSprites = EditorGUILayout.Toggle("Auto-upgrade", NGUISettings.trueColorAtlas, GUILayout.Width(100f));
+		GUILayout.Label("replace textures with sprites", GUILayout.MinWidth(70f));
+		GUILayout.EndHorizontal();
+
 		if (!NGUISettings.unityPacking)
 		{
 			GUILayout.BeginHorizontal();
@@ -1059,7 +1064,7 @@ public class UIAtlasMaker : EditorWindow
 				{
 					NGUIEditorTools.SelectSprite(selection);
 				}
-				else if (update || replace)
+				else if (NGUISettings.autoUpgradeSprites && (update || replace))
 				{
 					NGUIEditorTools.UpgradeTexturesToSprites(NGUISettings.atlas);
 					NGUIEditorTools.RepaintSprites();

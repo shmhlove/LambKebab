@@ -2,28 +2,48 @@
 using System.Collections;
 
 public class SHRenderQueue : MonoBehaviour
-{	
-	public int m_RenderQueue = 3000;
-    	
-	void Start()
+{
+    public ParticleSystem   m_ParticleSystem;
+    public Material         m_Material;
+    public int              m_iRenderQueue = 3000;
+
+    Material mMat;
+
+    void Start()
     {
-        SetQueue();
+        Renderer pRenderer = GetComponent<Renderer>();
+
+        if (null == pRenderer)
+        {
+            ParticleSystem pParticle = null;
+
+            if (null != m_ParticleSystem)
+                pParticle = m_ParticleSystem;
+            else
+                pParticle = GetComponent<ParticleSystem>();
+
+            if (pParticle != null)
+                pRenderer = pParticle.GetComponent<Renderer>();
+        }
+
+        if (pRenderer != null)
+        {
+            if (null != m_Material)
+                mMat = m_Material;
+            else
+                mMat = new Material(pRenderer.sharedMaterial);
+
+            if (null == mMat)
+                return;
+
+            mMat.renderQueue = m_iRenderQueue;
+            pRenderer.material = mMat;
+        }
     }
 
     [FuncButton]
-    void SetQueue()
+    public void RenderQueueReset()
     {
-        Transform[] pTransform = transform.GetComponentsInChildren<Transform>();
-        foreach (Transform tr in pTransform)
-        {
-            Renderer pRenderer = tr.gameObject.GetComponent<Renderer>();
-            if (null == pRenderer)
-                continue;
-
-            if (null == pRenderer.sharedMaterial)
-                continue;
-            
-            pRenderer.sharedMaterial.renderQueue = m_RenderQueue;
-        }
+        Start();
     }
 }

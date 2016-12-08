@@ -22,6 +22,8 @@ public class SHUIButtonAnimation : SHMonoWrapper
     #region System Functions
     public override void Awake()
     {
+        base.Awake();
+
         m_vScale = GetTarget().transform.localScale;
     }
     public override void Start()

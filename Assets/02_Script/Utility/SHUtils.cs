@@ -12,6 +12,23 @@ using System.Diagnostics;
 
 public static partial class SHUtils
 {
+    #region 자료형 관련
+    public static bool IsNan(Vector3 vValue)
+    {
+        return (float.IsNaN(vValue.x) ||
+                float.IsNaN(vValue.y) ||
+                float.IsNaN(vValue.z));
+    }
+    public static bool IsNan(Quaternion qValue)
+    {
+        return (float.IsNaN(qValue.x) ||
+                float.IsNaN(qValue.y) ||
+                float.IsNaN(qValue.z) ||
+                float.IsNaN(qValue.w));
+    }
+    #endregion
+
+
     #region 형 변환 관련 ( Enum.Parse 엄청느립니다. 가급적 사용금지!!! )
     // String을 Enum으로
     public static T GetStringToEnum<T>(string strEnum, string strErrorLog = "")

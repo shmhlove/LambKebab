@@ -25,27 +25,20 @@ public class SHScoreBoard : SHBaseEngine
 
 
     #region Interface Functions
-    public void Start()
+    public void Clear()
     {
         m_iScore    = 0;
         m_iAddScore = 0;
         CloseScoreBoard();
     }
-    public void ShowCurrentScore()
-    {
-        Single.UI.Show("Panel_ScoreBoard", "Current", m_iScore);
-    }
     public void ShowBestScore()
     {
         Single.UI.Show("Panel_ScoreBoard", "Best", GetBestScore());
     }
-    public void CloseScoreBoard()
-    {
-        Single.UI.Close("Panel_ScoreBoard");
-    }
     public void AddScore(int iScore)
     {
         m_iAddScore += iScore;
+        Debug.LogFormat("점수 : {0}", m_iAddScore);
     }
     #endregion
 
@@ -65,6 +58,14 @@ public class SHScoreBoard : SHBaseEngine
     private int GetBestScore()
     {
         return SHPlayerPrefs.GetInt("BestScore", 0);
+    }
+    private void ShowCurrentScore()
+    {
+        Single.UI.Show("Panel_ScoreBoard", "Current", m_iScore);
+    }
+    private void CloseScoreBoard()
+    {
+        Single.UI.Close("Panel_ScoreBoard");
     }
     #endregion
 

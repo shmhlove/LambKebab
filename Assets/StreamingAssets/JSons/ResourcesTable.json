@@ -1,43 +1,43 @@
 {
 	"ResourcesList": [
 		{
-			"s_Name": "cloud03_01",
-			"s_FileName": "cloud03_01.png",
-			"s_Extension": ".png",
-			"s_Size": "9940",
-			"s_Hash": "DB4C6A40B6056D61ADA845E0009C88D5",
-			"s_Path": "Effect/cloud03_01"
-		},
-		{
-			"s_Name": "Explosion 11",
-			"s_FileName": "Explosion 11.prefab",
+			"s_Name": "Dmg_Coin",
+			"s_FileName": "Dmg_Coin.prefab",
 			"s_Extension": ".prefab",
-			"s_Size": "13000",
-			"s_Hash": "B8AF6814B1920E86D75064A71663AF03",
-			"s_Path": "Effect/Explosion 11"
+			"s_Size": "16260",
+			"s_Hash": "E437B5E703CE16DA87242A3437B6E462",
+			"s_Path": "Prefab/Damage/Dmg_Coin"
 		},
 		{
-			"s_Name": "New Material",
-			"s_FileName": "New Material.mat",
-			"s_Extension": ".mat",
-			"s_Size": "5024",
-			"s_Hash": "F6F789BFB7DC42B22670C3215089824B",
-			"s_Path": "Effect/New Material"
-		},
-		{
-			"s_Name": "Particle_Crash_Dust",
-			"s_FileName": "Particle_Crash_Dust.prefab",
+			"s_Name": "Dmg_Sample",
+			"s_FileName": "Dmg_Sample.prefab",
 			"s_Extension": ".prefab",
-			"s_Size": "52056",
-			"s_Hash": "38BA9AE2CE22EEE63493A1DAF5A171EB",
-			"s_Path": "Prefab/Effect/Particle_Crash_Dust"
+			"s_Size": "13844",
+			"s_Hash": "299122AA5FBED397AF75BA0F0C7C53C7",
+			"s_Path": "Prefab/Damage/Dmg_Sample"
+		},
+		{
+			"s_Name": "Particle_Crash_Dust_Big",
+			"s_FileName": "Particle_Crash_Dust_Big.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "69288",
+			"s_Hash": "1F801B3EFC920BF9A204190BD1236968",
+			"s_Path": "Prefab/Effect/Particle_Crash_Dust_Big"
+		},
+		{
+			"s_Name": "Particle_Crash_Dust_Small",
+			"s_FileName": "Particle_Crash_Dust_Small.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "69296",
+			"s_Hash": "85163066A428D38EB34300E123251FE7",
+			"s_Path": "Prefab/Effect/Particle_Crash_Dust_Small"
 		},
 		{
 			"s_Name": "UIRoot_Global",
 			"s_FileName": "UIRoot_Global.prefab",
 			"s_Extension": ".prefab",
-			"s_Size": "10312",
-			"s_Hash": "B6A3EC4ED9A57165AFBBC75DEB492B37",
+			"s_Size": "10552",
+			"s_Hash": "11A4DFC706CA591C31EAA78440F10DE0",
 			"s_Path": "Prefab/UI/UIRoot_Global"
 		},
 		{
@@ -97,11 +97,19 @@
 			"s_Path": "Prefab/UI/Widget/Widget_Monster_4"
 		},
 		{
+			"s_Name": "Widget_Monster_5",
+			"s_FileName": "Widget_Monster_5.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "12740",
+			"s_Hash": "8D2942AE7FB500CF1F6B972D0BA93B73",
+			"s_Path": "Prefab/UI/Widget/Widget_Monster_5"
+		},
+		{
 			"s_Name": "Widget_Stick_1",
 			"s_FileName": "Widget_Stick_1.prefab",
 			"s_Extension": ".prefab",
-			"s_Size": "8592",
-			"s_Hash": "0CD67515D3A62F8D7F7B0A96E64BA169",
+			"s_Size": "8632",
+			"s_Hash": "84E8377A29BC835C3A1727389244E91E",
 			"s_Path": "Prefab/UI/Widget/Widget_Stick_1"
 		},
 		{

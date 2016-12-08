@@ -4,9 +4,17 @@ using System.Collections;
 
 public class SHMonoWrapper : MonoBehaviour
 {
+    #region Members : Transform
+    [HideInInspector] public Vector3     m_vStartPosition    = Vector3.zero;
+    [HideInInspector] public Vector3     m_vStartScale       = Vector3.zero;
+    [HideInInspector] public Quaternion  m_qStartRotation    = Quaternion.identity;
+    #endregion
+
+
     #region Members : Physics
-    [HideInInspector] public Vector3     m_vSpeed            = Vector3.zero;
+    [HideInInspector] public float       m_fSpeed            = 0.0f;
     [HideInInspector] public Vector3     m_vDirection        = Vector3.zero;
+    [HideInInspector] public Collider    m_pCollider         = null;
     #endregion
 
 
@@ -15,40 +23,50 @@ public class SHMonoWrapper : MonoBehaviour
     [HideInInspector] public bool        m_bIsAnimPlaying    = false;
     #endregion
 
-
+    
     #region System Functions
     public virtual void Awake()
     {
+        m_vStartPosition = transform.localPosition;
+        m_vStartScale    = transform.localScale;
+        m_qStartRotation = transform.localRotation;
     }
-    public virtual void Start()
-    {
-    }
-    public virtual void OnEnable()
-    {
-    }
-    public virtual void OnDisable()
-    {
-    }
-    public virtual void OnDestroy()
-    {
-    }
-    public virtual void Update()
-    {
-    }
-    public virtual void FixedUpdate()
-    {
-    }
-    public virtual void LateUpdate()
-    {
-    }
+    public virtual void Start() { }
+    public virtual void OnEnable() { }
+    public virtual void OnDisable() { }
+    public virtual void OnDestroy() { }
+    public virtual void Update() { }
+    public virtual void FixedUpdate() { }
+    public virtual void LateUpdate() { }
+    public virtual void OnCrashDamage(SHMonoWrapper pCrashObject) { }
     #endregion
 
 
-    #region Interface : Init Physics
-    public void InitPhysics()
+    #region Interface : Physics
+    public void InitPhysicsValue()
     {
-        m_vSpeed     = Vector3.zero;
+        m_fSpeed     = 0.0f;
         m_vDirection = Vector3.zero;
+    }
+    public Vector3 GetSpeed()
+    {
+        return m_vDirection * m_fSpeed;
+    }
+    public void SetSpeed(float fSpeed)
+    {
+        m_fSpeed     = fSpeed;
+    }
+    public void SetSpeed(Vector3 vSpeed)
+    {
+        m_fSpeed     = vSpeed.magnitude;
+        m_vDirection = vSpeed.normalized;
+    }
+    public Collider GetCollider()
+    {
+        if (null == m_pCollider)
+            m_pCollider = SHGameObject.GetComponent<Collider>(gameObject);
+
+        return m_pCollider;
     }
     #endregion
 
@@ -71,6 +89,9 @@ public class SHMonoWrapper : MonoBehaviour
     #region Interface : Position
     public void SetPosition(Vector3 vPos)
     {
+        if (true == SHUtils.IsNan(vPos))
+            return;
+
         gameObject.transform.position = vPos;
     }
     public void SetPositionX(float fX)
@@ -87,6 +108,9 @@ public class SHMonoWrapper : MonoBehaviour
     }
     public void SetLocalPosition(Vector3 vPos)
     {
+        if (true == SHUtils.IsNan(vPos))
+            return;
+
         gameObject.transform.localPosition = vPos;
     }
     public void SetLocalPositionX(float fX)
@@ -131,6 +155,9 @@ public class SHMonoWrapper : MonoBehaviour
     #region Interface : Scale
     public void SetLocalScale(Vector3 vScale)
     {
+        if (true == SHUtils.IsNan(vScale))
+            return;
+
         gameObject.transform.localScale = vScale;
     }
     public void SetLocalScaleZ(float fScale)
@@ -160,6 +187,9 @@ public class SHMonoWrapper : MonoBehaviour
     }
     public void SetRotate(Quaternion qRotate)
     {
+        if (true == SHUtils.IsNan(qRotate))
+            return;
+
         gameObject.transform.rotation = qRotate;
     }
     public void SetLocalRotate(Vector3 vRotate)
@@ -355,6 +385,28 @@ public class SHMonoWrapper : MonoBehaviour
             pEndCallback();
 
         m_bIsAnimPlaying = false;
+    }
+    #endregion
+
+
+    #region Interface : Object
+    public GameObject GetGameObject()
+    {
+        return gameObject;
+    }
+    public Transform GetTransform()
+    {
+        return transform;
+    }
+    #endregion
+
+
+    #region Interface : Helpper
+    public void SetStartTransform()
+    {
+        SetLocalPosition(m_vStartPosition);
+        SetLocalRotate(m_qStartRotation);
+        SetLocalScale(m_vStartScale);
     }
     #endregion
 
