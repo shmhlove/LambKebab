@@ -48,7 +48,7 @@ public class SHBalance : SHBaseEngine
     {
         return SHMath.RandomW(
             new List<string>() { "1",  "2",  "3",  "4", "5" },
-            new List<float>()  { 0.1f, 0.2f, 0.4f, 0.5f, 1.05f });
+            new List<float>()  { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f });
     }
     public float GetMonsterSpeed()
     {

@@ -86,6 +86,8 @@ public partial class SHDamageObject : SHMonoWrapper
         SetupPhysicsValue();
         ClearEffect();
 
+		SetActive (false);
+		SetActive (true);
         PlayAnimation();
         PlaySound(eDamageEvent.Start);
         PlayEffect(eDamageEvent.Start);
