@@ -80,8 +80,17 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     {
         m_fDeltaTime += (Time.deltaTime - m_fDeltaTime) * 0.1f;
 
-        if (true == Input.GetKeyDown(KeyCode.Escape))
-            SHUtils.GameQuit();
+        if (true == Input.GetKeyDown (KeyCode.Escape)) 
+		{
+			Single.UI.Show("Panel_Notice", new NoticeUI_Param()
+			{
+				m_eButtonType = eNoticeButton.Two,
+				m_eIconType   = eNoticeIcon.Warning,
+				m_strTitle    = "게임 종료",
+				m_strMessage  = "정말 게임을 종료하시겠습니까?",
+				m_pEventToOK  = SHUtils.GameQuit,
+			});
+		}
     }
 
     // 시스템 : GUI 업데이트
@@ -276,7 +285,7 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
         GUIStyle pStyle = new GUIStyle(GUI.skin.box);
         pStyle.fontSize = GetRatioW(20);
 
-        GUI.Box(new Rect(0, (Screen.height - GetRatioH(30)), GetRatioW(250), GetRatioH(30)),
+        GUI.Box(new Rect(0, (Screen.height - GetRatioH(30)), GetRatioW(350), GetRatioH(30)),
             string.Format("{0} : {1} : {2} Scene", Single.Table.GetServiceMode(), GetRuntimePlatform(), Single.Scene.GetCurrentScene()), pStyle);
 
         GUI.Box(new Rect((Screen.width * 0.5f) - (GetRatioW(120) * 0.5f), (Screen.height - GetRatioH(30)), GetRatioW(120), GetRatioH(30)),
