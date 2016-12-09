@@ -30,6 +30,14 @@ public class SHBalance : SHBaseEngine
             eDirection.Right,
         });
     }
+	public float GetRatioToGap(SHUIWidge_Stick pStick, SHUIWidge_Monster pMonster)
+	{
+		if ((null == pStick) || (null == pMonster))
+			return 0.0f;
+
+		var fRatio = Mathf.Abs(pMonster.GetLocalPosition().x - pStick.GetLocalPosition().x) / 150.0f;//pMonster.GetCollider().bounds.size.x;
+		return Mathf.Clamp(fRatio, 0.0f, 1.0f);
+	}
     public eDecision GetDecision(SHUIWidge_Stick pStick, SHUIWidge_Monster pMonster)
     {
         if ((null == pStick) || (null == pMonster))

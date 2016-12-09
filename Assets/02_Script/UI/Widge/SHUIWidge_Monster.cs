@@ -99,21 +99,23 @@ public class SHUIWidge_Monster : SHMonoWrapper
         InitPhysicsValue();
         StopMoveTween();
 
-        var eCrashDir = Single.Balance.GetDirection((SHUIWidge_Stick)pArgs[0], this);
+		var pStick    = (SHUIWidge_Stick)pArgs[0];
+		var eCrashDir = Single.Balance.GetDirection(pStick, this);
         PlayAnim(eDirection.Front, gameObject, (eDirection.Left == eCrashDir) ?
                                                 m_pDie_Left : m_pDie_Right, null);
 
-        var iCoinCount = SHMath.Random(m_pInfo.m_iMinCoin, m_pInfo.m_iMaxCoin);
-        SHUtils.For(0, iCoinCount, (iIndex) => 
+		var eAccuracy  = Single.Balance.GetDecision(pStick, this);
+		var iBonusCoin = GetBonusCoin (eAccuracy);
+		SHUtils.For(0, iBonusCoin, (iIndex) => 
         {
             var pHUD = Single.UI.GetPanel<SHUIPanel_HUD>("Panel_HUD");
             Single.Damage.AddDamage("Dmg_Coin", new SHAddDamageParam(this, pHUD.GetCoinTarget(), null, null));
         });
 
-        if (0 == iCoinCount)
-            PlayParticle("Particle_Crash_Dust_Small");
+		if ((0 != iBonusCoin) && (eDecision.Good == eAccuracy))
+			PlayParticle("Particle_Crash_Dust_Big");
         else
-            PlayParticle("Particle_Crash_Dust_Big");
+			PlayParticle("Particle_Crash_Dust_Small");
 
         m_fSpeed       = m_pInfo.m_vDieSpeed.magnitude;
         m_vDirection   = m_pInfo.m_vDieSpeed.normalized;
@@ -179,6 +181,16 @@ public class SHUIWidge_Monster : SHMonoWrapper
 
         return 0;
     }
+	public int GetBonusCoin(eDecision eDec)
+	{
+		switch (eDec)
+		{
+            case eDecision.Bad:     return m_pInfo.m_iMinCoin;
+		    case eDecision.Normal:  return SHMath.Lerp(m_pInfo.m_iMinCoin, m_pInfo.m_iMaxCoin, 0.5f);
+            case eDecision.Good:    return m_pInfo.m_iMaxCoin;
+		}
+		return 0;
+	}
     #endregion
 
 

@@ -60,6 +60,14 @@ public static class SHMath
     }
 
     // 보간 : 두 지점 사이의 X비율에 해당하는 값 구하기
+	public static int Lerp(int iMin, int iMax, float fRatio)
+	{
+		if (iMax < iMin)
+			Swap(ref iMin, ref iMax);
+		
+		//Mathf.Lerp(iMax, iMin, fRatio)
+		return (int)(iMin + ((iMax - iMin) * fRatio));
+	}
     public static float Lerp(float fMin, float fMax, float fRatio)
     {
         if (fMax < fMin)

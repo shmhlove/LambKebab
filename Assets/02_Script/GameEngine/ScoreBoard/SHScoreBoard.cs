@@ -38,7 +38,6 @@ public class SHScoreBoard : SHBaseEngine
     public void AddScore(int iScore)
     {
         m_iAddScore += iScore;
-        Debug.LogFormat("점수 : {0}", m_iAddScore);
     }
     #endregion
 
