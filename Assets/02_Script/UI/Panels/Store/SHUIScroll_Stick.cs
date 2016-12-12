@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class SHUIPanel_Store : SHUIBasePanel
+public class SHUIScroll_Stick : SHUIMassiveScrollView
 {
     #region Members : Inspector
     #endregion
@@ -17,9 +17,12 @@ public class SHUIPanel_Store : SHUIBasePanel
 
 
     #region Virtual Functions
-    public override void OnBeforeShow(params object[] pArgs)
+    protected override void OnInitialized()
     {
-        
+        SetCellCount(10);
+    }
+    protected override void SetSlotData(GameObject pSlot, int iIndex)
+    {
     }
     #endregion
 
@@ -33,11 +36,5 @@ public class SHUIPanel_Store : SHUIBasePanel
 
 
     #region Event Handler
-    public void OnClickToStartGame()
-    {
-    }
-	public void OnClickToStore()
-	{
-	}
     #endregion
 }
