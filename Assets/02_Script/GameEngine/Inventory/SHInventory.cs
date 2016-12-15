@@ -14,6 +14,7 @@ public partial class SHInventory : SHBaseEngine
     {
         OnUpdateCoin();
         OnUpdateStick();
+        OnUpdateMonster();
     }
     #endregion
 
@@ -23,6 +24,7 @@ public partial class SHInventory : SHBaseEngine
     {
         InitCoin();
         InitStick();
+        InitMonster();
     }
     #endregion
 

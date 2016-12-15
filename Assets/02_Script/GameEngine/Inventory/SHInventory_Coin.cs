@@ -4,11 +4,11 @@ using System.Collections;
 public partial class SHInventory : SHBaseEngine
 {
     #region Members
-    public int  m_iCoin     = 0;
-    public int  m_iAddCoin  = 0;
+    public int m_iCoin      { get; private set; }
+    public int m_iAddCoin   { get; private set; }
     #endregion
 
-    
+
     #region Interface Functions
     public void InitCoin()
     {

@@ -143,15 +143,19 @@ public partial class SHUIManager : SHSingleton<SHUIManager>
 
 
     #region Temp Functions
-    public void ShowNotice_NoMake()
+    public void ShowNotice(string strTitle, string strMessage)
     {
         Show("Panel_Notice", new NoticeUI_Param()
         {
             m_eButtonType   = eNoticeButton.One,
             m_eIconType     = eNoticeIcon.Information,
-            m_strTitle      = "알림",
-            m_strMessage    = "업데이트 예정입니다!",
+            m_strTitle      = strTitle,
+            m_strMessage    = strMessage,
         });
+    }
+    public void ShowNotice_NoMake()
+    {
+        ShowNotice("알림", "업데이트 예정입니다!");
     }
     #endregion
 }

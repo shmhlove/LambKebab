@@ -52,12 +52,10 @@ public class SHPlayerPrefs
         PlayerPrefs.SetInt(strKey, iValue);
         SaveEncryption(strKey, "int", iValue.ToString());
     }
-    
     public static int GetInt(string strKey)
     {
         return GetInt(strKey, 0);
     }
-    
     public static int GetInt(string strKey, int iDefaultValue)
     {
         int iValue = PlayerPrefs.GetInt(strKey);
@@ -75,12 +73,10 @@ public class SHPlayerPrefs
         PlayerPrefs.SetFloat(strKey, fValue);
         SaveEncryption(strKey, "float", Mathf.Floor(fValue * 1000.0f).ToString());
     }
-    
     public static float GetFloat(string strKey)
     {
         return GetFloat(strKey, 0f);
     }
-    
     public static float GetFloat(string strKey, float iDefaultValue)
     {
         float fValue = PlayerPrefs.GetFloat(strKey);
@@ -98,12 +94,10 @@ public class SHPlayerPrefs
         PlayerPrefs.SetString(strKey, strValue);
         SaveEncryption(strKey, "string", strValue);
     }
-    
     public static string GetString(string strKey)
     {
         return GetString(strKey, "");
     }
-    
     public static string GetString(string strKey, string iDefaultValue)
     {
         string value = PlayerPrefs.GetString(strKey);
@@ -128,7 +122,6 @@ public class SHPlayerPrefs
         }
         return strHash.PadLeft(32, '0');
     }
-
     public static void SaveEncryption(string strKey, string strType, string strValue)
     {
         var iKeyIndex    = (int)UnityEngine.Mathf.Floor(UnityEngine.Random.value * m_strkeys.Length);
@@ -137,7 +130,6 @@ public class SHPlayerPrefs
         PlayerPrefs.SetString(string.Format("{0}_Encryption_Check", strKey), strCheck);
         PlayerPrefs.SetInt(string.Format("{0}_Used_Key", strKey), iKeyIndex);
     }
-
     public static bool CheckEncryption(string strKey, string strType, string strValue)
     {
         int iKeyIndex       = PlayerPrefs.GetInt(strKey + "_Used_Key");
@@ -150,24 +142,20 @@ public class SHPlayerPrefs
 
         return (PlayerPrefs.GetString(strKey) == strCheck);
     }
-    
     public static bool HasKey(string strKey)
     {
         return PlayerPrefs.HasKey(strKey);
     }
-
     public static void DeleteKey(string strKey)
     {
         PlayerPrefs.DeleteKey(strKey);
         PlayerPrefs.DeleteKey(string.Format("{0}_Encryption_Check", strKey));
         PlayerPrefs.DeleteKey(string.Format("{0}_Used_Key",         strKey));
     }
-
     public static void DeleteAll()
     {
         PlayerPrefs.DeleteAll();
     }
-
     public static void Save()
     {
         PlayerPrefs.Save();

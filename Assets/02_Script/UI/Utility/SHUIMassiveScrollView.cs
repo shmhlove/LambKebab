@@ -692,32 +692,32 @@ public class SHUIMassiveScrollView : MonoBehaviour
 
     private void MakeSpareSlots()
     {
-        int count = m_iMaxColumn * m_iMaxRow;
+        int iCount = m_iMaxColumn * m_iMaxRow;
 
-        for (int i = 0; i < count; ++i)
+        for (int iLoop = 0; iLoop < iCount; ++iLoop)
         {
-            GameObject slot = Instantiate<GameObject>(m_pSample);
-            slot.transform.SetParent(m_pGrid.transform);
-            slot.transform.localPosition = Vector2.zero;
-            slot.transform.localScale = m_pSample.transform.localScale;
-            slot.transform.localRotation = Quaternion.Euler(Vector3.zero);
+            var pSlot = Single.Resource.Instantiate<GameObject>(m_pSample);
+            pSlot.transform.SetParent(m_pGrid.transform);
+            pSlot.transform.localPosition   = Vector2.zero;
+            pSlot.transform.localScale      = m_pSample.transform.localScale;
+            pSlot.transform.localRotation   = Quaternion.Euler(Vector3.zero);
 
-            PushSlot(slot);
+            PushSlot(pSlot);
         }
     }
 
     private void ClearSpareSlots()
     {
-        foreach (GameObject slot in m_dicSlots.Values)
+        foreach (var pSlot in m_dicSlots.Values)
         {
-            PushSlot(slot);
+            PushSlot(pSlot);
         }
 
         m_dicSlots.Clear();
 
-        foreach (GameObject slot in m_pSpareSlots)
+        foreach (var pSlot in m_pSpareSlots)
         {
-            GameObject.Destroy(slot);
+            GameObject.Destroy(pSlot);
         }
 
         m_pSpareSlots.Clear();
@@ -730,11 +730,11 @@ public class SHUIMassiveScrollView : MonoBehaviour
             return null;
         }
 
-        GameObject slot = m_pSpareSlots.Dequeue();
+        var pSlot = m_pSpareSlots.Dequeue();
 
-        NGUITools.SetActive(slot.gameObject, true);
+        NGUITools.SetActive(pSlot.gameObject, true);
 
-        return slot;
+        return pSlot;
     }
 
     private void OnClickItem()
@@ -745,11 +745,11 @@ public class SHUIMassiveScrollView : MonoBehaviour
         }
     }
 
-    private void PushSlot(GameObject slot)
+    private void PushSlot(GameObject pSlot)
     {
-        NGUITools.SetActive(slot.gameObject, false);
+        NGUITools.SetActive(pSlot.gameObject, false);
 
-        m_pSpareSlots.Enqueue(slot);
+        m_pSpareSlots.Enqueue(pSlot);
     }
     #endregion
 

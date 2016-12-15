@@ -30,7 +30,7 @@ public class SHPlayer : SHBaseEngine
     private SHUIWidge_Stick CreateStick()
     {
         m_pStick = Single.ObjectPool.Get<SHUIWidge_Stick>(
-            string.Format("Widget_Stick_{0}", GetStickType()));
+            SHHard.GetStickName(GetStickType()));
         if (null == m_pStick)
             return null;
         
@@ -49,9 +49,9 @@ public class SHPlayer : SHBaseEngine
         Single.ObjectPool.Return(m_pStick.gameObject);
         m_pStick = null;
     }
-    string GetStickType()
+    eStickType GetStickType()
     {
-        return SHPlayerPrefs.GetInt("StickType", 1).ToString();
+        return Single.Inventory.m_eStickType;
     }
     #endregion
 

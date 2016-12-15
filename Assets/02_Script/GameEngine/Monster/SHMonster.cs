@@ -41,7 +41,11 @@ public class SHMonster : SHBaseEngine
         bIsCheckCreateMonster = true;
         ClearMonster();
 
-        var pMonster = AddMonster(CreateMonster("4", 0.5f, 250.0f)); 
+        var eFirstMon = eMonsterType.Monster_4;
+        if (false == Single.Inventory.IsEnable(eFirstMon))
+            eFirstMon = SHMath.RandomN(Single.Inventory.GetEnableMonsters());
+
+        var pMonster = AddMonster(CreateMonster(eFirstMon, 0.5f, 250.0f)); 
         pMonster.StopMoveTween();
     }
     public void Stop()
@@ -72,7 +76,8 @@ public class SHMonster : SHBaseEngine
         if (0 != m_pMonsters.Count)
             return;
 
-        var pMonster = CreateMonster(Single.Balance.GetMonsterType(), GetRandomFactor(), SHMath.Random(MIN_CREATE_POS_Y, MAX_CREATE_POS_Y));
+        var pMonster = CreateMonster(
+            Single.Balance.GetMonsterType(), GetRandomFactor(), SHMath.Random(MIN_CREATE_POS_Y, MAX_CREATE_POS_Y));
         pMonster.PlayMoveTween();
         AddMonster(pMonster);
     }
@@ -84,10 +89,9 @@ public class SHMonster : SHBaseEngine
         }
         return pMonster;
     }
-    private SHUIWidge_Monster CreateMonster(string strKinds, float fFactor, float fStartPosY)
+    private SHUIWidge_Monster CreateMonster(eMonsterType eType, float fFactor, float fStartPosY)
     {
-        var pMonster = Single.ObjectPool.Get<SHUIWidge_Monster>(
-            string.Format("Widget_Monster_{0}", strKinds));
+        var pMonster = Single.ObjectPool.Get<SHUIWidge_Monster>(SHHard.GetMonsterName(eType));
         if (null == pMonster)
             return null;
 

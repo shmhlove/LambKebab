@@ -52,11 +52,9 @@ public class SHBalance : SHBaseEngine
 
         return eDecision.Miss;
     }
-    public string GetMonsterType()
+    public eMonsterType GetMonsterType()
     {
-        return SHMath.RandomW(
-            new List<string>() { "1",  "2",  "3",  "4", "5" },
-            new List<float>()  { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f });
+        return SHMath.RandomN(Single.Inventory.GetEnableMonsters());
     }
     public float GetMonsterSpeed()
     {
