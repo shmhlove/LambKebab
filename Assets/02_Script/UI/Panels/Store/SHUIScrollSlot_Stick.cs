@@ -69,7 +69,8 @@ public class SHUIScrollSlot_Stick : SHMonoWrapper
         if ((eStickType.None == eType) || (eStickType.Max == eType))
             return null;
         
-        return Single.ObjectPool.Get<SHUIWidge_Stick>(SHHard.GetStickName(eType));
+        return Single.ObjectPool.Get<SHUIWidge_Stick>(SHHard.GetStickName(eType),
+            ePoolReturnType.ChangeScene, ePoolDestroyType.ChangeScene);
     }
     void SetStickSlot(SHUIWidge_Stick pStick, GameObject pSlot)
     {

@@ -5,8 +5,10 @@ using System.Collections;
 public class SHUIPanel_Store : SHUIBasePanel
 {
     #region Members : Inspector
-    [SerializeField] private SHUIScroll_Stick   m_pStickTab   = null;
-    [SerializeField] private SHUIScroll_Monster m_pMonsterTab = null;
+    [SerializeField] private UIToggle           m_pToggleStick   = null;
+    [SerializeField] private UIToggle           m_pToggleMonster = null;
+    [SerializeField] private SHUIScroll_Stick   m_pTabStick      = null;
+    [SerializeField] private SHUIScroll_Monster m_pTabMonster    = null;
     #endregion
 
 
@@ -21,8 +23,11 @@ public class SHUIPanel_Store : SHUIBasePanel
     #region Virtual Functions
     public override void OnBeforeShow(params object[] pArgs)
     {
-        OnToggleToStick(true);
-        OnToggleToMonster(false);
+        if (null != m_pToggleStick)
+            m_pToggleStick.value   = true;
+
+        if (null != m_pToggleMonster)
+            m_pToggleMonster.value = false;
     }
     #endregion
 
@@ -38,23 +43,19 @@ public class SHUIPanel_Store : SHUIBasePanel
     #region Event Handler
     public void OnToggleToStick(bool bIsOn)
     {
-        if (null == m_pStickTab)
+        if (null == m_pTabStick)
             return;
 
-        if (true == bIsOn)
-            m_pStickTab.Initialize();
-
-        m_pStickTab.gameObject.SetActive(bIsOn);
+        m_pTabStick.Initialize();
+        m_pTabStick.gameObject.SetActive(bIsOn);
     } 
 	public void OnToggleToMonster(bool bIsOn)
 	{
-        if (null == m_pMonsterTab)
+        if (null == m_pTabMonster)
             return;
 
-        if (true == bIsOn)
-            m_pMonsterTab.Initialize();
-
-        m_pMonsterTab.gameObject.SetActive(bIsOn);
+        m_pTabMonster.Initialize();
+        m_pTabMonster.gameObject.SetActive(bIsOn);
     }
     #endregion
 }

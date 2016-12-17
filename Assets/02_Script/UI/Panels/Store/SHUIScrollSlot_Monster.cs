@@ -71,7 +71,8 @@ public class SHUIScrollSlot_Monster : SHMonoWrapper
         if ((eMonsterType.None == eType) || (eMonsterType.Max == eType))
             return null;
         
-        return Single.ObjectPool.Get<SHUIWidge_Monster>(SHHard.GetMonsterName(eType));
+        return Single.ObjectPool.Get<SHUIWidge_Monster>(SHHard.GetMonsterName(eType),
+            ePoolReturnType.ChangeScene, ePoolDestroyType.ChangeScene);
     }
     void SetMonsterSlot(SHUIWidge_Monster pMonster, GameObject pSlot)
     {

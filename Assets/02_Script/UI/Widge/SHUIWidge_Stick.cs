@@ -73,6 +73,10 @@ public class SHUIWidge_Stick : SHMonoWrapper
     }
     private void OnUpdateToCrash()
     {
+        if (false == IsActive())
+        {
+            Single.ObjectPool.Return(gameObject);
+        }
     }
     private void OnChangeToFlick(params object[] pArgs)
     {
