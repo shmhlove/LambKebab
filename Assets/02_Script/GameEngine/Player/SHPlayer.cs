@@ -14,7 +14,7 @@ public class SHPlayer : SHBaseEngine
 
 
     #region Interface Functions
-    public void Start()
+    public void StartStick()
     {
         ClearStick();
         CreateStick();

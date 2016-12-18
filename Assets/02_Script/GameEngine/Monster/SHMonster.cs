@@ -36,16 +36,13 @@ public class SHMonster : SHBaseEngine
 
 
     #region Interface Functions
-    public void Start()
+    public void StartMonster()
     {
         bIsCheckCreateMonster = true;
         ClearMonster();
 
-        var eFirstMon = eMonsterType.Monster_4;
-        if (false == Single.Inventory.IsEnable(eFirstMon))
-            eFirstMon = SHMath.RandomN(Single.Inventory.GetEnableMonsters());
-
-        var pMonster = AddMonster(CreateMonster(eFirstMon, 0.5f, 250.0f)); 
+        var eFirstMon = Single.Balance.GenMonsterTypeForFirst();
+        var pMonster  = AddMonster(CreateMonster(eFirstMon, 0.5f, 250.0f)); 
         pMonster.StopMoveTween();
     }
     public void Stop()
@@ -77,7 +74,7 @@ public class SHMonster : SHBaseEngine
             return;
 
         var pMonster = CreateMonster(
-            Single.Balance.GetMonsterType(), GetRandomFactor(), SHMath.Random(MIN_CREATE_POS_Y, MAX_CREATE_POS_Y));
+            Single.Balance.GenMonsterType(), GetRandomFactor(), SHMath.Random(MIN_CREATE_POS_Y, MAX_CREATE_POS_Y));
         pMonster.PlayMoveTween();
         AddMonster(pMonster);
     }

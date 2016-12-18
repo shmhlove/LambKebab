@@ -47,7 +47,7 @@ public class SHUIScroll_Monster : SHUIMassiveScrollView
     #region Utility Functions
     int GetMaxMonster()
     {
-        return (int)(eMonsterType.Max - 1);
+        return (int)(eMonsterType.Max_NormalMonster - 1);
     }
     void RefleshSlotForSelect()
     {
@@ -62,18 +62,18 @@ public class SHUIScroll_Monster : SHUIMassiveScrollView
     #region Event Handler
     public void OnClickToSlot(eMonsterType eType)
     {
-        var eUseType = Single.Inventory.GetMonsterUseType(eType);
+        var eUseType = Single.Inventory.GetMonsterUseTypeToPlayerPrefs(eType);
         switch(eUseType)
         {
             case eMonsterUseType.NotHas:
                 // @_@ 구매처리
-                Single.Inventory.SetMonsterType(eType, eMonsterUseType.Enable);
+                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eMonsterUseType.Enable);
                 break;
             case eMonsterUseType.Disable:
-                Single.Inventory.SetMonsterType(eType, eMonsterUseType.Enable);
+                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eMonsterUseType.Enable);
                 break;
             case eMonsterUseType.Enable:
-                Single.Inventory.SetMonsterType(eType, eMonsterUseType.Disable);
+                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eMonsterUseType.Disable);
                 break;
         }
         RefleshSlotForSelect();

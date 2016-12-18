@@ -52,9 +52,21 @@ public class SHBalance : SHBaseEngine
 
         return eDecision.Miss;
     }
-    public eMonsterType GetMonsterType()
+    public eMonsterType GenMonsterTypeForFirst()
     {
-        return SHMath.RandomN(Single.Inventory.GetEnableMonsters());
+        var eFirstMon = eMonsterType.Monster_4;
+        if (false == Single.Inventory.IsEnableToPlayerPrefs(eFirstMon))
+            eFirstMon = SHMath.RandomN(Single.Inventory.GetEnableMonstersForDic());
+
+        return eFirstMon;
+    }
+    public eMonsterType GenMonsterType()
+    {
+        m_iCoin
+        // 보너스 몬스터
+        // 점수,, 백분율
+        // Monster_Bonus
+        return SHMath.RandomN(Single.Inventory.GetEnableMonstersForDic());
     }
     public float GetMonsterSpeed()
     {

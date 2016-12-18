@@ -11,10 +11,10 @@ public class SHStep_Start : SHStepBase
     #region Virtual Functions
     public override void InitialStep()
     {
-        Single.Player.Start();
-        Single.Monster.Start();
         Single.ScoreBoard.Clear();
         Single.Inventory.Clear();
+        Single.Player.StartStick();
+        Single.Monster.StartMonster();
         Single.UI.Show("Panel_StartMenu", (Action)OnEventToTouch);
     }
     public override void FinalStep()

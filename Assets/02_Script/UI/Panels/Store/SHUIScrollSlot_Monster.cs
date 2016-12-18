@@ -45,13 +45,13 @@ public class SHUIScrollSlot_Monster : SHMonoWrapper
 
         if (null != m_pLeftSelector)
         {
-            var eUseType = Single.Inventory.GetMonsterUseType(m_eLeftType);
+            var eUseType = Single.Inventory.GetMonsterUseTypeToPlayerPrefs(m_eLeftType);
             m_pLeftSelector.SetActive(eMonsterUseType.Enable == eUseType);
         }
 
         if (null != m_pRightSelector)
         {
-            var eUseType = Single.Inventory.GetMonsterUseType(m_eRightType);
+            var eUseType = Single.Inventory.GetMonsterUseTypeToPlayerPrefs(m_eRightType);
             m_pRightSelector.SetActive(eMonsterUseType.Enable == eUseType);
         }
     }
@@ -68,7 +68,7 @@ public class SHUIScrollSlot_Monster : SHMonoWrapper
     }
     SHUIWidge_Monster CreateMonsterSlot(eMonsterType eType)
     {
-        if ((eMonsterType.None == eType) || (eMonsterType.Max == eType))
+        if ((eMonsterType.None == eType) || (eMonsterType.Max_NormalMonster == eType) || (eMonsterType.Max == eType))
             return null;
         
         return Single.ObjectPool.Get<SHUIWidge_Monster>(SHHard.GetMonsterName(eType),

@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using DicMonsters = System.Collections.Generic.Dictionary<eMonsterType, eMonsterUseType>;
+
 public enum eMonsterType
 {
     None,
@@ -17,10 +19,9 @@ public enum eMonsterType
     Monster_10,
     Monster_11,
     Monster_12,
-    Monster_13,
-    Monster_14,
-    Monster_15,
-    Max,
+    Max_NormalMonster,
+    Monster_Bonus,
+    Max
 }
 
 public enum eMonsterUseType
@@ -32,14 +33,28 @@ public enum eMonsterUseType
 
 public partial class SHInventory : SHBaseEngine
 {
+    /*
+     PlayerPreb와
+     Dic에 담아쓰는것을 구분짓고,
+        1은 상점에서만
+        2는 플레이 중에만 참조할 수 있도록
+    */
+    
+    #region Members : Info
+    private DicMonsters m_dicMonsterInfo = new DicMonsters();
+    #endregion
+
+
     #region Members : Constants
     private int MIN_ENABLE_COUNT = 5;
     #endregion
+
 
     #region Interface : System
     public void InitMonster()
     {
         RegisterBasicMonster();
+        ResetMonsterInfo();
     }
     public void OnUpdateMonster()
     {
@@ -48,13 +63,48 @@ public partial class SHInventory : SHBaseEngine
     #endregion
 
 
-    #region Interface : Helpper
-    public List<eMonsterType> GetHasMonsters()
+    #region Interface : Dic Helpper
+    public List<eMonsterType> GetEnableMonstersForDic()
+    {
+        var pResult = new List<eMonsterType>();
+        SHUtils.ForToDic(m_dicMonsterInfo, (pKey, pValue) =>
+        {
+            if (eMonsterUseType.Enable != pValue)
+                return;
+
+            pResult.Add(pKey);
+        });
+
+        return pResult;
+    }
+    #endregion
+
+
+    #region Interface : PlayerPrefs Helpper
+    public void SetMonsterTypeToPlayerPrefs(eMonsterType eMonType, eMonsterUseType eUseType)
+    {
+        if (eMonsterUseType.Disable == eUseType)
+        {
+            if (MIN_ENABLE_COUNT >= GetEnableMonstersToPlayerPrefs().Count)
+            {
+                Single.UI.ShowNotice("알림", "몬스터는 최소 5마리 이상입니다.");
+                return;
+            }
+        }
+
+        SHPlayerPrefs.SetInt(string.Format("Inventory_Monste_{0}", (int)eMonType), (int)eUseType);
+    }
+    public eMonsterUseType GetMonsterUseTypeToPlayerPrefs(eMonsterType eType)
+    {
+        return (eMonsterUseType)SHPlayerPrefs.GetInt(
+            string.Format("Inventory_Monste_{0}", (int)eType), (int)eMonsterUseType.NotHas);
+    }
+    public List<eMonsterType> GetEnableMonstersToPlayerPrefs()
     {
         var pResult = new List<eMonsterType>();
         SHUtils.ForToEnum<eMonsterType>((eType) =>
         {
-            if (false == IsHas(eType))
+            if (false == IsEnableToPlayerPrefs(eType))
                 return;
 
             pResult.Add(eType);
@@ -62,26 +112,13 @@ public partial class SHInventory : SHBaseEngine
 
         return pResult;
     }
-    public List<eMonsterType> GetEnableMonsters()
+    public bool IsHasToPlayerPrefs(eMonsterType eType)
     {
-        var pResult = new List<eMonsterType>();
-        SHUtils.ForToEnum<eMonsterType>((eType) =>
-        {
-            if (false == IsEnable(eType))
-                return;
-
-            pResult.Add(eType);
-        });
-
-        return pResult;
+        return (eMonsterUseType.NotHas != GetMonsterUseTypeToPlayerPrefs(eType));
     }
-    public bool IsHas(eMonsterType eType)
+    public bool IsEnableToPlayerPrefs(eMonsterType eType)
     {
-        return (eMonsterUseType.NotHas != GetMonsterUseType(eType));
-    }
-    public bool IsEnable(eMonsterType eType)
-    {
-        return (eMonsterUseType.Enable == GetMonsterUseType(eType));
+        return (eMonsterUseType.Enable == GetMonsterUseTypeToPlayerPrefs(eType));
     }
     #endregion
 
@@ -97,29 +134,23 @@ public partial class SHInventory : SHBaseEngine
     }
     private void RegisterMonster(eMonsterType eType)
     {
-        if (true == IsHas(eType))
+        if (true == IsHasToPlayerPrefs(eType))
             return;
 
-        SetMonsterType(eType, eMonsterUseType.Enable);
+        SetMonsterTypeToPlayerPrefs(eType, eMonsterUseType.Enable);
     }
-    public void SetMonsterType(eMonsterType eMonType, eMonsterUseType eUseType)
+    void ResetMonsterInfo()
     {
-        if (eMonsterUseType.Disable == eUseType)
+        m_dicMonsterInfo.Clear();
+        SHUtils.ForToEnum<eMonsterType>((eType) =>
         {
-            if (MIN_ENABLE_COUNT >= GetEnableMonsters().Count)
-            {
-                Single.UI.ShowNotice("알림", "몬스터는 최소 5마리 이상입니다.");
+            if ((eMonsterType.None == eType)              ||
+                (eMonsterType.Max_NormalMonster == eType) ||
+                (eMonsterType.Max == eType))
                 return;
-            }
-        }
 
-        SHPlayerPrefs.SetInt(string.Format("Inventory_Monste_{0}", (int)eMonType), (int)eUseType);
+            m_dicMonsterInfo.Add(eType, GetMonsterUseTypeToPlayerPrefs(eType));
+        });
     }
-    public eMonsterUseType GetMonsterUseType(eMonsterType eType)
-    {
-        return (eMonsterUseType)SHPlayerPrefs.GetInt(
-            string.Format("Inventory_Monste_{0}", (int)eType), (int)eMonsterUseType.NotHas);
-    }
-
     #endregion
 }
