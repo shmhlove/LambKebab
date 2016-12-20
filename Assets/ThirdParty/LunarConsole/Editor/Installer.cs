@@ -25,12 +25,13 @@ using UnityEditor;
 using System.Collections;
 using System.IO;
 
-namespace LunarConsoleInternal
-{
-    using Editor = LunarConsole.Editor;
-    using LunarConsole = LunarConsole.LunarConsole;
+using LunarConsolePlugin;
 
-    static class Installer
+namespace LunarConsolePluginInternal
+{
+    using Editor = LunarConsolePlugin.Editor;
+
+    public static class Installer
     {
         public static void Install(bool silent = true)
         {
@@ -72,12 +73,12 @@ namespace LunarConsoleInternal
             }
         }
 
-        static void EnablePlugin()
+        public static void EnablePlugin()
         {
             SetLunarConsoleEnabled(true);
         }
 
-        static void DisablePlugin()
+        public static void DisablePlugin()
         {
             SetLunarConsoleEnabled(false);
         }

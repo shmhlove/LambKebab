@@ -23,6 +23,8 @@
 
 #import "Lunar.h"
 
+static LUAssertHandler _assertHandler;
+
 void __lunar_assert(const char* expression, const char* file, int line, const char* function)
 {
     __lunar_assert_msg(expression, file, line, function, @"");
@@ -44,8 +46,18 @@ void __lunar_assert_msgv(const char* expressionCStr, const char* fileCStr, int l
     
     NSLog(@"%@", consoleMessage);
     
-    LU_RELEASE(message);
-    LU_RELEASE(consoleMessage);
+    if (_assertHandler)
+    {
+        _assertHandler(consoleMessage);
+    }
+    
     
     va_end(ap);
+}
+void LUAssertSetHandler(LUAssertHandler handler)
+{
+    if (_assertHandler != handler)
+    {
+        _assertHandler = [handler copy];
+    }
 }

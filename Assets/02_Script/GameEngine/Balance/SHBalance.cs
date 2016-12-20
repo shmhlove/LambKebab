@@ -13,7 +13,7 @@ public class SHBalance : SHBaseEngine
 
 
     #region Interface Functions
-    public eDirection GetDirection(SHUIWidge_Stick pStick, SHUIWidge_Monster pMonster)
+    public eDirection GetDirection(SHUIWidget_Stick pStick, SHUIWidget_Monster pMonster)
     {
         if ((null != pStick) && (null != pMonster))
         {
@@ -30,7 +30,7 @@ public class SHBalance : SHBaseEngine
             eDirection.Right,
         });
     }
-	public float GetRatioToGap(SHUIWidge_Stick pStick, SHUIWidge_Monster pMonster)
+	public float GetRatioToGap(SHUIWidget_Stick pStick, SHUIWidget_Monster pMonster)
 	{
 		if ((null == pStick) || (null == pMonster))
 			return 0.0f;
@@ -38,7 +38,7 @@ public class SHBalance : SHBaseEngine
 		var fRatio = Mathf.Abs(pMonster.GetLocalPosition().x - pStick.GetLocalPosition().x) / 150.0f;//pMonster.GetCollider().bounds.size.x;
 		return Mathf.Clamp(fRatio, 0.0f, 1.0f);
 	}
-    public eDecision GetDecision(SHUIWidge_Stick pStick, SHUIWidge_Monster pMonster)
+    public eDecision GetDecision(SHUIWidget_Stick pStick, SHUIWidget_Monster pMonster)
     {
         if ((null == pStick) || (null == pMonster))
             return eDecision.Miss;
@@ -55,17 +55,19 @@ public class SHBalance : SHBaseEngine
     public eMonsterType GenMonsterTypeForFirst()
     {
         var eFirstMon = eMonsterType.Monster_4;
-        if (false == Single.Inventory.IsEnableToPlayerPrefs(eFirstMon))
+        if (false == Single.Inventory.IsEnableMonsterToPlayerPrefs(eFirstMon))
             eFirstMon = SHMath.RandomN(Single.Inventory.GetEnableMonstersForDic());
 
         return eFirstMon;
     }
     public eMonsterType GenMonsterType()
     {
-        m_iCoin
-        // 보너스 몬스터
-        // 점수,, 백분율
-        // Monster_Bonus
+        if (50 <= Single.Inventory.m_iCoin)
+        {
+            if (0.1 >= SHMath.Random(0.0f, 1.0f))
+                return eMonsterType.Monster_Bonus;
+        }
+        
         return SHMath.RandomN(Single.Inventory.GetEnableMonstersForDic());
     }
     public float GetMonsterSpeed()

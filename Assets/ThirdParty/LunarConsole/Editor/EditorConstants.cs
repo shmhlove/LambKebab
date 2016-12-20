@@ -22,12 +22,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace LunarConsoleInternal
+namespace LunarConsolePluginInternal
 {
     static class EditorConstants
     {
-        public static readonly string PrefabPath = "Assets/" + "ThirdParty/" + Constants.PluginName + "/Scripts/" + Constants.PluginName + ".prefab";
-        public static readonly string EditorPath = "Assets/" + "ThirdParty/" + Constants.PluginName + "/Editor";
+        public static readonly string PrefabPath = "Assets/" + Constants.PluginName + "/Scripts/" + Constants.PluginName + ".prefab";
+        public static readonly string EditorPath = "Assets/" + Constants.PluginName + "/Editor";
         public static readonly string EditorPathIOS = EditorPath + "/iOS";
         public static readonly string EditorPathAndroid = EditorPath + "/Android";
 

@@ -26,9 +26,9 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-using LunarConsole;
+using LunarConsolePlugin;
 
-namespace LunarConsoleInternal
+namespace LunarConsolePluginInternal
 {
     static class AndroidPlugin
     {
@@ -110,6 +110,9 @@ namespace LunarConsoleInternal
                 AssetDatabase.CopyAsset(srcPath, dstPath);
             }
 
+            PluginImporter pluginImporter = PluginImporter.GetAtPath(pluginDir) as PluginImporter;
+            pluginImporter.SetCompatibleWithAnyPlatform(false);
+            pluginImporter.SetCompatibleWithPlatform(BuildTarget.Android, true);
             AssetDatabase.ImportAsset(pluginDir, ImportAssetOptions.ImportRecursive);
         }
 

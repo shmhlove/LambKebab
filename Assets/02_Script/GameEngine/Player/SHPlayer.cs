@@ -5,7 +5,7 @@ using System.Collections;
 public class SHPlayer : SHBaseEngine
 {
     #region Members : Info
-    private SHUIWidge_Stick m_pStick = null;
+    private SHUIWidget_Stick m_pStick = null;
     #endregion
 
 
@@ -27,9 +27,9 @@ public class SHPlayer : SHBaseEngine
 
 
     #region Utility Functions
-    private SHUIWidge_Stick CreateStick()
+    private SHUIWidget_Stick CreateStick()
     {
-        m_pStick = Single.ObjectPool.Get<SHUIWidge_Stick>(
+        m_pStick = Single.ObjectPool.Get<SHUIWidget_Stick>(
             SHHard.GetStickName(GetStickType()));
         if (null == m_pStick)
             return null;
@@ -51,7 +51,7 @@ public class SHPlayer : SHBaseEngine
     }
     eStickType GetStickType()
     {
-        return Single.Inventory.m_eStickType;
+        return Single.Inventory.GetEnableSticksForDic();
     }
     #endregion
 

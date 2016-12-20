@@ -21,6 +21,10 @@
 
 #define LUNAR_CONSOLE_ENABLED
 
+#if UNITY_IOS || UNITY_IPHONE || UNITY_ANDROID
+#define LUNAR_CONSOLE_PLATFORM_SUPPORTED
+#endif
+
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -31,15 +35,19 @@ using System.Runtime.CompilerServices;
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 
-using LunarConsoleInternal;
+using LunarConsolePlugin;
+using LunarConsolePluginInternal;
 
 #if UNITY_EDITOR
 [assembly: InternalsVisibleTo("Test")]
 #endif
 
-namespace LunarConsole
+namespace LunarConsolePlugin
 {
     public enum Gesture
     {
@@ -47,23 +55,45 @@ namespace LunarConsole
         SwipeDown
     }
 
-    public class LunarConsole : MonoBehaviour
+    delegate void LunarConsoleNativeMessageCallback(string message);
+    delegate void LunarConsoleNativeMessageHandler(IDictionary<string, string> data);
+
+    public sealed class LunarConsole : MonoBehaviour
     {
+        #pragma warning disable 0649
+        #pragma warning disable 0414
+
         [Range(128, 65536)]
         [Tooltip("Logs will be trimmed to the capacity")]
-        public int capacity = 4096;
+        [SerializeField]
+        int m_capacity = 4096;
 
         [Range(128, 65536)]
         [Tooltip("How many logs will be trimmed when console overflows")]
-        public int trim = 512;
+        [SerializeField]
+        int m_trim = 512;
 
         [Tooltip("Gesture type to open the console")]
-        public Gesture gesture = Gesture.SwipeDown;
+        [SerializeField]
+        Gesture m_gesture = Gesture.SwipeDown;
+
+        [Tooltip("If checked - removes <color>, <b> and <i> rich text tags from the output (may cause performance overhead)")]
+        [SerializeField]
+        bool m_removeRichTextTags;
+
+        static LunarConsole s_instance;
+
+        #pragma warning restore 0649
+        #pragma warning restore 0414
 
         #if LUNAR_CONSOLE_ENABLED
 
-        private static LunarConsole instance;
-        private IPlatform platform;
+        IPlatform m_platform;
+        IDictionary<string, LunarConsoleNativeMessageHandler> m_nativeHandlerLookup;
+
+        Queue<MessageInfo> m_queuedMessages;
+
+        #region Life cycle
 
         void Awake()
         {
@@ -75,13 +105,18 @@ namespace LunarConsole
             InitInstance();
         }
 
+        void Update()
+        {
+            DispatchMessages();
+        }
+
         void InitInstance()
         {
-            if (instance == null)
+            if (s_instance == null)
             {
-                if (InitPlatform(capacity, trim))
+                if (InitPlatform(m_capacity, m_trim))
                 {
-                    instance = this;
+                    s_instance = this;
                     DontDestroyOnLoad(gameObject);
                 }
                 else
@@ -89,49 +124,41 @@ namespace LunarConsole
                     Destroy(gameObject);
                 }
             }
-            else if (instance != this)
+            else if (s_instance != this)
             {
                 Destroy(gameObject);
             }
         }
 
-        void ShowConsole()
-        {
-            if (platform != null)
-            {
-                platform.ShowConsole();
-            }
-        }
+        #endregion
 
-        void HideConsole()
-        {
-            if (platform != null)
-            {
-                platform.HideConsole();
-            }
-        }
-
-        void ClearConsole()
-        {
-            if (platform != null)
-            {
-                platform.ClearConsole();
-            }
-        }
+        #region Platforms
 
         bool InitPlatform(int capacity, int trim)
         {
             try
             {
-                if (platform == null)
+                if (m_platform == null)
                 {
                     trim = Math.Min(trim, capacity); // can't trim more that we have
 
-                    platform = CreatePlatform(capacity, trim);
-                    if (platform != null)
+                    m_platform = CreatePlatform(capacity, trim);
+                    if (m_platform != null)
                     {
-                        Application.logMessageReceived += delegate(string message, string stackTrace, LogType type) {
-                            platform.OnLogMessageReceived(message, stackTrace, type);
+                        m_queuedMessages = new Queue<MessageInfo>();
+                        int mainThreadId = Thread.CurrentThread.ManagedThreadId;
+
+                        Application.logMessageReceivedThreaded += delegate(string message, string stackTrace, LogType type)
+                        {
+                            message = m_removeRichTextTags ? StringUtils.RemoveRichTextTags(message) : message;
+                            if (Thread.CurrentThread.ManagedThreadId == mainThreadId)
+                            {
+                                m_platform.OnLogMessageReceived(message, stackTrace, type);
+                            }
+                            else
+                            {
+                                QueueMessage(message, stackTrace, type);
+                            }
                         };
 
                         return true;
@@ -151,12 +178,14 @@ namespace LunarConsole
             #if UNITY_IOS || UNITY_IPHONE
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
-                return new PlatformIOS(Constants.Version, capacity, trim, GetGestureName(gesture));
+                LunarConsoleNativeMessageCallback callback = NativeMessageCallback;
+                return new PlatformIOS(gameObject.name, callback.Method.Name, Constants.Version, capacity, trim, GetGestureName(m_gesture));
             }
             #elif UNITY_ANDROID
             if (Application.platform == RuntimePlatform.Android)
             {
-                return new PlatformAndroid(Constants.Version, capacity, trim, GetGestureName(gesture));
+                LunarConsoleNativeMessageCallback callback = NativeMessageCallback;
+                return new PlatformAndroid(gameObject.name, callback.Method.Name, Constants.Version, capacity, trim, GetGestureName(m_gesture));
             }
             #endif
 
@@ -176,12 +205,39 @@ namespace LunarConsole
             void ClearConsole();
         }
 
+        #region Threading
+
+        void QueueMessage(string message, string stackTrace, LogType type)
+        {
+            lock (m_queuedMessages)
+            {
+                m_queuedMessages.Enqueue(new MessageInfo(message, stackTrace, type));
+            }
+        }
+
+        void DispatchMessages()
+        {
+            if (m_queuedMessages != null)
+            {
+                lock (m_queuedMessages)
+                {
+                    while (m_queuedMessages.Count > 0)
+                    {
+                        var info = m_queuedMessages.Dequeue();
+                        m_platform.OnLogMessageReceived(info.message, info.stackTrace, info.type);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         #if UNITY_IOS || UNITY_IPHONE
 
         class PlatformIOS : IPlatform
         {
             [DllImport("__Internal")]
-            private static extern void __lunar_console_initialize(string version, int capacity, int trim, string gesture);
+            private static extern void __lunar_console_initialize(string targetName, string methodName, string version, int capacity, int trim, string gesture);
             
             [DllImport("__Internal")]
             private static extern void __lunar_console_log_message(string message, string stackTrace, int type);
@@ -194,10 +250,19 @@ namespace LunarConsole
 
             [DllImport("__Internal")]
             private static extern void __lunar_console_clear();
-            
-            public PlatformIOS(string version, int capacity, int trim, string gesture)
+
+            /// <summary>
+            /// Initializes a new instance of the iOS platform class.
+            /// </summary>
+            /// <param name="targetName">The name of the game object which will receive native callbacks</param>
+            /// <param name="methodName">The method of the game object which will be called from the native code</param>
+            /// <param name="version">Plugin version</param>
+            /// <param name="capacity">Console capacity (elements over this amount will be trimmed)</param>
+            /// <param name="trim">Console trim amount (how many elements will be trimmed on the overflow)</param>
+            /// <param name="gesture">Gesture name to activate the console</param>
+            public PlatformIOS(string targetName, string methodName, string version, int capacity, int trim, string gesture)
             {
-                __lunar_console_initialize(version, capacity, trim, gesture);
+                __lunar_console_initialize(targetName, methodName, version, capacity, trim, gesture);
             }
             
             public void OnLogMessageReceived(string message, string stackTrace, LogType type)
@@ -242,13 +307,29 @@ namespace LunarConsole
             private readonly IntPtr methodHideConsole;
             private readonly IntPtr methodClearConsole;
 
-            public PlatformAndroid(string version, int capacity, int trim, string gesture)
+            /// <summary>
+            /// Initializes a new instance of the Android platform class.
+            /// </summary>
+            /// <param name="targetName">The name of the game object which will receive native callbacks</param>
+            /// <param name="methodName">The method of the game object which will be called from the native code</param>
+            /// <param name="version">Plugin version</param>
+            /// <param name="capacity">Console capacity (elements over this amount will be trimmed)</param>
+            /// <param name="trim">Console trim amount (how many elements will be trimmed on the overflow)</param>
+            /// <param name="gesture">Gesture name to activate the console</param>
+            public PlatformAndroid(string targetName, string methodName, string version, int capacity, int trim, string gesture)
             {
                 pluginClass = new AndroidJavaClass(PluginClassName);
                 pluginClassRaw = pluginClass.GetRawClass();
 
-                IntPtr methodInit = GetStaticMethod(pluginClassRaw, "init", "(Ljava.lang.String;IILjava.lang.String;)V");
-                CallStaticVoidMethod(methodInit, new jvalue[] { jval(version), jval(capacity), jval(trim), jval(gesture) });
+                IntPtr methodInit = GetStaticMethod(pluginClassRaw, "init", "(Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;IILjava.lang.String;)V");
+                CallStaticVoidMethod(methodInit, new jvalue[] {
+                    jval(targetName),
+                    jval(methodName),
+                    jval(version),
+                    jval(capacity),
+                    jval(trim),
+                    jval(gesture)
+                });
 
                 methodLogMessage = GetStaticMethod(pluginClassRaw, "logMessage", "(Ljava.lang.String;Ljava.lang.String;I)V");
                 methodShowConsole = GetStaticMethod(pluginClassRaw, "show", "()V");
@@ -349,24 +430,96 @@ namespace LunarConsole
         }
 
         #endif // UNITY_ANDROID
-        
+
+        #endregion
+
+        #region Native callback
+
+        void NativeMessageCallback(string param)
+        {
+            IDictionary<string, string> data = StringUtils.DeserializeString(param);
+            string name = data["name"];
+            if (string.IsNullOrEmpty(name))
+            {
+                Debug.LogError("Can't handle native callback: 'name' is undefined");
+                return;
+            }
+
+            LunarConsoleNativeMessageHandler handler;
+            if (!nativeHandlerLookup.TryGetValue(name, out handler))
+            {
+                Debug.LogError("Can't handle native callback: handler not found '" + name + "'");
+                return;
+            }
+
+            try
+            {
+                handler(data);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Exception while handling native callback (" + name + "): " + e.Message);
+            }
+        }
+
+        IDictionary<string, LunarConsoleNativeMessageHandler> nativeHandlerLookup
+        {
+            get
+            {
+                if (m_nativeHandlerLookup == null)
+                {
+                    m_nativeHandlerLookup = new Dictionary<string, LunarConsoleNativeMessageHandler>();
+                    m_nativeHandlerLookup["console_open"] = ConsoleOpenHandler;
+                    m_nativeHandlerLookup["console_close"] = ConsoleCloseHandler;
+                }
+
+                return m_nativeHandlerLookup;
+            }
+        }
+
+        void ConsoleOpenHandler(IDictionary<string, string> data)
+        {
+            if (onConsoleOpened != null)
+            {
+                onConsoleOpened();
+            }
+        }
+
+        void ConsoleCloseHandler(IDictionary<string, string> data)
+        {
+            if (onConsoleClosed != null)
+            {
+                onConsoleClosed();
+            }
+        }
+
+        #endregion
+
         #endif // LUNAR_CONSOLE_ENABLED
+
+        #region Operations
 
         /// <summary>
         /// Shows Lunar console on top of everything. Does nothing if platform is not supported or if plugin is not initizlied.
         /// </summary>
         public static void Show()
         {
-            #if LUNAR_CONSOLE_ENABLED
-            if (instance != null)
+#if LUNAR_CONSOLE_PLATFORM_SUPPORTED
+        #if LUNAR_CONSOLE_ENABLED
+            if (s_instance != null)
             {
-                instance.ShowConsole();
+                s_instance.ShowConsole();
             }
             else
             {
                 Debug.LogError("Can't show " + Constants.PluginName + ": instance is not initialized. Make sure you've installed it correctly");
             }
-            #endif
+        #else
+            Debug.LogWarning("Can't show " + Constants.PluginName + ": plugin is disabled");
+        #endif
+#else
+            Debug.LogWarning("Can't show " + Constants.PluginName + ": current platform is not supported");
+#endif
         }
 
         /// <summary>
@@ -374,16 +527,22 @@ namespace LunarConsole
         /// </summary>
         public static void Hide()
         {
-            #if LUNAR_CONSOLE_ENABLED
-            if (instance != null)
+#if LUNAR_CONSOLE_PLATFORM_SUPPORTED
+        #if LUNAR_CONSOLE_ENABLED
+            if (s_instance != null)
             {
-                instance.HideConsole();
+                s_instance.HideConsole();
             }
             else
             {
                 Debug.LogError("Can't hide " + Constants.PluginName + ": instance is not initialized. Make sure you've installed it correctly");
             }
-            #endif
+        #else
+            Debug.LogWarning("Can't hide " + Constants.PluginName + ": plugin is disabled");
+        #endif
+#else
+            Debug.LogWarning("Can't hide " + Constants.PluginName + ": current platform is not supported");
+#endif
         }
 
         /// <summary>
@@ -391,17 +550,56 @@ namespace LunarConsole
         /// </summary>
         public static void Clear()
         {
-            #if LUNAR_CONSOLE_ENABLED
-            if (instance != null)
+#if LUNAR_CONSOLE_PLATFORM_SUPPORTED
+        #if LUNAR_CONSOLE_ENABLED
+            if (s_instance != null)
             {
-                instance.ClearConsole();
+                s_instance.ClearConsole();
             }
             else
             {
                 Debug.LogError("Can't clear " + Constants.PluginName + ": instance is not initialized. Make sure you've installed it correctly");
             }
-            #endif
+        #else
+            Debug.LogWarning("Can't clear " + Constants.PluginName + ": plugin is disabled");
+        #endif
+#else
+            Debug.LogWarning("Can't clear " + Constants.PluginName + ": current platform is not supported");
+#endif
         }
+
+        public static Action onConsoleOpened { get; set; }
+        public static Action onConsoleClosed { get; set; }
+
+        #if LUNAR_CONSOLE_ENABLED
+
+        void ShowConsole()
+        {
+            if (m_platform != null)
+            {
+                m_platform.ShowConsole();
+            }
+        }
+
+        void HideConsole()
+        {
+            if (m_platform != null)
+            {
+                m_platform.HideConsole();
+            }
+        }
+
+        void ClearConsole()
+        {
+            if (m_platform != null)
+            {
+                m_platform.ClearConsole();
+            }
+        }
+
+        #endif // LUNAR_CONSOLE_ENABLED
+
+        #endregion
     }
 
     public static class LunarConsoleSettings
@@ -484,4 +682,22 @@ namespace LunarConsole
     }
 
     #endif // UNITY_EDITOR
+
+    #if LUNAR_CONSOLE_ENABLED
+
+    struct MessageInfo
+    {
+        public readonly string message;
+        public readonly string stackTrace;
+        public readonly LogType type;
+
+        public MessageInfo(string message, string stackTrace, LogType type)
+        {
+            this.message = message;
+            this.stackTrace = stackTrace;
+            this.type = type;
+        }
+    }
+
+    #endif // LUNAR_CONSOLE_ENABLED
 }

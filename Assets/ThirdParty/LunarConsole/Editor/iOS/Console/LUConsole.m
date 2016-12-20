@@ -25,7 +25,7 @@
 
 @interface LUConsole ()
 {
-    LUConsoleEntryList * _entries;
+    LUConsoleLogEntryList * _entries;
 }
 
 @end
@@ -37,21 +37,16 @@
     self = [super init];
     if (self)
     {
-        _entries = [[LUConsoleEntryList alloc] initWithCapacity:capacity trimCount:trimCount];
+        _entries = [[LUConsoleLogEntryList alloc] initWithCapacity:capacity trimCount:trimCount];
     }
     return self;
 }
 
-- (void)dealloc
-{
-    LU_RELEASE(_entries);
-    LU_SUPER_DEALLOC
-}
 
 #pragma mark -
 #pragma mark Entries
 
-- (LUConsoleEntry *)entryAtIndex:(NSUInteger)index
+- (LUConsoleLogEntry *)entryAtIndex:(NSUInteger)index
 {
     return [_entries entryAtIndex:index];
 }
@@ -61,7 +56,7 @@
     NSUInteger oldTotalCount   = _entries.totalCount;   // total count before we added a new item
     NSUInteger oldTrimmedCount = _entries.trimmedCount; // trimmed count before we added a new item
     
-    LUConsoleEntry *entry = [[LUConsoleEntry alloc] initWithType:type message:message stackTrace:stackTrace];
+    LUConsoleLogEntry *entry = [[LUConsoleLogEntry alloc] initWithType:type message:message stackTrace:stackTrace];
     NSInteger index = [_entries addEntry:entry];
 
     NSInteger trimmed = _entries.trimmedCount - oldTrimmedCount;
@@ -82,7 +77,6 @@
         [_delegate lunarConsole:self didUpdateEntryAtIndex:index trimmedCount:trimmed];
     }
     
-    LU_RELEASE(entry);
 }
 
 - (void)clear

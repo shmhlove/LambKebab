@@ -29,6 +29,17 @@
 @property (nonatomic, readonly) UIColor *textColor;
 @property (nonatomic, readonly) UIColor *backgroundColorLight;
 @property (nonatomic, readonly) UIColor *backgroundColorDark;
+@property (nonatomic, readonly) UIColor *overlayTextColor;
+
+@end
+
+@interface LUButtonSkin : NSObject
+
++ (instancetype)buttonSkin;
+
+@property (nonatomic, readonly) UIImage *normalImage;
+@property (nonatomic, readonly) UIImage *selectedImage;
+@property (nonatomic, readonly) UIFont  *font;
 
 @end
 
@@ -42,24 +53,47 @@
 @property (nonatomic, readonly) LUCellSkin *cellError;
 @property (nonatomic, readonly) LUCellSkin *cellWarning;
 
+@property (nonatomic, readonly) UIColor *backgroundColorLight;
+@property (nonatomic, readonly) UIColor *backgroundColorDark;
+
 @property (nonatomic, readonly) UIFont *font;
+@property (nonatomic, readonly) UIFont *fontOverlay;
 @property (nonatomic, readonly) UIFont *fontSmall;
 @property (nonatomic, readonly) NSLineBreakMode lineBreakMode;
 
 @property (nonatomic, readonly) CGFloat cellHeight;
 @property (nonatomic, readonly) CGFloat indentHor;
 @property (nonatomic, readonly) CGFloat indentVer;
+@property (nonatomic, readonly) CGFloat cellHeightTiny;
+@property (nonatomic, readonly) CGFloat indentHorTiny;
+@property (nonatomic, readonly) CGFloat indentVerTiny;
 @property (nonatomic, readonly) CGFloat buttonWidth;
 @property (nonatomic, readonly) CGFloat buttonHeight;
+
+@property (nonatomic, readonly) LUButtonSkin *actionButtonLargeSkin;
 
 @property (nonatomic, readonly) UIImage *collapseBackgroundImage;
 @property (nonatomic, readonly) UIColor *collapseBackgroundColor;
 @property (nonatomic, readonly) UIColor *collapseTextColor;
 
+@property (nonatomic, readonly) UIFont  *actionsWarningFont;
+@property (nonatomic, readonly) UIColor *actionsWarningTextColor;
+@property (nonatomic, readonly) UIFont  *actionsFont;
+@property (nonatomic, readonly) UIColor *actionsTextColor;
+@property (nonatomic, readonly) UIColor *actionsBackgroundColorLight;
+@property (nonatomic, readonly) UIColor *actionsBackgroundColorDark;
+@property (nonatomic, readonly) UIFont  *actionsGroupFont;
+@property (nonatomic, readonly) UIColor *actionsGroupTextColor;
+@property (nonatomic, readonly) UIColor *actionsGroupBackgroundColor;
+
 @property (nonatomic, readonly) UIFont  *contextMenuFont;
 @property (nonatomic, readonly) UIColor *contextMenuBackgroundColor;
 @property (nonatomic, readonly) UIColor *contextMenuTextColor;
 @property (nonatomic, readonly) UIColor *contextMenuTextHighlightColor;
+
+@property (nonatomic, readonly) UIColor *switchTintColor;
+
+@property (nonatomic, readonly) UIImage *settingsIconImage;
 
 + (LUTheme *)mainTheme;
 

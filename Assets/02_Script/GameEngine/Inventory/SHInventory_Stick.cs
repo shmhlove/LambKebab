@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
+using DicSticks = System.Collections.Generic.Dictionary<eStickType, eGoodsState>;
 
 public enum eStickType
 {
@@ -25,34 +28,105 @@ public enum eStickType
 public partial class SHInventory : SHBaseEngine
 {
     #region Members
-    public eStickType m_eStickType { get; private set; }
+    private DicSticks m_dicStickInfo = new DicSticks();
     #endregion
 
-    
-    #region Interface Functions
+
+    #region Interface : System
     public void InitStick()
     {
-        m_eStickType = GetStickType();
+        RegisterBasicStick();
+        ResetStickInfo();
     }
     public void OnUpdateStick()
     {
 
     }
-    public void ChangeStick(eStickType eType)
+    #endregion
+
+
+    #region Interface : Dic Helpper
+    public eStickType GetEnableSticksForDic()
     {
-        SetStickType(eType);
+        foreach(var kvp in m_dicStickInfo)
+        {
+            if (eGoodsState.Enable != kvp.Value)
+                continue;
+
+            return kvp.Key;
+        }
+
+        return eStickType.None;
+    }
+    #endregion
+
+
+    #region Interface : PlayerPrefs Helpper
+    public void SetStickTypeToPlayerPrefs(eStickType eStickType, eGoodsState eGoods)
+    {
+        if (eGoodsState.Disable == eGoods)
+        {
+            if (1 >= GetEnableSticksToPlayerPrefs().Count)
+            {
+                Single.UI.ShowNotice("알림", "꼬쟁이는 최소 1개 이상입니다.");
+                return;
+            }
+        }
+
+        SHPlayerPrefs.SetInt(string.Format("Inventory_Stick_{0}", (int)eStickType), (int)eGoods);
+    }
+    public eGoodsState GetStickGoodsStateToPlayerPrefs(eStickType eType)
+    {
+        return (eGoodsState)SHPlayerPrefs.GetInt(
+            string.Format("Inventory_Stick_{0}", (int)eType), (int)eGoodsState.NotHas);
+    }
+    public List<eStickType> GetEnableSticksToPlayerPrefs()
+    {
+        var pResult = new List<eStickType>();
+        SHUtils.ForToEnum<eStickType>((eType) =>
+        {
+            if (false == IsEnableStickToPlayerPrefs(eType))
+                return;
+
+            pResult.Add(eType);
+        });
+
+        return pResult;
+    }
+    public bool IsHasStickToPlayerPrefs(eStickType eType)
+    {
+        return (eGoodsState.NotHas != GetStickGoodsStateToPlayerPrefs(eType));
+    }
+    public bool IsEnableStickToPlayerPrefs(eStickType eType)
+    {
+        return (eGoodsState.Enable == GetStickGoodsStateToPlayerPrefs(eType));
     }
     #endregion
 
 
     #region Utility Functions
-    private void SetStickType(eStickType eType)
+    private void RegisterBasicStick()
     {
-        SHPlayerPrefs.SetInt("Inventory_Stick", (int)(m_eStickType = eType));
+        RegisterStick(eStickType.Stick_1);
     }
-    private eStickType GetStickType()
+    private void RegisterStick(eStickType eType)
     {
-        return (eStickType)SHPlayerPrefs.GetInt("Inventory_Stick", (int)eStickType.Stick_1);
+        if (true == IsHasStickToPlayerPrefs(eType))
+            return;
+
+        SetStickTypeToPlayerPrefs(eType, eGoodsState.Enable);
+    }
+    void ResetStickInfo()
+    {
+        m_dicStickInfo.Clear();
+        SHUtils.ForToEnum<eStickType>((eType) =>
+        {
+            if ((eStickType.None == eType) ||
+                (eStickType.Max == eType))
+                return;
+
+            m_dicStickInfo.Add(eType, GetStickGoodsStateToPlayerPrefs(eType));
+        });
     }
     #endregion
 }

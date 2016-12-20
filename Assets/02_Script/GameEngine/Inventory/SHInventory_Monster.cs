@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using DicMonsters = System.Collections.Generic.Dictionary<eMonsterType, eMonsterUseType>;
+using DicMonsters = System.Collections.Generic.Dictionary<eMonsterType, eGoodsState>;
 
 public enum eMonsterType
 {
@@ -24,29 +24,15 @@ public enum eMonsterType
     Max
 }
 
-public enum eMonsterUseType
-{
-    NotHas      = -1,
-    Disable     = 0,
-    Enable      = 1,
-}
-
 public partial class SHInventory : SHBaseEngine
 {
-    /*
-     PlayerPreb와
-     Dic에 담아쓰는것을 구분짓고,
-        1은 상점에서만
-        2는 플레이 중에만 참조할 수 있도록
-    */
-    
     #region Members : Info
     private DicMonsters m_dicMonsterInfo = new DicMonsters();
     #endregion
 
 
     #region Members : Constants
-    private int MIN_ENABLE_COUNT = 5;
+    private int MIN_ENABLE_COUNT = 4;
     #endregion
 
 
@@ -69,7 +55,7 @@ public partial class SHInventory : SHBaseEngine
         var pResult = new List<eMonsterType>();
         SHUtils.ForToDic(m_dicMonsterInfo, (pKey, pValue) =>
         {
-            if (eMonsterUseType.Enable != pValue)
+            if (eGoodsState.Enable != pValue)
                 return;
 
             pResult.Add(pKey);
@@ -81,9 +67,9 @@ public partial class SHInventory : SHBaseEngine
 
 
     #region Interface : PlayerPrefs Helpper
-    public void SetMonsterTypeToPlayerPrefs(eMonsterType eMonType, eMonsterUseType eUseType)
+    public void SetMonsterTypeToPlayerPrefs(eMonsterType eMonType, eGoodsState eGoods)
     {
-        if (eMonsterUseType.Disable == eUseType)
+        if (eGoodsState.Disable == eGoods)
         {
             if (MIN_ENABLE_COUNT >= GetEnableMonstersToPlayerPrefs().Count)
             {
@@ -92,19 +78,19 @@ public partial class SHInventory : SHBaseEngine
             }
         }
 
-        SHPlayerPrefs.SetInt(string.Format("Inventory_Monste_{0}", (int)eMonType), (int)eUseType);
+        SHPlayerPrefs.SetInt(string.Format("Inventory_Monste_{0}", (int)eMonType), (int)eGoods);
     }
-    public eMonsterUseType GetMonsterUseTypeToPlayerPrefs(eMonsterType eType)
+    public eGoodsState GetMonsterGoodsStateToPlayerPrefs(eMonsterType eType)
     {
-        return (eMonsterUseType)SHPlayerPrefs.GetInt(
-            string.Format("Inventory_Monste_{0}", (int)eType), (int)eMonsterUseType.NotHas);
+        return (eGoodsState)SHPlayerPrefs.GetInt(
+            string.Format("Inventory_Monste_{0}", (int)eType), (int)eGoodsState.NotHas);
     }
     public List<eMonsterType> GetEnableMonstersToPlayerPrefs()
     {
         var pResult = new List<eMonsterType>();
         SHUtils.ForToEnum<eMonsterType>((eType) =>
         {
-            if (false == IsEnableToPlayerPrefs(eType))
+            if (false == IsEnableMonsterToPlayerPrefs(eType))
                 return;
 
             pResult.Add(eType);
@@ -112,13 +98,13 @@ public partial class SHInventory : SHBaseEngine
 
         return pResult;
     }
-    public bool IsHasToPlayerPrefs(eMonsterType eType)
+    public bool IsHasMonsterToPlayerPrefs(eMonsterType eType)
     {
-        return (eMonsterUseType.NotHas != GetMonsterUseTypeToPlayerPrefs(eType));
+        return (eGoodsState.NotHas != GetMonsterGoodsStateToPlayerPrefs(eType));
     }
-    public bool IsEnableToPlayerPrefs(eMonsterType eType)
+    public bool IsEnableMonsterToPlayerPrefs(eMonsterType eType)
     {
-        return (eMonsterUseType.Enable == GetMonsterUseTypeToPlayerPrefs(eType));
+        return (eGoodsState.Enable == GetMonsterGoodsStateToPlayerPrefs(eType));
     }
     #endregion
 
@@ -130,14 +116,13 @@ public partial class SHInventory : SHBaseEngine
         RegisterMonster(eMonsterType.Monster_2);
         RegisterMonster(eMonsterType.Monster_3);
         RegisterMonster(eMonsterType.Monster_4);
-        RegisterMonster(eMonsterType.Monster_5);
     }
     private void RegisterMonster(eMonsterType eType)
     {
-        if (true == IsHasToPlayerPrefs(eType))
+        if (true == IsHasMonsterToPlayerPrefs(eType))
             return;
 
-        SetMonsterTypeToPlayerPrefs(eType, eMonsterUseType.Enable);
+        SetMonsterTypeToPlayerPrefs(eType, eGoodsState.Enable);
     }
     void ResetMonsterInfo()
     {
@@ -149,7 +134,7 @@ public partial class SHInventory : SHBaseEngine
                 (eMonsterType.Max == eType))
                 return;
 
-            m_dicMonsterInfo.Add(eType, GetMonsterUseTypeToPlayerPrefs(eType));
+            m_dicMonsterInfo.Add(eType, GetMonsterGoodsStateToPlayerPrefs(eType));
         });
     }
     #endregion

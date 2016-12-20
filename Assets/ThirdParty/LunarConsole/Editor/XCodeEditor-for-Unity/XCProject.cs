@@ -11,17 +11,17 @@ namespace UnityEditor.XCodeEditor.LunarConsole
 	{
 		private PBXDictionary _datastore;
 		public PBXDictionary _objects;
-		//private PBXDictionary _configurations;
+		private PBXDictionary _configurations;
 		
 		private PBXGroup _rootGroup;
-		//private string _defaultConfigurationName;
+		private string _defaultConfigurationName;
 		private string _rootObjectKey;
 	
 		public string projectRootPath { get; private set; }
 		private FileInfo projectFileInfo;
 		
 		public string filePath { get; private set; }
-		//private string sourcePathRoot;
+		private string sourcePathRoot;
 		private bool modified = false;
 		
 		#region Data

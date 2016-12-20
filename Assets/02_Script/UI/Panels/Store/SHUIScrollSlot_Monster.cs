@@ -5,18 +5,16 @@ using System.Collections;
 public class SHUIScrollSlot_Monster : SHMonoWrapper
 {
     #region Members : Inspector
-    [SerializeField]  private GameObject m_pLeftSlot        = null;
-    [SerializeField]  private GameObject m_pRightSlot       = null;
-    [SerializeField]  private GameObject m_pLeftSelector    = null;
-    [SerializeField]  private GameObject m_pRightSelector   = null;
+    [SerializeField]  private SHUIWidget_ItemSlot m_pLeftSlot     = null;
+    [SerializeField]  private SHUIWidget_ItemSlot m_pRightSlot    = null;
     #endregion
 
 
     #region Members : Info
-    [SerializeField]  public  eMonsterType      m_eLeftType     = eMonsterType.None;
-    [SerializeField]  public  eMonsterType      m_eRightType    = eMonsterType.None;
-    [HideInInspector] private SHUIWidge_Monster m_pLeftMonster  = null;
-    [HideInInspector] private SHUIWidge_Monster m_pRightMonster = null;
+    [SerializeField]  public  eMonsterType        m_eLeftType     = eMonsterType.None;
+    [SerializeField]  public  eMonsterType        m_eRightType    = eMonsterType.None;
+    [HideInInspector] private SHUIWidget_Monster  m_pLeftMonster  = null;
+    [HideInInspector] private SHUIWidget_Monster  m_pRightMonster = null;
     #endregion
 
 
@@ -36,50 +34,61 @@ public class SHUIScrollSlot_Monster : SHMonoWrapper
         SetMonsterSlot((m_pLeftMonster  = CreateMonsterSlot((m_eLeftType  = eType1))), m_pLeftSlot);
         SetMonsterSlot((m_pRightMonster = CreateMonsterSlot((m_eRightType = eType2))), m_pRightSlot);
         
-        SetSelector();
+        SetGoodsState();
     }
-    public void SetSelector()
+    public void SetGoodsState()
     {
-        // @_@ Stick상태처리(Lock, On, Off)
-        // @_@ 금액처리
-
-        if (null != m_pLeftSelector)
+        if (null != m_pLeftSlot)
         {
-            var eUseType = Single.Inventory.GetMonsterUseTypeToPlayerPrefs(m_eLeftType);
-            m_pLeftSelector.SetActive(eMonsterUseType.Enable == eUseType);
+            if (null == m_pLeftMonster)
+            {
+                m_pLeftSlot.Initialize();
+            }
+            else
+            {
+                var eGoodsType = Single.Inventory.GetMonsterGoodsStateToPlayerPrefs(m_eLeftType);
+                m_pLeftSlot.SetGoodsState(eGoodsType, m_pLeftMonster.GetPrice());
+            }
         }
 
-        if (null != m_pRightSelector)
+        if (null != m_pRightSlot)
         {
-            var eUseType = Single.Inventory.GetMonsterUseTypeToPlayerPrefs(m_eRightType);
-            m_pRightSelector.SetActive(eMonsterUseType.Enable == eUseType);
+            if (null == m_pRightMonster)
+            {
+                m_pRightSlot.Initialize();
+            }
+            else
+            {
+                var eGoodsType = Single.Inventory.GetMonsterGoodsStateToPlayerPrefs(m_eRightType);
+                m_pRightSlot.SetGoodsState(eGoodsType, m_pRightMonster.GetPrice());
+            }
         }
     }
     #endregion
 
 
     #region Utility Functions
-    void ReturnStickObject(SHUIWidge_Monster pMonster)
+    void ReturnStickObject(SHUIWidget_Monster pMonster)
     {
         if (null == pMonster)
             return;
 
         Single.ObjectPool.Return(pMonster.GetGameObject());
     }
-    SHUIWidge_Monster CreateMonsterSlot(eMonsterType eType)
+    SHUIWidget_Monster CreateMonsterSlot(eMonsterType eType)
     {
         if ((eMonsterType.None == eType) || (eMonsterType.Max_NormalMonster == eType) || (eMonsterType.Max == eType))
             return null;
         
-        return Single.ObjectPool.Get<SHUIWidge_Monster>(SHHard.GetMonsterName(eType),
+        return Single.ObjectPool.Get<SHUIWidget_Monster>(SHHard.GetMonsterName(eType),
             ePoolReturnType.ChangeScene, ePoolDestroyType.ChangeScene);
     }
-    void SetMonsterSlot(SHUIWidge_Monster pMonster, GameObject pSlot)
+    void SetMonsterSlot(SHUIWidget_Monster pMonster, SHUIWidget_ItemSlot pSlot)
     {
         if ((null == pMonster) || (null == pSlot))
             return;
 
-        SHGameObject.SetParent(pMonster.GetGameObject(), pSlot);
+        SHGameObject.SetParent(pMonster.GetGameObject(), pSlot.GetGameObject());
         pMonster.Initialize(0.5f, 0.0f, 0.0f);
         pMonster.SetLocalPosition(Vector3.zero);
         pMonster.SetLocalScale(Vector3.one);

@@ -8,6 +8,8 @@
         android:minSdkVersion="9"
         android:targetSdkVersion="23" />
 
-    <application />
+    <application>
+        <activity android:name="spacemadness.com.lunarconsole.settings.SettingsActivity" />
+    </application>
 
 </manifest>

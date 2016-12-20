@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using Monsters = System.Collections.Generic.List<SHUIWidge_Monster>;
+using Monsters = System.Collections.Generic.List<SHUIWidget_Monster>;
 
 public class SHMonster : SHBaseEngine
 {
@@ -78,7 +78,7 @@ public class SHMonster : SHBaseEngine
         pMonster.PlayMoveTween();
         AddMonster(pMonster);
     }
-    private SHUIWidge_Monster AddMonster(SHUIWidge_Monster pMonster)
+    private SHUIWidget_Monster AddMonster(SHUIWidget_Monster pMonster)
     {
         if (null != pMonster)
         {
@@ -86,9 +86,9 @@ public class SHMonster : SHBaseEngine
         }
         return pMonster;
     }
-    private SHUIWidge_Monster CreateMonster(eMonsterType eType, float fFactor, float fStartPosY)
+    private SHUIWidget_Monster CreateMonster(eMonsterType eType, float fFactor, float fStartPosY)
     {
-        var pMonster = Single.ObjectPool.Get<SHUIWidge_Monster>(SHHard.GetMonsterName(eType));
+        var pMonster = Single.ObjectPool.Get<SHUIWidget_Monster>(SHHard.GetMonsterName(eType));
         if (null == pMonster)
             return null;
 

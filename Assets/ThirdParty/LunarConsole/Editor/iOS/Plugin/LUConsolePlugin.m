@@ -26,21 +26,27 @@
 static const NSTimeInterval kWindowAnimationDuration = 0.4f;
 static const CGFloat kWarningHeight = 45.0f;
 
+static NSString * const kScriptMessageConsoleOpen  = @"console_open";
+static NSString * const kScriptMessageConsoleClose = @"console_close";
+static NSString * const kSettingsFilename          = @"com.spacemadness.lunarmobileconsole.settings.bin";
+
 @interface LUConsolePlugin () <LUConsoleControllerDelegate, LUExceptionWarningControllerDelegate>
 {
-    NSString            * _version;
-    LUConsole           * _console;
-    LUWindow            * _consoleWindow;
-    LUWindow            * _warningWindow;
-    UIGestureRecognizer * _gestureRecognizer;
-    LUConsoleGesture      _gesture;
+    LUUnityScriptMessenger  * _scriptMessenger;
+    UIGestureRecognizer     * _gestureRecognizer;
+    LUConsoleGesture          _gesture;
 }
 
 @end
 
 @implementation LUConsolePlugin
 
-- (instancetype)initWithVersion:(NSString *)version capacity:(NSUInteger)capacity trimCount:(NSUInteger)trimCount gestureName:(NSString *)gestureName
+- (instancetype)initWithTargetName:(NSString *)targetName
+                        methodName:(NSString *)methodName
+                           version:(NSString *)version
+                       capacity:(NSUInteger)capacity
+                      trimCount:(NSUInteger)trimCount
+                    gestureName:(NSString *)gestureName
 {
     self = [super init];
     if (self)
@@ -49,14 +55,16 @@ static const CGFloat kWarningHeight = 45.0f;
         {
             NSLog(@"Console is not initialized. Mininum iOS version required: %d", LU_SYSTEM_VERSION_MIN);
             
-            LU_RELEASE(self);
             self = nil;
             return nil;
         }
         
-        _version = LU_RETAIN(version);
+        _scriptMessenger = [[LUUnityScriptMessenger alloc] initWithTargetName:targetName methodName:methodName];
+        _version = version;
         _console = [[LUConsole alloc] initWithCapacity:capacity trimCount:trimCount];
+        _actionRegistry = [[LUActionRegistry alloc] init];
         _gesture = [self gestureFromString:gestureName];
+        _settings = [LUConsolePluginSettings loadFromFile:kSettingsFilename];
     }
     return self;
 }
@@ -64,26 +72,31 @@ static const CGFloat kWarningHeight = 45.0f;
 - (void)dealloc
 {
     [self disableGestureRecognition];
-    
-    LU_RELEASE(_version);
-    LU_RELEASE(_console);
-    LU_RELEASE(_consoleWindow);
-    LU_RELEASE(_warningWindow);
-    LU_RELEASE(_gestureRecognizer);
-    
-    LU_SUPER_DEALLOC
 }
 
 #pragma mark -
 #pragma mark Public interface
 
-- (void)show
+- (void)start
 {
-    LUAssert(_consoleWindow == nil);
+    [self enableGestureRecognition];
+    
+    if (_settings.enableTransparentLogOverlay)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showOverlay];
+        });
+    }
+}
+
+- (void)showConsole
+{
+    [self hideOverlay];
+    [self hideWarning];
+    
     if (_consoleWindow == nil)
     {
-        LUConsoleController *controller = [LUConsoleController controllerWithConsole:_console];
-        controller.version = _version;
+        LUConsoleController *controller = [LUConsoleController controllerWithPlugin:self];
         controller.delegate = self;
         
         CGRect windowFrame = LUGetScreenBounds();
@@ -93,7 +106,7 @@ static const CGFloat kWarningHeight = 45.0f;
         _consoleWindow = [[LUWindow alloc] initWithFrame:windowInitialFrame];
         _consoleWindow.rootViewController = controller;
         _consoleWindow.opaque = YES;
-        _consoleWindow.backgroundColor = [UIColor grayColor];
+        _consoleWindow.backgroundColor = [UIColor clearColor];
         _consoleWindow.hidden = NO;
         
         [UIView animateWithDuration:kWindowAnimationDuration animations:^{
@@ -105,7 +118,7 @@ static const CGFloat kWarningHeight = 45.0f;
     }
 }
 
-- (void)hide
+- (void)hideConsole
 {
     if (_consoleWindow != nil)
     {
@@ -122,9 +135,50 @@ static const CGFloat kWarningHeight = 45.0f;
             window.hidden = YES;
         }];
         
-        LU_RELEASE(_consoleWindow);
         _consoleWindow = nil;
     }
+    
+    if (_settings.enableTransparentLogOverlay)
+    {
+        [self showOverlay];
+    }
+}
+
+- (void)showOverlay
+{
+    if (_overlayWindow == nil)
+    {
+        LUConsoleOverlayControllerSettings *settings = [LUConsoleOverlayControllerSettings settings];
+        LUConsoleOverlayController *controller = [LUConsoleOverlayController controllerWithConsole:_console
+                                                                                          settings:settings];
+        
+        CGRect windowFrame = LUGetScreenBounds();
+        _overlayWindow = [[LUWindow alloc] initWithFrame:windowFrame];
+        _overlayWindow.userInteractionEnabled = NO;
+        _overlayWindow.rootViewController = controller;
+        _overlayWindow.opaque = YES;
+        _overlayWindow.hidden = NO;
+    }
+}
+
+- (void)hideOverlay
+{
+    if (_overlayWindow != nil)
+    {
+        _overlayWindow.rootViewController = nil;
+        _overlayWindow.hidden = YES;
+        _overlayWindow = nil;
+    }
+}
+
+- (void)showActionOverlay
+{
+    
+}
+
+- (void)hideActionOverlay
+{
+    
 }
 
 - (void)logMessage:(NSString *)message stackTrace:(NSString *)stackTrace type:(LUConsoleLogType)type
@@ -146,11 +200,34 @@ static const CGFloat kWarningHeight = 45.0f;
 }
 
 #pragma mark -
+#pragma mark Quick actions
+
+- (void)registerActionWithId:(int)actionId name:(NSString *)name
+{
+    [_actionRegistry registerActionWithId:actionId name:name];
+}
+
+- (void)unregisterActionWithId:(int)actionId
+{
+    [_actionRegistry unregisterActionWithId:actionId];
+}
+
+- (void)registerVariableWithId:(int)entryId name:(NSString *)name type:(NSString *)type value:(NSString *)value
+{
+    [_actionRegistry registerVariableWithId:entryId name:name typeName:type value:value];
+}
+
+- (void)setValue:(NSString *)value forVariableWithId:(int)variableId
+{
+    [_actionRegistry setValue:value forVariableWithId:variableId];
+}
+
+#pragma mark -
 #pragma mark Warnings
 
 - (BOOL)showWarningWithMessage:(NSString *)message
 {
-    if (_warningWindow == nil)
+    if (_warningWindow == nil && _settings.enableExceptionWarning)
     {
         CGSize screenSize = LUGetScreenBounds().size;
         
@@ -162,7 +239,6 @@ static const CGFloat kWarningHeight = 45.0f;
         controller.view.frame = _warningWindow.bounds;
         controller.delegate = self;
         _warningWindow.rootViewController = controller;
-        LU_RELEASE(controller);
         
         _warningWindow.hidden = NO;
         
@@ -177,7 +253,6 @@ static const CGFloat kWarningHeight = 45.0f;
     if (_warningWindow)
     {
         _warningWindow.hidden = YES;
-        LU_RELEASE(_warningWindow);
         _warningWindow = nil;
     }
 }
@@ -197,14 +272,14 @@ static const CGFloat kWarningHeight = 45.0f;
 }
 
 #pragma mark -
-#pragma mark LUConsoleControllerEntrySource
+#pragma mark LUConsoleLogControllerEntrySource
 
-- (NSInteger)consoleControllerNumberOfEntries:(LUConsoleController *)controller
+- (NSInteger)consoleControllerNumberOfEntries:(LUConsoleLogController *)controller
 {
     return _console.entriesCount;
 }
 
-- (LUConsoleEntry *)consoleController:(LUConsoleController *)controller entryAtIndex:(NSUInteger)index
+- (LUConsoleLogEntry *)consoleController:(LUConsoleLogController *)controller entryAtIndex:(NSUInteger)index
 {
     return [_console entryAtIndex:index];
 }
@@ -212,14 +287,24 @@ static const CGFloat kWarningHeight = 45.0f;
 #pragma mark -
 #pragma mark LUConsoleControllerDelegate
 
-- (void)consoleControllerDidClose:(LUConsoleController *)controller
+- (void)consoleControllerDidOpen:(LUConsoleController *)controller
 {
-    [self hide];
+    [_scriptMessenger sendMessageName:kScriptMessageConsoleOpen];
+    
+    if ([_delegate respondsToSelector:@selector(consolePluginDidOpenController:)]) {
+        [_delegate consolePluginDidOpenController:self];
+    }
 }
 
-- (void)consoleControllerDidClear:(LUConsoleController *)controller
+- (void)consoleControllerDidClose:(LUConsoleController *)controller
 {
-    [_console clear];
+    [self hideConsole];
+    
+    [_scriptMessenger sendMessageName:kScriptMessageConsoleClose];
+    
+    if ([_delegate respondsToSelector:@selector(consolePluginDidCloseController:)]) {
+        [_delegate consolePluginDidCloseController:self];
+    }
 }
 
 #pragma mark -
@@ -228,7 +313,7 @@ static const CGFloat kWarningHeight = 45.0f;
 - (void)exceptionWarningControllerDidShow:(LUExceptionWarningController *)controller
 {
     [self hideWarning];
-    [self show];
+    [self showConsole];
 }
 
 - (void)exceptionWarningControllerDidDismiss:(LUExceptionWarningController *)controller
@@ -260,7 +345,6 @@ static const CGFloat kWarningHeight = 45.0f;
     if (_gestureRecognizer != nil)
     {
         [[self keyWindow] removeGestureRecognizer:_gestureRecognizer];
-        LU_RELEASE(_gestureRecognizer);
         _gestureRecognizer = nil;
     }
 }
@@ -269,7 +353,7 @@ static const CGFloat kWarningHeight = 45.0f;
 {
     if (gr.state == UIGestureRecognizerStateEnded)
     {
-        [self show];
+        [self showConsole];
     }
 }
 
@@ -300,7 +384,6 @@ static const CGFloat kWarningHeight = 45.0f;
 {
     NSInteger trimCount = _console.trimmedCount;
     
-    LU_RELEASE(_console);
     _console = [[LUConsole alloc] initWithCapacity:capacity trimCount:trimCount];
 }
 
@@ -312,7 +395,6 @@ static const CGFloat kWarningHeight = 45.0f;
 - (void)setTrim:(NSInteger)trim
 {
     NSInteger capacity = _console.capacity;
-    LU_RELEASE(_console);
     _console = [[LUConsole alloc] initWithCapacity:capacity trimCount:trim];
 }
 

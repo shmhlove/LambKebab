@@ -53,7 +53,7 @@ public class SHUIScroll_Monster : SHUIMassiveScrollView
     {
         SHUtils.ForToList(m_pMonster, (pSlot) =>
         {
-            pSlot.SetSelector();
+            pSlot.SetGoodsState();
         });
     }
     #endregion
@@ -62,18 +62,18 @@ public class SHUIScroll_Monster : SHUIMassiveScrollView
     #region Event Handler
     public void OnClickToSlot(eMonsterType eType)
     {
-        var eUseType = Single.Inventory.GetMonsterUseTypeToPlayerPrefs(eType);
+        var eUseType = Single.Inventory.GetMonsterGoodsStateToPlayerPrefs(eType);
         switch(eUseType)
         {
-            case eMonsterUseType.NotHas:
+            case eGoodsState.NotHas:
                 // @_@ 구매처리
-                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eMonsterUseType.Enable);
+                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eGoodsState.Enable);
                 break;
-            case eMonsterUseType.Disable:
-                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eMonsterUseType.Enable);
+            case eGoodsState.Disable:
+                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eGoodsState.Enable);
                 break;
-            case eMonsterUseType.Enable:
-                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eMonsterUseType.Disable);
+            case eGoodsState.Enable:
+                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eGoodsState.Disable);
                 break;
         }
         RefleshSlotForSelect();

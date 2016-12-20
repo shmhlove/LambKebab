@@ -63,7 +63,20 @@ public class SHUIScroll_Stick : SHUIMassiveScrollView
     #region Event Handler
     public void OnClickToSlot(eStickType eType)
     {
-        Single.Inventory.ChangeStick(eType);
+        var eUseType = Single.Inventory.GetStickGoodsStateToPlayerPrefs(eType);
+        switch(eUseType)
+        {
+            case eGoodsState.NotHas:
+                // @_@ 구매처리
+                Single.Inventory.SetStickTypeToPlayerPrefs(eType, eGoodsState.Enable);
+                break;
+            case eGoodsState.Disable:
+                Single.Inventory.SetStickTypeToPlayerPrefs(eType, eGoodsState.Enable);
+                break;
+            case eGoodsState.Enable:
+                Single.Inventory.SetStickTypeToPlayerPrefs(eType, eGoodsState.Disable);
+                break;
+        }
         RefleshSlotForSelect();
     }
     #endregion

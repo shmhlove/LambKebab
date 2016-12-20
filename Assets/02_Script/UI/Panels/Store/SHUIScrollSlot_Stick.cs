@@ -5,18 +5,16 @@ using System.Collections;
 public class SHUIScrollSlot_Stick : SHMonoWrapper
 {
     #region Members : Inspector
-    [SerializeField]  private GameObject m_pLeftSlot        = null;
-    [SerializeField]  private GameObject m_pRightSlot       = null;
-    [SerializeField]  private GameObject m_pLeftSelector    = null;
-    [SerializeField]  private GameObject m_pRightSelector   = null;
+    [SerializeField]  private SHUIWidget_ItemSlot m_pLeftSlot  = null;
+    [SerializeField]  private SHUIWidget_ItemSlot m_pRightSlot = null;
     #endregion
 
 
     #region Members : Info
     [SerializeField]  public  eStickType      m_eLeftType   = eStickType.None;
     [SerializeField]  public  eStickType      m_eRightType  = eStickType.None;
-    [HideInInspector] private SHUIWidge_Stick m_pLeftStick  = null;
-    [HideInInspector] private SHUIWidge_Stick m_pRightStick = null;
+    [HideInInspector] private SHUIWidget_Stick m_pLeftStick  = null;
+    [HideInInspector] private SHUIWidget_Stick m_pRightStick = null;
     #endregion
 
 
@@ -40,44 +38,57 @@ public class SHUIScrollSlot_Stick : SHMonoWrapper
     }
     public void SetSelector()
     {
-        // @_@ Stick상태처리(Lock, On, Off)
-        // @_@ 금액처리
-
-        if (null != m_pLeftSelector)
+        if (null != m_pLeftSlot)
         {
-            m_pLeftSelector.SetActive(m_eLeftType == Single.Inventory.m_eStickType);
+            if (null == m_pLeftStick)
+            {
+                m_pLeftSlot.Initialize();
+            }
+            else
+            {
+                var eGoodsType = Single.Inventory.GetStickGoodsStateToPlayerPrefs(m_eLeftType);
+                m_pLeftSlot.SetGoodsState(eGoodsType, m_pLeftStick.GetPrice());
+            }
         }
 
-        if (null != m_pRightSelector)
+        if (null != m_pRightSlot)
         {
-            m_pRightSelector.SetActive(m_eRightType == Single.Inventory.m_eStickType);
+            if (null == m_pRightStick)
+            {
+                m_pRightSlot.Initialize();
+            }
+            else
+            {
+                var eGoodsType = Single.Inventory.GetStickGoodsStateToPlayerPrefs(m_eRightType);
+                m_pRightSlot.SetGoodsState(eGoodsType, m_pRightStick.GetPrice());
+            }
         }
     }
     #endregion
 
 
     #region Utility Functions
-    void ReturnStickObject(SHUIWidge_Stick pStick)
+    void ReturnStickObject(SHUIWidget_Stick pStick)
     {
         if (null == pStick)
             return;
 
         Single.ObjectPool.Return(pStick.GetGameObject());
     }
-    SHUIWidge_Stick CreateStickSlot(eStickType eType)
+    SHUIWidget_Stick CreateStickSlot(eStickType eType)
     {
         if ((eStickType.None == eType) || (eStickType.Max == eType))
             return null;
         
-        return Single.ObjectPool.Get<SHUIWidge_Stick>(SHHard.GetStickName(eType),
+        return Single.ObjectPool.Get<SHUIWidget_Stick>(SHHard.GetStickName(eType),
             ePoolReturnType.ChangeScene, ePoolDestroyType.ChangeScene);
     }
-    void SetStickSlot(SHUIWidge_Stick pStick, GameObject pSlot)
+    void SetStickSlot(SHUIWidget_Stick pStick, SHUIWidget_ItemSlot pSlot)
     {
         if ((null == pStick) || (null == pSlot))
             return;
 
-        SHGameObject.SetParent(pStick.GetGameObject(), pSlot);
+        SHGameObject.SetParent(pStick.GetGameObject(), pSlot.GetGameObject());
         pStick.Initialize();
         pStick.SetLocalPosition(Vector3.zero);
         pStick.SetLocalScale(Vector3.one);

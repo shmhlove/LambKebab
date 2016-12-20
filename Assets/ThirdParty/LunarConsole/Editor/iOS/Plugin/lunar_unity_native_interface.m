@@ -28,48 +28,54 @@
 
 static LUConsolePlugin * _lunarConsolePlugin;
 
-void __lunar_console_initialize(const char * cversion, int capacity, int trimCount, const char *cgesture)
+OBJC_EXTERN // see: https://github.com/SpaceMadness/lunar-unity-console/pull/18
+void __lunar_console_initialize(const char *targetNameStr, const char *methodNameStr, const char * versionStr, int capacity, int trimCount, const char *gestureStr)
 {
     lunar_dispatch_main(^{
         if (_lunarConsolePlugin == nil) {
-            NSString *version = [[NSString alloc] initWithUTF8String:cversion];
-            NSString *gesture = [[NSString alloc] initWithUTF8String:cgesture];
+            NSString *targetName = [[NSString alloc] initWithUTF8String:targetNameStr];
+            NSString *methodName = [[NSString alloc] initWithUTF8String:methodNameStr];
+            NSString *version = [[NSString alloc] initWithUTF8String:versionStr];
+            NSString *gesture = [[NSString alloc] initWithUTF8String:gestureStr];
             
-            _lunarConsolePlugin = [[LUConsolePlugin alloc] initWithVersion:version
+            _lunarConsolePlugin = [[LUConsolePlugin alloc] initWithTargetName:targetName
+                                                                   methodName:methodName
+                                                                      version:version
                                                                   capacity:capacity
                                                                  trimCount:trimCount
                                                                gestureName:gesture];
-            [_lunarConsolePlugin enableGestureRecognition];
+            [_lunarConsolePlugin start];
             
-            LU_RELEASE(version);
-            LU_RELEASE(gesture);
         }
     });
 }
 
+OBJC_EXTERN // see: https://github.com/SpaceMadness/lunar-unity-console/pull/18
 void __lunar_console_destroy() {
     lunar_dispatch_main(^{
-        LU_RELEASE(_lunarConsolePlugin);
         _lunarConsolePlugin = nil;
     });
 }
 
+OBJC_EXTERN // see: https://github.com/SpaceMadness/lunar-unity-console/pull/18
 void __lunar_console_show()
 {
     lunar_dispatch_main(^{
         LUAssert(_lunarConsolePlugin);
-        [_lunarConsolePlugin show];
+        [_lunarConsolePlugin showConsole];
     });
 }
 
+OBJC_EXTERN // see: https://github.com/SpaceMadness/lunar-unity-console/pull/18
 void __lunar_console_hide()
 {
     lunar_dispatch_main(^{
         LUAssert(_lunarConsolePlugin);
-        [_lunarConsolePlugin hide];
+        [_lunarConsolePlugin hideConsole];
     });
 }
 
+OBJC_EXTERN // see: https://github.com/SpaceMadness/lunar-unity-console/pull/18
 void __lunar_console_clear()
 {
     lunar_dispatch_main(^{
@@ -78,13 +84,45 @@ void __lunar_console_clear()
     });
 }
 
-void __lunar_console_log_message(const char * cmessage, const char * cstackTrace, int type)
+OBJC_EXTERN // see: https://github.com/SpaceMadness/lunar-unity-console/pull/18
+void __lunar_console_log_message(const char * messageStr, const char * stackTraceStr, int type)
 {
-    NSString *message = [[NSString alloc] initWithUTF8String:cmessage];
-    NSString *stackTrace = [[NSString alloc] initWithUTF8String:cstackTrace];
+    NSString *message = [[NSString alloc] initWithUTF8String:messageStr];
+    NSString *stackTrace = [[NSString alloc] initWithUTF8String:stackTraceStr];
 
     [_lunarConsolePlugin logMessage:message stackTrace:stackTrace type:type];
     
-    LU_RELEASE(message);
-    LU_RELEASE(stackTrace);
+}
+
+void __lunar_console_action_add(int actionId, const char *actionNameStr)
+{
+    NSString *actionName = [[NSString alloc] initWithUTF8String:actionNameStr];
+    lunar_dispatch_main(^{
+        [_lunarConsolePlugin registerActionWithId:actionId name:actionName];
+    });
+}
+
+void __lunar_console_action_remove(int actionId)
+{
+    lunar_dispatch_main(^{
+        [_lunarConsolePlugin unregisterActionWithId:actionId];
+    });
+}
+
+void __lunar_console_cvar_add(int entryId, const char *nameStr, const char *typeStr, const char *valueStr)
+{
+    lunar_dispatch_main(^{
+        NSString *name = [[NSString alloc] initWithUTF8String:nameStr];
+        NSString *type = [[NSString alloc] initWithUTF8String:typeStr];
+        NSString *value = [[NSString alloc] initWithUTF8String:valueStr];
+        [_lunarConsolePlugin registerVariableWithId:entryId name:name type:type value:value];
+    });
+}
+
+void __lunar_console_cvar_set(int entryId, const char *valueStr)
+{
+    lunar_dispatch_main(^{
+        NSString *value = [[NSString alloc] initWithUTF8String:valueStr];
+        [_lunarConsolePlugin setValue:value forVariableWithId:entryId];
+    });
 }

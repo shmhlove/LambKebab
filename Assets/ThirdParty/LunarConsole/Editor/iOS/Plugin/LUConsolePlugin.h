@@ -22,25 +22,69 @@
 #import <Foundation/Foundation.h>
 
 #import "LUObject.h"
-#import "LUConsoleEntry.h"
+#import "LUConsoleLogEntry.h"
+
+@class LUActionRegistry;
+@class LUConsole;
+@class LUConsolePlugin;
+@class LUConsolePluginSettings;
+@class LUWindow;
 
 typedef enum : NSUInteger {
     LUConsoleGestureNone,
     LUConsoleGestureSwipe
 } LUConsoleGesture;
 
+@protocol LUConsolePluginDelegate <NSObject>
+
+@optional
+- (void)consolePluginDidOpenController:(LUConsolePlugin *)plugin;
+- (void)consolePluginDidCloseController:(LUConsolePlugin *)plugin;
+
+@end
+
 @interface LUConsolePlugin : LUObject
+
+@property (nonatomic, readonly) LUWindow         * consoleWindow;
+@property (nonatomic, readonly) LUWindow         * overlayWindow;
+@property (nonatomic, readonly) LUWindow         * actionOverlayWindow;
+@property (nonatomic, readonly) LUWindow         * warningWindow;
+@property (nonatomic, readonly) LUConsole        * console;
+@property (nonatomic, readonly) LUActionRegistry * actionRegistry;
+@property (nonatomic, readonly) NSString         * version;
 
 @property (nonatomic, assign) NSInteger capacity;
 @property (nonatomic, assign) NSInteger trim;
 
-- (instancetype)initWithVersion:(NSString *)version capacity:(NSUInteger)capacity trimCount:(NSUInteger)trimCount gestureName:(NSString *)gestureName;
+@property (nonatomic, readonly) LUConsolePluginSettings *settings;
+@property (nonatomic, weak) id<LUConsolePluginDelegate> delegate;
 
-- (void)show;
-- (void)hide;
+- (instancetype)initWithTargetName:(NSString *)targetName
+                        methodName:(NSString *)methodName
+                           version:(NSString *)version
+                          capacity:(NSUInteger)capacity
+                         trimCount:(NSUInteger)trimCount
+                       gestureName:(NSString *)gestureName;
+
+- (void)start;
+
+- (void)showConsole;
+- (void)hideConsole;
+
+- (void)showOverlay;
+- (void)hideOverlay;
+
+- (void)showActionOverlay;
+- (void)hideActionOverlay;
 
 - (void)logMessage:(NSString *)message stackTrace:(NSString *)stackTrace type:(LUConsoleLogType)type;
 - (void)clear;
+
+- (void)registerActionWithId:(int)actionId name:(NSString *)name;
+- (void)unregisterActionWithId:(int)actionId;
+
+- (void)registerVariableWithId:(int)entryId name:(NSString *)name type:(NSString *)type value:(NSString *)value;
+- (void)setValue:(NSString *)value forVariableWithId:(int)variableId;
 
 - (void)enableGestureRecognition;
 - (void)disableGestureRecognition;

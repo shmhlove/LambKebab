@@ -97,7 +97,7 @@ public partial class SHAssetBundleData : SHBaseData
         return new SHLoadData()
         {
             m_eDataType = eDataType.BundleData,
-            m_strName = pInfo.m_strBundleName,
+            m_strName   = pInfo.m_strBundleName,
             m_pLoadFunc = Patch,
             m_pTriggerLoadCall = () =>
             {
@@ -132,9 +132,9 @@ public partial class SHAssetBundleData : SHBaseData
     #region Utility Functions
     void AddBundleData(string strBundleName, AssetBundle pBundle)
     {
-        SHAssetBundle pBundleData = new SHAssetBundle();
-        pBundleData.m_pBundleName = strBundleName;
-        pBundleData.m_pBundle = pBundle;
+        SHAssetBundle pBundleData   = new SHAssetBundle();
+        pBundleData.m_pBundleName   = strBundleName;
+        pBundleData.m_pBundle       = pBundle;
         m_dicBundles[strBundleName] = pBundleData;
     }
     #endregion
