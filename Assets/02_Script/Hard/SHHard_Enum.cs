@@ -103,4 +103,19 @@ public static partial class SHHard
 
         return eServiceMode.None;
     }
+
+    public static eLanguage GetSystemLanguage()
+    {
+        switch(Application.systemLanguage)
+        {
+            case SystemLanguage.Korean:     return eLanguage.Korean;
+            case SystemLanguage.English:    return eLanguage.English;
+            case SystemLanguage.Japanese:   return eLanguage.Japanese;
+            case SystemLanguage.ChineseTraditional:
+            case SystemLanguage.Chinese:    return eLanguage.ChineseTraditional;
+        }
+
+        return eLanguage.English;
+    }
+    
 }

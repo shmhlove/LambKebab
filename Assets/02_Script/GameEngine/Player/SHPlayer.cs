@@ -37,7 +37,7 @@ public class SHPlayer : SHBaseEngine
         SHGameObject.SetParent(m_pStick.transform, Single.UI.GetRootToScene());
         Single.ObjectPool.SetStartTransform(m_pStick.gameObject);
         m_pStick.SetActive(true);
-        m_pStick.Initialize();
+        m_pStick.Initialize(GetStickType());
 
         return m_pStick;
     }

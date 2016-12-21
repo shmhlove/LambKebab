@@ -11,10 +11,10 @@ public class SHUIScrollSlot_Monster : SHMonoWrapper
 
 
     #region Members : Info
-    [SerializeField]  public  eMonsterType        m_eLeftType     = eMonsterType.None;
-    [SerializeField]  public  eMonsterType        m_eRightType    = eMonsterType.None;
-    [HideInInspector] private SHUIWidget_Monster  m_pLeftMonster  = null;
-    [HideInInspector] private SHUIWidget_Monster  m_pRightMonster = null;
+    [SerializeField]  public eMonsterType       m_eLeftType     = eMonsterType.None;
+    [SerializeField]  public eMonsterType       m_eRightType    = eMonsterType.None;
+    [HideInInspector] public SHUIWidget_Monster m_pLeftMonster  = null;
+    [HideInInspector] public SHUIWidget_Monster m_pRightMonster = null;
     #endregion
 
 
@@ -31,8 +31,14 @@ public class SHUIScrollSlot_Monster : SHMonoWrapper
     {
         ReturnStickObject(m_pLeftMonster);
         ReturnStickObject(m_pRightMonster);
-        SetMonsterSlot((m_pLeftMonster  = CreateMonsterSlot((m_eLeftType  = eType1))), m_pLeftSlot);
-        SetMonsterSlot((m_pRightMonster = CreateMonsterSlot((m_eRightType = eType2))), m_pRightSlot);
+        SetMonsterSlot(
+            (m_eLeftType    = eType1), 
+            (m_pLeftMonster = CreateMonsterSlot(eType1)), 
+            m_pLeftSlot);
+        SetMonsterSlot(
+            (m_eRightType    = eType2), 
+            (m_pRightMonster = CreateMonsterSlot(eType2)), 
+            m_pRightSlot);
         
         SetGoodsState();
     }
@@ -83,13 +89,13 @@ public class SHUIScrollSlot_Monster : SHMonoWrapper
         return Single.ObjectPool.Get<SHUIWidget_Monster>(SHHard.GetMonsterName(eType),
             ePoolReturnType.ChangeScene, ePoolDestroyType.ChangeScene);
     }
-    void SetMonsterSlot(SHUIWidget_Monster pMonster, SHUIWidget_ItemSlot pSlot)
+    void SetMonsterSlot(eMonsterType eType, SHUIWidget_Monster pMonster, SHUIWidget_ItemSlot pSlot)
     {
         if ((null == pMonster) || (null == pSlot))
             return;
 
         SHGameObject.SetParent(pMonster.GetGameObject(), pSlot.GetGameObject());
-        pMonster.Initialize(0.5f, 0.0f, 0.0f);
+        pMonster.Initialize(eType, 0.5f, 0.0f, 0.0f);
         pMonster.SetLocalPosition(Vector3.zero);
         pMonster.SetLocalScale(Vector3.one);
         pMonster.StopMoveTween();

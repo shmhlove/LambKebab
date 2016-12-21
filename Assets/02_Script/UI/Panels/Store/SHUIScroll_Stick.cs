@@ -61,20 +61,36 @@ public class SHUIScroll_Stick : SHUIMassiveScrollView
 
 
     #region Event Handler
-    public void OnClickToSlot(eStickType eType)
+    public void OnClickToSlot(SHUIWidget_Stick pStick)
     {
-        var eUseType = Single.Inventory.GetStickGoodsStateToPlayerPrefs(eType);
+        if (null == pStick)
+            return;
+
+        var eUseType = Single.Inventory.GetStickGoodsStateToPlayerPrefs(pStick.m_eType);
         switch(eUseType)
         {
             case eGoodsState.NotHas:
-                // @_@ 구매처리
-                Single.Inventory.SetStickTypeToPlayerPrefs(eType, eGoodsState.Enable);
+                if (Single.Inventory.m_iCoin < pStick.GetPrice())
+                {
+                    Single.UI.ShowNotice(Localization.Get("POPUP_TITLE_NOTICE"),
+                        Localization.Format("STORE_COIN_SHORTAGE", (pStick.GetPrice() - Single.Inventory.m_iCoin)));
+                }
+                else
+                {
+                    Single.UI.ShowNotice_TwoBtn("알림",
+                        string.Format("{0} 코인을 소모합니다.\n구매 하시겠습니까?", pStick.GetPrice()),
+                        () => 
+                        {
+                            Single.Inventory.ConsumeCoin(pStick.GetPrice());
+                            Single.Inventory.SetStickTypeToPlayerPrefs(pStick.m_eType, eGoodsState.Enable);
+                        }, null);
+                }
                 break;
             case eGoodsState.Disable:
-                Single.Inventory.SetStickTypeToPlayerPrefs(eType, eGoodsState.Enable);
+                Single.Inventory.SetStickTypeToPlayerPrefs(pStick.m_eType, eGoodsState.Enable);
                 break;
             case eGoodsState.Enable:
-                Single.Inventory.SetStickTypeToPlayerPrefs(eType, eGoodsState.Disable);
+                Single.Inventory.SetStickTypeToPlayerPrefs(pStick.m_eType, eGoodsState.Disable);
                 break;
         }
         RefleshSlotForSelect();

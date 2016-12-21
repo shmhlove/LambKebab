@@ -4,6 +4,17 @@ public enum eNationType
     Korea,
 }
 
+// 언어
+public enum eLanguage
+{
+    None,
+    Korean,
+    English,
+    Japanese,
+    ChineseTraditional,
+    Max,
+}
+
 // 서비스 모드
 public enum eServiceMode
 {

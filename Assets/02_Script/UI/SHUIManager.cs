@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -151,6 +152,18 @@ public partial class SHUIManager : SHSingleton<SHUIManager>
             m_eIconType     = eNoticeIcon.Information,
             m_strTitle      = strTitle,
             m_strMessage    = strMessage,
+        });
+    }
+    public void ShowNotice_TwoBtn(string strTitle, string strMessage, Action pOk, Action pCancel)
+    {
+        Show("Panel_Notice", new NoticeUI_Param()
+        {
+            m_eButtonType    = eNoticeButton.Two,
+            m_eIconType      = eNoticeIcon.Information,
+            m_strTitle       = strTitle,
+            m_strMessage     = strMessage,
+            m_pEventToOK     = pOk,
+            m_pEventToCancel = pCancel,
         });
     }
     public void ShowNotice_NoMake()

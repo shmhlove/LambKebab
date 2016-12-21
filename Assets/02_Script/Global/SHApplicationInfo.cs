@@ -14,6 +14,10 @@ using DicRealLoadInfo = System.Collections.Generic.Dictionary<eSceneType, System
 public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
 {
     #region Members
+    [Header("Localization")]
+    [SerializeField] private List<string>       m_pLocalFiles       = new List<string>();
+    [SerializeField] private eLanguage          m_eLanguage         = eLanguage.None;
+
     [Header("Release")]
     // 배포제한 시간정보
     [SerializeField] private SHReleaseTimer     m_pReleaseTime      = new SHReleaseTimer();
@@ -75,6 +79,24 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
 
     }
 
+    // 시스템 : 초기화
+    public override void Start()
+    {
+        base.Start();
+
+        SetDontDestroy();
+
+        // 언어설정
+        SetLocalization();
+
+        // 어플리케이션 정보설정
+        SetApplicationInfo();
+
+        // 디버그 기능
+        StartCoroutine(PrintGameInfo());
+        StartCoroutine(CheckReleaseTime());
+    }
+
     // 시스템 : 업데이트
     public override void Update()
     {
@@ -103,25 +125,27 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
 
 
     #region Virtual Functions
-    // 다양화 : 생성시
-    public override void OnInitialize()
-    {
-        SetDontDestroy();
-
-        // 어플리케이션 정보설정
-        SetApplicationInfo();
-
-        // 디버그 기능
-        StartCoroutine(PrintGameInfo());
-        StartCoroutine(CheckReleaseTime());
-    }
-
-    // 다양화 : 제거시
+    public override void OnInitialize() { }
     public override void OnFinalize() { }
     #endregion
 
 
     #region Interface Functions
+    // 인터페이스 : 언어설정
+    public void SetLocalization()
+    {
+        var pByte = LoadLocalization();
+        if (0 == pByte.Count)
+            return;
+        
+        Localization.localizationHasBeenSet = false;
+        Localization.LoadCSV(pByte.ToArray());
+        if (null != Localization.onLocalize)
+            Localization.onLocalize();
+        
+        UIRoot.Broadcast("OnLocalize");
+        Localization.language = GetLanguage().ToString();
+    }
     // 인터페이스 : 어플리케이션 정보설정
     public void SetApplicationInfo()
     {
@@ -186,12 +210,6 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     {
         return Application.bundleIdentifier.Split('.')[2];
     }
-
-    // 인터페이스 : 시스템 언어
-    public SystemLanguage GetSystemLanguage()
-    {
-        return Application.systemLanguage;
-    }
     #endregion
 
 
@@ -243,6 +261,39 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     int GetRatioH(int iValue)
     {
         return (int)(iValue * (Screen.height / 720.0f));
+    }
+
+    // 유틸 : 언어설정
+    eLanguage GetLanguage()
+    {
+        m_eLanguage = (eLanguage)SHPlayerPrefs.GetInt("ApplicationInfo_Language", 0);
+        if (eLanguage.None == m_eLanguage)
+            m_eLanguage = SHHard.GetSystemLanguage();
+
+        return m_eLanguage;
+    }
+    void SetLanguage(eLanguage eLang)
+    {
+        m_eLanguage = eLang;
+        SHPlayerPrefs.SetInt("ApplicationInfo_Language", (int)m_eLanguage);
+    }
+
+    // 유틸 : 언어파일 로드
+    List<byte> LoadLocalization()
+    {
+        var pByte    = new List<byte>();
+        var pNewLine = System.Text.Encoding.UTF8.GetBytes("\n");
+        SHUtils.ForToList(m_pLocalFiles, (strFile) =>
+        {
+            var pData = Single.Resource.GetTextAsset(strFile);
+            if (null == pData)
+                return;
+
+            pByte.AddRange(pNewLine);
+            pByte.AddRange(pData.bytes);
+        });
+
+        return pByte;
     }
     #endregion
 

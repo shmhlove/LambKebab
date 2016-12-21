@@ -60,20 +60,36 @@ public class SHUIScroll_Monster : SHUIMassiveScrollView
 
 
     #region Event Handler
-    public void OnClickToSlot(eMonsterType eType)
+    public void OnClickToSlot(SHUIWidget_Monster pMonster)
     {
-        var eUseType = Single.Inventory.GetMonsterGoodsStateToPlayerPrefs(eType);
+        if (null == pMonster)
+            return;
+
+        var eUseType = Single.Inventory.GetMonsterGoodsStateToPlayerPrefs(pMonster.m_eType);
         switch(eUseType)
         {
             case eGoodsState.NotHas:
-                // @_@ 구매처리
-                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eGoodsState.Enable);
+                if (Single.Inventory.m_iCoin < pMonster.GetPrice())
+                {
+                    Single.UI.ShowNotice("알림",
+                        string.Format("{0} 코인이 부족합니다.", pMonster.GetPrice() - Single.Inventory.m_iCoin));
+                }
+                else
+                {
+                    Single.UI.ShowNotice_TwoBtn("알림",
+                        string.Format("{0} 코인을 소모합니다.\n구매 하시겠습니까?", pMonster.GetPrice()),
+                        () =>
+                        {
+                            Single.Inventory.ConsumeCoin(pMonster.GetPrice());
+                            Single.Inventory.SetMonsterTypeToPlayerPrefs(pMonster.m_eType, eGoodsState.Enable);
+                        }, null);
+                }
                 break;
             case eGoodsState.Disable:
-                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eGoodsState.Enable);
+                Single.Inventory.SetMonsterTypeToPlayerPrefs(pMonster.m_eType, eGoodsState.Enable);
                 break;
             case eGoodsState.Enable:
-                Single.Inventory.SetMonsterTypeToPlayerPrefs(eType, eGoodsState.Disable);
+                Single.Inventory.SetMonsterTypeToPlayerPrefs(pMonster.m_eType, eGoodsState.Disable);
                 break;
         }
         RefleshSlotForSelect();

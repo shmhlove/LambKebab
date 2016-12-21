@@ -95,7 +95,7 @@ public class SHMonster : SHBaseEngine
         SHGameObject.SetParent(pMonster.transform, Single.UI.GetRootToScene());
         Single.ObjectPool.SetStartTransform(pMonster.gameObject);
         pMonster.SetActive(true);
-        pMonster.Initialize(fFactor, Single.Balance.GetMonsterSpeed(), fStartPosY);
+        pMonster.Initialize(eType, fFactor, Single.Balance.GetMonsterSpeed(), fStartPosY);
         return pMonster;
     }
     private float GetRandomFactor()

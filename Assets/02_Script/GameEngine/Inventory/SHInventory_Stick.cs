@@ -62,18 +62,30 @@ public partial class SHInventory : SHBaseEngine
 
 
     #region Interface : PlayerPrefs Helpper
-    public void SetStickTypeToPlayerPrefs(eStickType eStickType, eGoodsState eGoods)
+    public void SetStickTypeToPlayerPrefs(eStickType eType, eGoodsState eGoods)
     {
-        if (eGoodsState.Disable == eGoods)
+        switch(eGoods)
         {
-            if (1 >= GetEnableSticksToPlayerPrefs().Count)
-            {
-                Single.UI.ShowNotice("알림", "꼬쟁이는 최소 1개 이상입니다.");
-                return;
-            }
+            case eGoodsState.Disable:
+                if (1 >= GetEnableSticksToPlayerPrefs().Count)
+                {
+                    Single.UI.ShowNotice("알림", "꼬쟁이는 최소 1개 이상입니다.");
+                    return;
+                }
+                break;
         }
 
-        SHPlayerPrefs.SetInt(string.Format("Inventory_Stick_{0}", (int)eStickType), (int)eGoods);
+        var pEnableSticks = GetEnableSticksToPlayerPrefs();
+        SHPlayerPrefs.SetInt(string.Format("Inventory_Stick_{0}", (int)eType), (int)eGoods);
+        switch (eGoods)
+        {
+            case eGoodsState.Enable:
+                SHUtils.ForToList(pEnableSticks, (eStick) =>
+                {
+                    SetStickTypeToPlayerPrefs(eStick, eGoodsState.Disable);
+                });
+                break;
+        }
     }
     public eGoodsState GetStickGoodsStateToPlayerPrefs(eStickType eType)
     {
@@ -122,7 +134,7 @@ public partial class SHInventory : SHBaseEngine
         SHUtils.ForToEnum<eStickType>((eType) =>
         {
             if ((eStickType.None == eType) ||
-                (eStickType.Max == eType))
+                (eStickType.Max  == eType))
                 return;
 
             m_dicStickInfo.Add(eType, GetStickGoodsStateToPlayerPrefs(eType));

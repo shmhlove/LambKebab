@@ -11,10 +11,10 @@ public class SHUIScrollSlot_Stick : SHMonoWrapper
 
 
     #region Members : Info
-    [SerializeField]  public  eStickType      m_eLeftType   = eStickType.None;
-    [SerializeField]  public  eStickType      m_eRightType  = eStickType.None;
-    [HideInInspector] private SHUIWidget_Stick m_pLeftStick  = null;
-    [HideInInspector] private SHUIWidget_Stick m_pRightStick = null;
+    [SerializeField]  public eStickType       m_eLeftType   = eStickType.None;
+    [SerializeField]  public eStickType       m_eRightType  = eStickType.None;
+    [HideInInspector] public SHUIWidget_Stick m_pLeftStick  = null;
+    [HideInInspector] public SHUIWidget_Stick m_pRightStick = null;
     #endregion
 
 
@@ -31,8 +31,14 @@ public class SHUIScrollSlot_Stick : SHMonoWrapper
     {
         ReturnStickObject(m_pLeftStick);
         ReturnStickObject(m_pRightStick);
-        SetStickSlot((m_pLeftStick  = CreateStickSlot((m_eLeftType  = eType1))), m_pLeftSlot);
-        SetStickSlot((m_pRightStick = CreateStickSlot((m_eRightType = eType2))), m_pRightSlot);
+        SetStickSlot(
+            (m_eLeftType  = eType1), 
+            (m_pLeftStick = CreateStickSlot(eType1)), 
+            m_pLeftSlot);
+        SetStickSlot(
+            (m_eRightType = eType2), 
+            (m_pRightStick = CreateStickSlot(eType2)), 
+            m_pRightSlot);
         
         SetSelector();
     }
@@ -83,13 +89,13 @@ public class SHUIScrollSlot_Stick : SHMonoWrapper
         return Single.ObjectPool.Get<SHUIWidget_Stick>(SHHard.GetStickName(eType),
             ePoolReturnType.ChangeScene, ePoolDestroyType.ChangeScene);
     }
-    void SetStickSlot(SHUIWidget_Stick pStick, SHUIWidget_ItemSlot pSlot)
+    void SetStickSlot(eStickType eType, SHUIWidget_Stick pStick, SHUIWidget_ItemSlot pSlot)
     {
         if ((null == pStick) || (null == pSlot))
             return;
 
         SHGameObject.SetParent(pStick.GetGameObject(), pSlot.GetGameObject());
-        pStick.Initialize();
+        pStick.Initialize(eType);
         pStick.SetLocalPosition(Vector3.zero);
         pStick.SetLocalScale(Vector3.one);
         pStick.SetActive(true);

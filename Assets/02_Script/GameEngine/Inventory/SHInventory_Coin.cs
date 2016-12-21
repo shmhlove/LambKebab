@@ -28,6 +28,11 @@ public partial class SHInventory : SHBaseEngine
     {
         m_iAddCoin += iCoin;
     }
+    public void ConsumeCoin(int iCoin)
+    {
+        m_iAddCoin -= iCoin;
+        m_iAddCoin = Mathf.Clamp(m_iAddCoin, 0, m_iAddCoin);
+    }
     #endregion
 
 

@@ -49,6 +49,7 @@ public class SHUIWidget_Monster : SHMonoWrapper
 
 
     #region Members : Info
+    public eMonsterType            m_eType       = eMonsterType.None;
     private eState                 m_eState      = eState.Idle;
     private SHUIWidge_Monster_Info m_pInfo       = new SHUIWidge_Monster_Info();
     #endregion
@@ -143,8 +144,9 @@ public class SHUIWidget_Monster : SHMonoWrapper
 
 
     #region Interface Functions
-    public void Initialize(float fFactor, float fSpeed, float fStartPosY)
+    public void Initialize(eMonsterType eType, float fFactor, float fSpeed, float fStartPosY)
     {
+        m_eType = eType;
         ChangeState(eState.Idle, fFactor, fSpeed, fStartPosY);
     }
     [FuncButton] public void PlayMoveTween()

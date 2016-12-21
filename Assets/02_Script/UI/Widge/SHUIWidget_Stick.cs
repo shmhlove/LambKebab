@@ -24,6 +24,7 @@ public class SHUIWidget_Stick : SHMonoWrapper
 
     #region Members : Info
     private eState      m_eState         = eState.Idle;
+    public  eStickType  m_eType          = eStickType.None;
     #endregion
 
 
@@ -90,8 +91,9 @@ public class SHUIWidget_Stick : SHMonoWrapper
 
 
     #region Interface Functions
-    public void Initialize()
+    public void Initialize(eStickType eType)
     {
+        m_eType = eType;
         ChangeState(eState.Idle);
         m_pEventToPass = null;
         SetLocalPositionY(m_fStartPosition);
