@@ -244,11 +244,11 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     {
 #if UNITY_ANDROID
         UnityEngine.Debug.LogFormat("Crittercism.DidCrashOnLastLoad = {0}", CrittercismAndroid.DidCrashOnLastLoad());
-        CrittercismAndroid.Init("20fb64bf760d44589b6aefeb6bcb220700555300");
+		CrittercismAndroid.Init("44b2adbccc214b0ba1dddff3b439fbe200555300");
         CrittercismAndroid.SetLogUnhandledExceptionAsCrash(true);
 #elif UNITY_IPHONE || UNITY_IOS
         UnityEngine.Debug.LogFormat("Crittercism.DidCrashOnLastLoad = {0}", CrittercismIOS.DidCrashOnLastLoad());
-        CrittercismIOS.Init("7d02af2372694b93b84d75a999dd7dd400555300");
+		CrittercismIOS.Init("5b49333394d1485ebb7a761d11f3c13900555300");
         CrittercismIOS.SetLogUnhandledExceptionAsCrash(true);
 #endif
     }
