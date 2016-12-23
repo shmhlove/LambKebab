@@ -14,16 +14,22 @@ using DicRealLoadInfo = System.Collections.Generic.Dictionary<eSceneType, System
 public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
 {
     #region Members
+    // 크레시 레포트
+    [Header("Crittercism")]
+    [SerializeField] private string             m_strAppKeyForAOS   = string.Empty;
+    [SerializeField] private string             m_strAppKeyForIOS   = string.Empty;
+
+    // 로컬라이즈
     [Header("Localization")]
     [SerializeField] private List<string>       m_pLocalFiles       = new List<string>();
     [SerializeField] private eLanguage          m_eLanguage         = eLanguage.None;
 
-    [Header("Release")]
     // 배포제한 시간정보
+    [Header("Release")]
     [SerializeField] private SHReleaseTimer     m_pReleaseTime      = new SHReleaseTimer();
 
-    [Header("Debug")]
     // 컴포넌트(디버그) : 디버그용 정보출력 
+    [Header("Debug")]
     [SerializeField] private GUIText            m_pDebugText        = null;
 
     // 기타(디버그) : FPS 출력용 델타타임
@@ -86,6 +92,9 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
 
         SetDontDestroy();
 
+        SHBalance pException = null;
+        float fException = pException.GetMonsterSpeed();
+        
         // 언어설정
         SetLocalization();
 
@@ -242,17 +251,19 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     // 유틸 : 크래시 래포트 설정
     void SetCrittercism()
     {
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+        
+#elif UNITY_ANDROID
         UnityEngine.Debug.LogFormat("Crittercism.DidCrashOnLastLoad = {0}", CrittercismAndroid.DidCrashOnLastLoad());
-		CrittercismAndroid.Init("44b2adbccc214b0ba1dddff3b439fbe200555300");
+		CrittercismAndroid.Init(m_strAppKeyForAOS);
         CrittercismAndroid.SetLogUnhandledExceptionAsCrash(true);
 #elif UNITY_IPHONE || UNITY_IOS
         UnityEngine.Debug.LogFormat("Crittercism.DidCrashOnLastLoad = {0}", CrittercismIOS.DidCrashOnLastLoad());
-		CrittercismIOS.Init("5b49333394d1485ebb7a761d11f3c13900555300");
+		CrittercismIOS.Init(m_strAppKeyForIOS);
         CrittercismIOS.SetLogUnhandledExceptionAsCrash(true);
 #endif
     }
-    
+
     // 유틸 : 해상도 비율값
     int GetRatioW(int iValue)
     {
@@ -268,7 +279,7 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     {
         m_eLanguage = (eLanguage)SHPlayerPrefs.GetInt("ApplicationInfo_Language", 0);
         if (eLanguage.None == m_eLanguage)
-            m_eLanguage = SHHard.GetSystemLanguage();
+            SetLanguage(SHHard.GetSystemLanguage());
 
         return m_eLanguage;
     }
