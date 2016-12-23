@@ -62,6 +62,8 @@ public class SHPlayer : SHBaseEngine
         if (null == m_pStick)
             return;
 
+        m_pStick.SetActive(false);
+        m_pStick.SetActive(true);
         m_pStick.Shoot(pEventToPass);
         SHCoroutine.Instance.WaitTime(() => CreateStick(), m_pStick.m_fReCreateTime);
         m_pStick = null;
