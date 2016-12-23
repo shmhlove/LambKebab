@@ -62,11 +62,8 @@ public class SHBalance : SHBaseEngine
     }
     public eMonsterType GenMonsterType()
     {
-        if (50 <= Single.Inventory.m_iCoin)
-        {
-            if (0.1 >= SHMath.Random(0.0f, 1.0f))
-                return eMonsterType.Monster_Bonus;
-        }
+        if (0.1 >= SHMath.Random(0.0f, 1.0f))
+            return eMonsterType.Monster_Bonus;
         
         return SHMath.RandomN(Single.Inventory.GetEnableMonstersForDic());
     }
