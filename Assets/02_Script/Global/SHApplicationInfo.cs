@@ -91,9 +91,6 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
         base.Start();
 
         SetDontDestroy();
-
-        SHBalance pException = null;
-        float fException = pException.GetMonsterSpeed();
         
         // 언어설정
         SetLocalization();
