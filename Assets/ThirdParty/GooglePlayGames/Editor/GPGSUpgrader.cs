@@ -79,9 +79,9 @@ namespace GooglePlayGames.Editor
             {
                 string[] paths =
                     {
-                        "Assets/GooglePlayGames",
+                        "Assets/ThirdParty/GooglePlayGames",
                         "Assets/Plugins/Android",
-                        "Assets/PlayServicesResolver"
+                        "Assets/ThirdParty/PlayServicesResolver"
                     };
                 foreach (string p in paths)
                 {
@@ -152,34 +152,34 @@ namespace GooglePlayGames.Editor
         {
             string[] obsoleteFiles =
                 {
-                "Assets/GooglePlayGames/Editor/CocoaPodHelper.cs",
-                "Assets/GooglePlayGames/Editor/CocoaPodHelper.cs.meta",
-                "Assets/GooglePlayGames/Editor/GPGSInstructionWindow.cs",
-                "Assets/GooglePlayGames/Editor/GPGSInstructionWindow.cs.meta",
-                "Assets/GooglePlayGames/Editor/Podfile.txt",
-                "Assets/GooglePlayGames/Editor/Podfile.txt.meta",
-                "Assets/GooglePlayGames/Editor/cocoapod_instructions",
-                "Assets/GooglePlayGames/Editor/cocoapod_instructions.meta",
-                "Assets/GooglePlayGames/Editor/ios_instructions",
-                "Assets/GooglePlayGames/Editor/ios_instructions.meta",
+                "Assets/ThirdParty/GooglePlayGames/Editor/CocoaPodHelper.cs",
+                "Assets/ThirdParty/GooglePlayGames/Editor/CocoaPodHelper.cs.meta",
+                "Assets/ThirdParty/GooglePlayGames/Editor/GPGSInstructionWindow.cs",
+                "Assets/ThirdParty/GooglePlayGames/Editor/GPGSInstructionWindow.cs.meta",
+                "Assets/ThirdParty/GooglePlayGames/Editor/Podfile.txt",
+                "Assets/ThirdParty/GooglePlayGames/Editor/Podfile.txt.meta",
+                "Assets/ThirdParty/GooglePlayGames/Editor/cocoapod_instructions",
+                "Assets/ThirdParty/GooglePlayGames/Editor/cocoapod_instructions.meta",
+                "Assets/ThirdParty/GooglePlayGames/Editor/ios_instructions",
+                "Assets/ThirdParty/GooglePlayGames/Editor/ios_instructions.meta",
 
-                "Assets/PlayServicesResolver/Editor/DefaultResolver.cs",
-                "Assets/PlayServicesResolver/Editor/DefaultResolver.cs.meta",
-                "Assets/PlayServicesResolver/Editor/IResolver.cs",
-                "Assets/PlayServicesResolver/Editor/IResolver.cs.meta",
-                "Assets/PlayServicesResolver/Editor/JarResolverLib.dll",
-                "Assets/PlayServicesResolver/Editor/JarResolverLib.dll.meta",
-                "Assets/PlayServicesResolver/Editor/PlayServicesResolver.cs",
-                "Assets/PlayServicesResolver/Editor/PlayServicesResolver.cs.meta",
-                "Assets/PlayServicesResolver/Editor/ResolverVer1_1.cs",
-                "Assets/PlayServicesResolver/Editor/ResolverVer1_1.cs.meta",
-                "Assets/PlayServicesResolver/Editor/SampleDependencies.cs",
-                "Assets/PlayServicesResolver/Editor/SampleDependencies.cs.meta",
-                "Assets/PlayServicesResolver/Editor/SettingsDialog.cs",
-                "Assets/PlayServicesResolver/Editor/SettingsDialog.cs.meta",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/DefaultResolver.cs",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/DefaultResolver.cs.meta",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/IResolver.cs",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/IResolver.cs.meta",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/JarResolverLib.dll",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/JarResolverLib.dll.meta",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/PlayServicesResolver.cs",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/PlayServicesResolver.cs.meta",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/ResolverVer1_1.cs",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/ResolverVer1_1.cs.meta",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/SampleDependencies.cs",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/SampleDependencies.cs.meta",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/SettingsDialog.cs",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/SettingsDialog.cs.meta",
 
                 "Assets/Plugins/Android/play-services-plus-8.4.0.aar",
-                "Assets/PlayServicesResolver/Editor/play-services-plus-8.4.0.aar.meta",
+                "Assets/ThirdParty/PlayServicesResolver/Editor/play-services-plus-8.4.0.aar.meta",
 
                 // not an obsolete file, but delete the cache since the schema changed.
                 "ProjectSettings/GoogleDependencyGooglePlayGames.xml"
@@ -207,8 +207,8 @@ namespace GooglePlayGames.Editor
         {
             string[] obsoleteFiles =
                 {
-                    "Assets/GooglePlayGames/Editor/GPGSExportPackageUI.cs",
-                    "Assets/GooglePlayGames/Editor/GPGSExportPackageUI.cs.meta"
+                    "Assets/ThirdParty/GooglePlayGames/Editor/GPGSExportPackageUI.cs",
+                    "Assets/ThirdParty/GooglePlayGames/Editor/GPGSExportPackageUI.cs.meta"
                 };
             foreach (string file in obsoleteFiles)
             {
@@ -234,18 +234,18 @@ namespace GooglePlayGames.Editor
             // As of 930, the CRM API is handled by the Native SDK, not GmsCore.
             string[] obsoleteFiles =
             {
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Games.cs",
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Games.cs.meta",
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Stats/LoadPlayerStatsResultObject.cs",
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Stats/LoadPlayerStatsResultObject.cs.meta",
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Stats/PlayerStats.cs",
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Stats/PlayerStats.cs.meta",
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Stats/PlayerStatsObject.cs",
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Stats/PlayerStatsObject.cs.meta",
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Stats/Stats.cs",
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Stats/Stats.cs.meta",
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Stats/StatsObject.cs",
-                "Assets/GooglePlayGames/Platforms/Android/Gms/Games/Stats/StatsObject.cs.meta"
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Games.cs",
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Games.cs.meta",
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Stats/LoadPlayerStatsResultObject.cs",
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Stats/LoadPlayerStatsResultObject.cs.meta",
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Stats/PlayerStats.cs",
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Stats/PlayerStats.cs.meta",
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Stats/PlayerStatsObject.cs",
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Stats/PlayerStatsObject.cs.meta",
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Stats/Stats.cs",
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Stats/Stats.cs.meta",
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Stats/StatsObject.cs",
+                "Assets/ThirdParty/GooglePlayGames/Platforms/Android/Gms/Games/Stats/StatsObject.cs.meta"
             };
 
             // only delete these if we are not version 0.9.34
@@ -271,10 +271,10 @@ namespace GooglePlayGames.Editor
             // warn the user that restarting the editor is required.
             string[] obsoleteFiles =
                 {
-                    "Assets/GooglePlayGames/Editor/JarResolverLib.dll",
-                    "Assets/GooglePlayGames/Editor/JarResolverLib.dll.meta",
-                    "Assets/GooglePlayGames/Editor/BackgroundResolution.cs",
-                    "Assets/GooglePlayGames/Editor/BackgroundResolution.cs.meta"
+                    "Assets/ThirdParty/GooglePlayGames/Editor/JarResolverLib.dll",
+                    "Assets/ThirdParty/GooglePlayGames/Editor/JarResolverLib.dll.meta",
+                    "Assets/ThirdParty/GooglePlayGames/Editor/BackgroundResolution.cs",
+                    "Assets/ThirdParty/GooglePlayGames/Editor/BackgroundResolution.cs.meta"
                 };
 
             bool found = File.Exists(obsoleteFiles[0]);
@@ -307,14 +307,14 @@ namespace GooglePlayGames.Editor
         {
             string[] obsoleteFiles =
                 {
-                    "Assets/GooglePlayGames/Editor/GPGGizmo.cs",
-                    "Assets/GooglePlayGames/Editor/GPGGizmo.cs.meta",
-                    "Assets/GooglePlayGames/BasicApi/OnStateLoadedListener.cs",
-                    "Assets/GooglePlayGames/BasicApi/OnStateLoadedListener.cs.meta",
-                    "Assets/GooglePlayGames/Platforms/Native/AndroidAppStateClient.cs",
-                    "Assets/GooglePlayGames/Platforms/Native/AndroidAppStateClient.cs.meta",
-                    "Assets/GooglePlayGames/Platforms/Native/UnsupportedAppStateClient.cs",
-                    "Assets/GooglePlayGames/Platforms/Native/UnsupportedAppStateClient.cs.meta"
+                    "Assets/ThirdParty/GooglePlayGames/Editor/GPGGizmo.cs",
+                    "Assets/ThirdParty/GooglePlayGames/Editor/GPGGizmo.cs.meta",
+                    "Assets/ThirdParty/GooglePlayGames/BasicApi/OnStateLoadedListener.cs",
+                    "Assets/ThirdParty/GooglePlayGames/BasicApi/OnStateLoadedListener.cs.meta",
+                    "Assets/ThirdParty/GooglePlayGames/Platforms/Native/AndroidAppStateClient.cs",
+                    "Assets/ThirdParty/GooglePlayGames/Platforms/Native/AndroidAppStateClient.cs.meta",
+                    "Assets/ThirdParty/GooglePlayGames/Platforms/Native/UnsupportedAppStateClient.cs",
+                    "Assets/ThirdParty/GooglePlayGames/Platforms/Native/UnsupportedAppStateClient.cs.meta"
                 };
             foreach (string file in obsoleteFiles)
             {
@@ -402,10 +402,10 @@ namespace GooglePlayGames.Editor
             // delete obsolete files, if they are there
             string[] obsoleteFiles =
                 {
-                    "Assets/GooglePlayGames/OurUtils/Utils.cs",
-                    "Assets/GooglePlayGames/OurUtils/Utils.cs.meta",
-                    "Assets/GooglePlayGames/OurUtils/MyClass.cs",
-                    "Assets/GooglePlayGames/OurUtils/MyClass.cs.meta",
+                    "Assets/ThirdParty/GooglePlayGames/OurUtils/Utils.cs",
+                    "Assets/ThirdParty/GooglePlayGames/OurUtils/Utils.cs.meta",
+                    "Assets/ThirdParty/GooglePlayGames/OurUtils/MyClass.cs",
+                    "Assets/ThirdParty/GooglePlayGames/OurUtils/MyClass.cs.meta",
                     "Assets/Plugins/GPGSUtils.dll",
                     "Assets/Plugins/GPGSUtils.dll.meta",
                 };

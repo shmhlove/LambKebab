@@ -119,7 +119,7 @@ namespace GooglePlayGames.Editor
         /// <summary>
         /// The game info file path.  This is a generated file.
         /// </summary>
-        private const string GameInfoPath = "Assets/GooglePlayGames/GameInfo.cs";
+        private const string GameInfoPath = "Assets/ThirdParty/GooglePlayGames/GameInfo.cs";
 
         /// <summary>
         /// The map of replacements for filling in code templates.  The
@@ -176,7 +176,7 @@ namespace GooglePlayGames.Editor
         /// <param name="name">Name of the template in the editor directory.</param>
         public static string ReadEditorTemplate(string name)
         {
-            return ReadFile(SlashesToPlatformSeparator("Assets/GooglePlayGames/Editor/" + name + ".txt"));
+            return ReadFile(SlashesToPlatformSeparator("Assets/ThirdParty/GooglePlayGames/Editor/" + name + ".txt"));
         }
 
         /// <summary>

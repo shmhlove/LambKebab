@@ -8,3 +8,5 @@ and.ResourceData=%3c%3fxml+version%3d%221.0%22+encoding%3d%22utf-8%22%3f%3e%0d%0
 and.ClientId=125348741650-dode7h6sbt64s7nonretkirbh01glfjj.apps.googleusercontent.com
 proj.requireGPlus=false
 android.SetupDone=true
+App.NearbdServiceId=125348741650
+android.NearbySetupDone=true
