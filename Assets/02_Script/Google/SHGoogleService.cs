@@ -17,6 +17,7 @@ public class SHGoogleService : SHSingleton<SHGoogleService>
     #region Virtual Functions
     public override void OnInitialize()
     {
+        PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
     }
     public override void OnFinalize()

@@ -156,6 +156,7 @@ class SHBuildScript
         Debug.LogFormat("** Build Start({0}) -> {1}", strBuildName, DateTime.Now.ToString("yyyy-MM-dd [ HH:mm:ss ]"));
         {
             EditorUserBuildSettings.SwitchActiveBuildTarget(eTarget);
+            EditorUserBuildSettings.development = true;
 
             string strFileName = string.Format("{0}/{1}", SHPath.GetPathToBuild(), strBuildName);
 
