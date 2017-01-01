@@ -249,7 +249,8 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     void SetCrittercism()
     {
 #if UNITY_EDITOR
-        
+        UnityEngine.Debug.LogFormat("AOS Crittercism : {0}", m_strAppKeyForAOS);
+        UnityEngine.Debug.LogFormat("IOS Crittercism : {0}", m_strAppKeyForIOS);
 #elif UNITY_ANDROID
         UnityEngine.Debug.LogFormat("Crittercism.DidCrashOnLastLoad = {0}", CrittercismAndroid.DidCrashOnLastLoad());
 		CrittercismAndroid.Init(m_strAppKeyForAOS);

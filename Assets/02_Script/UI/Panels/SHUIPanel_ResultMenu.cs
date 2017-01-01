@@ -2,10 +2,6 @@
 using System;
 using System.Collections;
 
-using GooglePlayGames;
-using GooglePlayGames.BasicApi.SavedGame;
-using GooglePlayGames.BasicApi;
-
 public class SHUIPanel_ResultMenu : SHUIBasePanel
 {
     #region Members : Inspector
@@ -55,28 +51,19 @@ public class SHUIPanel_ResultMenu : SHUIBasePanel
 	}
     public void OnClickToRank()
     {
-        Action pLeaderBoard = () => 
-        {
-            Social.Active.ReportScore(
-                (long)Single.ScoreBoard.GetBestScore(),
-                GPGSIds.leaderboard_lambkebab, 
-                (bIsSuccess)=> { });
-
-            Social.Active.ShowLeaderboardUI();
-        };
-
-        PlayGamesPlatform.Activate();
-        if (false == Social.localUser.authenticated)
-        {
-            Social.localUser.Authenticate((bIsSuccess) =>
+#if UNITY_EDITOR
+        Single.UI.ShowNotice(
+            Localization.Get("POPUP_TITLE_NOTICE"),
+            Localization.Get("EXCEPTION_ONLY_DEVICE"));
+#else
+        Single.Google.SetLeaderboard(
+            (long)Single.ScoreBoard.GetBestScore(), 
+            eLeaderBoardType.BestScore,
+            (bIsSuccess) => 
             {
-                pLeaderBoard();
+                Single.Google.ShowLeaderboard();
             });
-        }
-        else
-        {
-            pLeaderBoard();
-        }
+#endif
     }
     #endregion
 }
