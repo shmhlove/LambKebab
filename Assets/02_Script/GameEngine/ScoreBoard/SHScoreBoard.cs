@@ -54,7 +54,7 @@ public class SHScoreBoard : SHBaseEngine
     {
         SHPlayerPrefs.SetInt("BestScore", iScore);
     }
-    private int GetBestScore()
+    public int GetBestScore()
     {
         return SHPlayerPrefs.GetInt("BestScore", 0);
     }
