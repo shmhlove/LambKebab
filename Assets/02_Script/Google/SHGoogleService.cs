@@ -37,8 +37,12 @@ public class SHGoogleService : SHSingleton<SHGoogleService>
         pCallback(true);
         return;
 #else
-        if (false == IsLogin())
-        {
+            if (true == IsLogin())
+            {
+                pCallback(true);
+                return;
+            }
+
             Social.localUser.Authenticate((bIsSuccess, strMessage) => 
             {
                 if (false == string.IsNullOrEmpty(strMessage))
@@ -46,18 +50,10 @@ public class SHGoogleService : SHSingleton<SHGoogleService>
 
                 pCallback(bIsSuccess);
             });
-        }
-        else
-        {
-            pCallback(true);
-        }
 #endif
     }
     public void Logout()
     {
-        if (false == IsLogin())
-            return;
-        
         ((PlayGamesPlatform)Social.Active).SignOut();
     }
     public bool IsLogin()
@@ -68,6 +64,13 @@ public class SHGoogleService : SHSingleton<SHGoogleService>
 
 
     #region Interface : UserInfo
+    public string GetUserID()
+    {
+        if (false == IsLogin())
+            return string.Empty;
+
+        return Social.localUser.id;
+    }
     public string GetUserName()
     {
         if (false == IsLogin())
@@ -95,18 +98,12 @@ public class SHGoogleService : SHSingleton<SHGoogleService>
         pCallback(true);
         return;
 #else
-        Action pFunction = () =>
-        {
-            Social.Active.ReportScore(
-                lScore, GetLeaderBoardType(eType), pCallback);
-        };
+            Action pFunction = () =>
+            {
+                Social.Active.ReportScore(
+                    lScore, GetLeaderBoardType(eType), pCallback);
+            };
 
-        if (true == IsLogin())
-        {
-            pFunction();
-        }
-        else
-        {
             Login((bIsSuccess) =>
             {
                 if (false == bIsSuccess)
@@ -114,7 +111,6 @@ public class SHGoogleService : SHSingleton<SHGoogleService>
                 else
                     pFunction();
             });
-        }
 #endif
     }
     public void ShowLeaderboard()
@@ -122,23 +118,16 @@ public class SHGoogleService : SHSingleton<SHGoogleService>
 #if UNITY_EDITOR
         return;
 #else
-        Action pFunction = () =>
-        {
-            Social.Active.ShowLeaderboardUI();
-        };
+            Action pFunction = () =>
+            {
+                Social.Active.ShowLeaderboardUI();
+            };
 
-        if (true == IsLogin())
-        {
-            pFunction();
-        }
-        else
-        {
             Login((bIsSuccess) =>
             {
                 if (true == bIsSuccess)
                     pFunction();
             });
-        }
 #endif
     }
     #endregion

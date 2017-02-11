@@ -12,9 +12,9 @@ public static partial class SHHard
         switch(strType.ToLower())
         {
             case "intro":       return eSceneType.Intro;
-            case "patch":       return eSceneType.Patch;
-            case "login":       return eSceneType.Login;
             case "loading":     return eSceneType.Loading;
+            case "ingame":      return eSceneType.InGame;
+                
         }
         return eSceneType.None;
     }

@@ -13,7 +13,7 @@ public class SHUIPanel_Intro : SHUIBasePanel
 
 
     #region Members : Event
-    private Action m_pEventToTouch = null;
+    private Action m_pEventToScreen = null;
     #endregion
 
 
@@ -27,7 +27,7 @@ public class SHUIPanel_Intro : SHUIBasePanel
         if ((null == pArgs) || (1 > pArgs.Length))
             return;
 
-        m_pEventToTouch = (Action)pArgs[0];
+        m_pEventToScreen = (Action)pArgs[0];
     }
     #endregion
 
@@ -51,8 +51,8 @@ public class SHUIPanel_Intro : SHUIBasePanel
         
         SHCoroutine.Instance.WaitTime(() =>
         {
-            if (null != m_pEventToTouch)
-                m_pEventToTouch();
+            if (null != m_pEventToScreen)
+                m_pEventToScreen();
         }, 0.2f);
     }
     #endregion

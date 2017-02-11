@@ -48,8 +48,6 @@ public enum eSceneType
 {
     None,
     Intro,
-    Patch,
-    Login,
     Loading,
     InGame,
 }
